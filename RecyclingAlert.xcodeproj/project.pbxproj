@@ -13,8 +13,16 @@
 		507A16CD1B23EE3400B4A016 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 507A16CC1B23EE3400B4A016 /* Images.xcassets */; };
 		507A16D01B23EE3400B4A016 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 507A16CE1B23EE3400B4A016 /* LaunchScreen.xib */; };
 		507A16DC1B23EE3400B4A016 /* RecyclingAlertTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16DB1B23EE3400B4A016 /* RecyclingAlertTests.m */; };
-		507A16E71B241B7C00B4A016 /* ExampleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16E61B241B7C00B4A016 /* ExampleTableViewController.m */; };
-		507A16E81B241B7C00B4A016 /* ExampleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16E61B241B7C00B4A016 /* ExampleTableViewController.m */; };
+		507A16EC1B241EF400B4A016 /* ExampleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16EB1B241EF400B4A016 /* ExampleDataSource.m */; };
+		507A16ED1B241EF400B4A016 /* ExampleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16EB1B241EF400B4A016 /* ExampleDataSource.m */; };
+		507A16F01B241F0F00B4A016 /* ExampleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16EF1B241F0F00B4A016 /* ExampleTableViewController.m */; };
+		507A16F11B241F0F00B4A016 /* ExampleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16EF1B241F0F00B4A016 /* ExampleTableViewController.m */; };
+		507A16F41B241FC000B4A016 /* ExampleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16F31B241FC000B4A016 /* ExampleDelegate.m */; };
+		507A16F51B241FC000B4A016 /* ExampleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16F31B241FC000B4A016 /* ExampleDelegate.m */; };
+		507A16F81B2423DD00B4A016 /* ExampleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16F71B2423DD00B4A016 /* ExampleCell.m */; };
+		507A16F91B2423DD00B4A016 /* ExampleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16F71B2423DD00B4A016 /* ExampleCell.m */; };
+		507A16FC1B24242900B4A016 /* ExampleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16FB1B24242900B4A016 /* ExampleItem.m */; };
+		507A16FD1B24242900B4A016 /* ExampleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16FB1B24242900B4A016 /* ExampleItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +47,16 @@
 		507A16D51B23EE3400B4A016 /* RecyclingAlertTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecyclingAlertTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		507A16DA1B23EE3400B4A016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		507A16DB1B23EE3400B4A016 /* RecyclingAlertTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecyclingAlertTests.m; sourceTree = "<group>"; };
-		507A16E51B241B7C00B4A016 /* ExampleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleTableViewController.h; sourceTree = "<group>"; };
-		507A16E61B241B7C00B4A016 /* ExampleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleTableViewController.m; sourceTree = "<group>"; };
+		507A16EA1B241EF400B4A016 /* ExampleDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleDataSource.h; path = ExampleTableViewController/ExampleDataSource.h; sourceTree = "<group>"; };
+		507A16EB1B241EF400B4A016 /* ExampleDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleDataSource.m; path = ExampleTableViewController/ExampleDataSource.m; sourceTree = "<group>"; };
+		507A16EE1B241F0F00B4A016 /* ExampleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleTableViewController.h; path = ExampleTableViewController/ExampleTableViewController.h; sourceTree = "<group>"; };
+		507A16EF1B241F0F00B4A016 /* ExampleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleTableViewController.m; path = ExampleTableViewController/ExampleTableViewController.m; sourceTree = "<group>"; };
+		507A16F21B241FC000B4A016 /* ExampleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleDelegate.h; path = ExampleTableViewController/ExampleDelegate.h; sourceTree = "<group>"; };
+		507A16F31B241FC000B4A016 /* ExampleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleDelegate.m; path = ExampleTableViewController/ExampleDelegate.m; sourceTree = "<group>"; };
+		507A16F61B2423DD00B4A016 /* ExampleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleCell.h; path = ExampleTableViewController/ExampleCell.h; sourceTree = "<group>"; };
+		507A16F71B2423DD00B4A016 /* ExampleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleCell.m; path = ExampleTableViewController/ExampleCell.m; sourceTree = "<group>"; };
+		507A16FA1B24242900B4A016 /* ExampleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleItem.h; path = ExampleTableViewController/ExampleItem.h; sourceTree = "<group>"; };
+		507A16FB1B24242900B4A016 /* ExampleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleItem.m; path = ExampleTableViewController/ExampleItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,8 +98,7 @@
 		507A16BE1B23EE3400B4A016 /* RecyclingAlert */ = {
 			isa = PBXGroup;
 			children = (
-				507A16E51B241B7C00B4A016 /* ExampleTableViewController.h */,
-				507A16E61B241B7C00B4A016 /* ExampleTableViewController.m */,
+				507A16E91B241E6200B4A016 /* ExampleTableViewController */,
 				507A16C31B23EE3400B4A016 /* AppDelegate.h */,
 				507A16C41B23EE3400B4A016 /* AppDelegate.m */,
 				507A16C91B23EE3400B4A016 /* Main.storyboard */,
@@ -118,6 +133,23 @@
 				507A16DA1B23EE3400B4A016 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		507A16E91B241E6200B4A016 /* ExampleTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				507A16EE1B241F0F00B4A016 /* ExampleTableViewController.h */,
+				507A16EF1B241F0F00B4A016 /* ExampleTableViewController.m */,
+				507A16EA1B241EF400B4A016 /* ExampleDataSource.h */,
+				507A16EB1B241EF400B4A016 /* ExampleDataSource.m */,
+				507A16F21B241FC000B4A016 /* ExampleDelegate.h */,
+				507A16F31B241FC000B4A016 /* ExampleDelegate.m */,
+				507A16F61B2423DD00B4A016 /* ExampleCell.h */,
+				507A16F71B2423DD00B4A016 /* ExampleCell.m */,
+				507A16FA1B24242900B4A016 /* ExampleItem.h */,
+				507A16FB1B24242900B4A016 /* ExampleItem.m */,
+			);
+			name = ExampleTableViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,9 +252,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				507A16E71B241B7C00B4A016 /* ExampleTableViewController.m in Sources */,
+				507A16EC1B241EF400B4A016 /* ExampleDataSource.m in Sources */,
 				507A16C51B23EE3400B4A016 /* AppDelegate.m in Sources */,
+				507A16F81B2423DD00B4A016 /* ExampleCell.m in Sources */,
+				507A16F01B241F0F00B4A016 /* ExampleTableViewController.m in Sources */,
 				507A16C21B23EE3400B4A016 /* main.m in Sources */,
+				507A16FC1B24242900B4A016 /* ExampleItem.m in Sources */,
+				507A16F41B241FC000B4A016 /* ExampleDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,8 +266,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				507A16E81B241B7C00B4A016 /* ExampleTableViewController.m in Sources */,
+				507A16F11B241F0F00B4A016 /* ExampleTableViewController.m in Sources */,
+				507A16FD1B24242900B4A016 /* ExampleItem.m in Sources */,
+				507A16ED1B241EF400B4A016 /* ExampleDataSource.m in Sources */,
+				507A16F91B2423DD00B4A016 /* ExampleCell.m in Sources */,
 				507A16DC1B23EE3400B4A016 /* RecyclingAlertTests.m in Sources */,
+				507A16F51B241FC000B4A016 /* ExampleDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

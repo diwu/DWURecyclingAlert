@@ -1,0 +1,54 @@
+//
+//  ExampleDataSource.m
+//  RecyclingAlert
+//
+//  Created by Di Wu on 6/7/15.
+//  Copyright (c) 2015 Di Wu. All rights reserved.
+//
+
+#import "ExampleDataSource.h"
+
+static const NSInteger ExampleNumberOfSections = 1;
+
+@interface ExampleDataSource ()
+
+@property (nonatomic, copy) NSArray *itemsArr;
+
+@property (nonatomic, copy) NSString *cellIdentifier;
+
+@property (nonatomic, copy) ConfigureExampleCell configureExampleCell;
+
+@end
+
+@implementation ExampleDataSource
+
+- (instancetype)initWithItems: (NSArray *)itemsArr cellIdentifier: (NSString *)cellIdentifier configureCellBlock: (ConfigureExampleCell)configureExampleCell {
+    if ((self = [super init])) {
+        self.itemsArr = itemsArr;
+        self.cellIdentifier = cellIdentifier;
+        self.configureExampleCell = configureExampleCell;
+    }
+    return self;
+}
+
+- (ExampleItem *)itemAtIndexPath: (NSIndexPath *)indexPath {
+    return self.itemsArr[[indexPath row]];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.itemsArr count];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return ExampleNumberOfSections;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    id cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier
+                                              forIndexPath:indexPath];
+    id item = [self itemAtIndexPath:indexPath];
+    self.configureExampleCell(cell, item);
+    return cell;
+}
+
+@end
