@@ -8,7 +8,7 @@
 
 #import "ExampleDelegate.h"
 
-static const CGFloat ExampleCellFixedHeight = 120.f;
+static const CGFloat ExampleCellFixedHeight = 90.f;
 
 @implementation ExampleDelegate
 
