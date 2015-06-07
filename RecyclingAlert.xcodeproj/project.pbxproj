@@ -23,6 +23,7 @@
 		507A16F91B2423DD00B4A016 /* ExampleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16F71B2423DD00B4A016 /* ExampleCell.m */; };
 		507A16FC1B24242900B4A016 /* ExampleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16FB1B24242900B4A016 /* ExampleItem.m */; };
 		507A16FD1B24242900B4A016 /* ExampleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16FB1B24242900B4A016 /* ExampleItem.m */; };
+		50A5D65F1B24408C0058E134 /* DWUJRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A5D65E1B24408C0058E134 /* DWUJRSwizzle.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,8 @@
 		507A16F71B2423DD00B4A016 /* ExampleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleCell.m; path = ExampleTableViewController/ExampleCell.m; sourceTree = "<group>"; };
 		507A16FA1B24242900B4A016 /* ExampleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleItem.h; path = ExampleTableViewController/ExampleItem.h; sourceTree = "<group>"; };
 		507A16FB1B24242900B4A016 /* ExampleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleItem.m; path = ExampleTableViewController/ExampleItem.m; sourceTree = "<group>"; };
+		50A5D65D1B24408C0058E134 /* DWUJRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DWUJRSwizzle.h; path = DWURecycledAlert/DWUJRSwizzle.h; sourceTree = "<group>"; };
+		50A5D65E1B24408C0058E134 /* DWUJRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DWUJRSwizzle.m; path = DWURecycledAlert/DWUJRSwizzle.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,7 @@
 		507A16BE1B23EE3400B4A016 /* RecyclingAlert */ = {
 			isa = PBXGroup;
 			children = (
+				50A5D65C1B2440760058E134 /* DWURecycledAlert */,
 				507A16E91B241E6200B4A016 /* ExampleTableViewController */,
 				507A16C31B23EE3400B4A016 /* AppDelegate.h */,
 				507A16C41B23EE3400B4A016 /* AppDelegate.m */,
@@ -150,6 +154,15 @@
 				507A16FB1B24242900B4A016 /* ExampleItem.m */,
 			);
 			name = ExampleTableViewController;
+			sourceTree = "<group>";
+		};
+		50A5D65C1B2440760058E134 /* DWURecycledAlert */ = {
+			isa = PBXGroup;
+			children = (
+				50A5D65D1B24408C0058E134 /* DWUJRSwizzle.h */,
+				50A5D65E1B24408C0058E134 /* DWUJRSwizzle.m */,
+			);
+			name = DWURecycledAlert;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +270,7 @@
 				507A16F81B2423DD00B4A016 /* ExampleCell.m in Sources */,
 				507A16F01B241F0F00B4A016 /* ExampleTableViewController.m in Sources */,
 				507A16C21B23EE3400B4A016 /* main.m in Sources */,
+				50A5D65F1B24408C0058E134 /* DWUJRSwizzle.m in Sources */,
 				507A16FC1B24242900B4A016 /* ExampleItem.m in Sources */,
 				507A16F41B241FC000B4A016 /* ExampleDelegate.m in Sources */,
 			);
@@ -458,6 +472,7 @@
 				507A16E11B23EE3400B4A016 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		507A16E21B23EE3400B4A016 /* Build configuration list for PBXNativeTarget "RecyclingAlertTests" */ = {
 			isa = XCConfigurationList;
@@ -466,6 +481,7 @@
 				507A16E41B23EE3400B4A016 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
