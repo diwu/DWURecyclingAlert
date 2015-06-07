@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		507A16C21B23EE3400B4A016 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16C11B23EE3400B4A016 /* main.m */; };
 		507A16C51B23EE3400B4A016 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16C41B23EE3400B4A016 /* AppDelegate.m */; };
-		507A16C81B23EE3400B4A016 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16C71B23EE3400B4A016 /* ViewController.m */; };
 		507A16CB1B23EE3400B4A016 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 507A16C91B23EE3400B4A016 /* Main.storyboard */; };
 		507A16CD1B23EE3400B4A016 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 507A16CC1B23EE3400B4A016 /* Images.xcassets */; };
 		507A16D01B23EE3400B4A016 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 507A16CE1B23EE3400B4A016 /* LaunchScreen.xib */; };
 		507A16DC1B23EE3400B4A016 /* RecyclingAlertTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16DB1B23EE3400B4A016 /* RecyclingAlertTests.m */; };
+		507A16E71B241B7C00B4A016 /* ExampleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16E61B241B7C00B4A016 /* ExampleTableViewController.m */; };
+		507A16E81B241B7C00B4A016 /* ExampleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16E61B241B7C00B4A016 /* ExampleTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +33,14 @@
 		507A16C11B23EE3400B4A016 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		507A16C31B23EE3400B4A016 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		507A16C41B23EE3400B4A016 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		507A16C61B23EE3400B4A016 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		507A16C71B23EE3400B4A016 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		507A16CA1B23EE3400B4A016 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		507A16CC1B23EE3400B4A016 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		507A16CF1B23EE3400B4A016 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		507A16D51B23EE3400B4A016 /* RecyclingAlertTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecyclingAlertTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		507A16DA1B23EE3400B4A016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		507A16DB1B23EE3400B4A016 /* RecyclingAlertTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecyclingAlertTests.m; sourceTree = "<group>"; };
+		507A16E51B241B7C00B4A016 /* ExampleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleTableViewController.h; sourceTree = "<group>"; };
+		507A16E61B241B7C00B4A016 /* ExampleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,10 +82,10 @@
 		507A16BE1B23EE3400B4A016 /* RecyclingAlert */ = {
 			isa = PBXGroup;
 			children = (
+				507A16E51B241B7C00B4A016 /* ExampleTableViewController.h */,
+				507A16E61B241B7C00B4A016 /* ExampleTableViewController.m */,
 				507A16C31B23EE3400B4A016 /* AppDelegate.h */,
 				507A16C41B23EE3400B4A016 /* AppDelegate.m */,
-				507A16C61B23EE3400B4A016 /* ViewController.h */,
-				507A16C71B23EE3400B4A016 /* ViewController.m */,
 				507A16C91B23EE3400B4A016 /* Main.storyboard */,
 				507A16CC1B23EE3400B4A016 /* Images.xcassets */,
 				507A16CE1B23EE3400B4A016 /* LaunchScreen.xib */,
@@ -219,7 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				507A16C81B23EE3400B4A016 /* ViewController.m in Sources */,
+				507A16E71B241B7C00B4A016 /* ExampleTableViewController.m in Sources */,
 				507A16C51B23EE3400B4A016 /* AppDelegate.m in Sources */,
 				507A16C21B23EE3400B4A016 /* main.m in Sources */,
 			);
@@ -229,6 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				507A16E81B241B7C00B4A016 /* ExampleTableViewController.m in Sources */,
 				507A16DC1B23EE3400B4A016 /* RecyclingAlertTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

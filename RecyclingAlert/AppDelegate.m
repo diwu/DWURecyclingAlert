@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ExampleTableViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    ExampleTableViewController *controller = [ExampleTableViewController new];
+    self.window.rootViewController = controller;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 

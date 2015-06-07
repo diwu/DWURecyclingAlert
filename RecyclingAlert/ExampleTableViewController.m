@@ -1,15 +1,13 @@
 //
-//  ViewController.h
+//  ExampleTableViewController.m
 //  RecyclingAlert
 //
 //  Created by Di Wu on 6/7/15.
 //  Copyright (c) 2015 Di Wu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "ExampleTableViewController.h"
 
-@interface ViewController : UIViewController
-
+@implementation ExampleTableViewController
 
 @end
-
