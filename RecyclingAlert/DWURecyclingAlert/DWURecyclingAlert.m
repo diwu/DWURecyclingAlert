@@ -38,27 +38,37 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
     return YES;
 }
 
+static void dwu_recursionHelper1(UIView *view) {
+    view.dwuRecyclingCount = @(1);
+    for (UIView *subview in view.subviews) {
+        dwu_recursionHelper1(subview);
+    }
+}
+
 static void dwu_markAllSubviewsAsRecycled(UITableViewCell *_self) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        for (UIView *view in _self.contentView.subviews) {
-            view.dwuRecyclingCount = @(1);
-        }
+        dwu_recursionHelper1(_self.contentView);
     });
+}
+
+static void dwu_recursionHelper2(UIView *view) {
+    NSNumber *recyclingCount = view.dwuRecyclingCount;
+    if (!recyclingCount) {
+        view.dwuRecyclingCount = @(1);
+        view.layer.borderColor = [[UIColor redColor] CGColor];
+        view.layer.borderWidth = 5.0;
+    } else {
+        view.layer.borderColor = [[UIColor clearColor] CGColor];
+        view.layer.borderWidth = 0.0;
+    }
+    for (UIView *subview in view.subviews) {
+        dwu_recursionHelper2(subview);
+    }
 }
 
 static void dwu_checkNonRecycledSubviews(UITableViewCell *_self) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        for (UIView *view in _self.contentView.subviews) {
-            NSNumber *recyclingCount = view.dwuRecyclingCount;
-            if (!recyclingCount) {
-                view.dwuRecyclingCount = @(1);
-                view.layer.borderColor = [[UIColor redColor] CGColor];
-                view.layer.borderWidth = 5.0;
-            } else {
-                view.layer.borderColor = [[UIColor clearColor] CGColor];
-                view.layer.borderWidth = 0.0;
-            }
-        }
+        dwu_recursionHelper2(_self.contentView);
     });
 }
 
