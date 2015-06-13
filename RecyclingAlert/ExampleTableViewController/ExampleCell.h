@@ -14,8 +14,12 @@
 
 @interface ExampleCell (LayoutSubviews)
 
+@property (nonatomic, strong, readonly) UIImageView *recycledImageViewWithNonRecycledImage;
+
 - (void)layoutRecyledView: (UIView *)view;
 
 - (void)layoutNonRecycledView: (UIView *)view;
+
+- (void)layoutNonRecycledImage: (UIView *)view;
 
 @end

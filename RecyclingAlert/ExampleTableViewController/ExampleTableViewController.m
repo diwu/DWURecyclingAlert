@@ -9,6 +9,7 @@
 #import "ExampleTableViewController.h"
 #import "ExampleDataSource.h"
 #import "ExampleDelegate.h"
+#import "ExampleImage.h"
 
 static const NSInteger ExampleNumberOfItems = 999;
 static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
@@ -49,6 +50,8 @@ static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
             view.backgroundColor = [UIColor blueColor];
             [cell.contentView addSubview:view];
             [cell layoutNonRecycledView:view];
+            
+            cell.recycledImageViewWithNonRecycledImage.image = [ExampleImage imageWithPureColor:[UIColor blackColor]];
         }
     }];
     self.tableView.delegate = self.exampleDelegate;

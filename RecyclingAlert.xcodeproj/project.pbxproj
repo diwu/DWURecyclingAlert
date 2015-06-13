@@ -23,6 +23,7 @@
 		507A16F91B2423DD00B4A016 /* ExampleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16F71B2423DD00B4A016 /* ExampleCell.m */; };
 		507A16FC1B24242900B4A016 /* ExampleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16FB1B24242900B4A016 /* ExampleItem.m */; };
 		507A16FD1B24242900B4A016 /* ExampleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16FB1B24242900B4A016 /* ExampleItem.m */; };
+		508DF4F31B2C0FD000361081 /* ExampleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 508DF4F21B2C0FD000361081 /* ExampleImage.m */; };
 		50A5D6661B2463FA0058E134 /* DWURecyclingAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */; };
 		50A5D6691B2468250058E134 /* UIView+DWURecyclingAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A5D6681B2468250058E134 /* UIView+DWURecyclingAlert.m */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,8 @@
 		507A16F71B2423DD00B4A016 /* ExampleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleCell.m; path = ExampleTableViewController/ExampleCell.m; sourceTree = "<group>"; };
 		507A16FA1B24242900B4A016 /* ExampleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleItem.h; path = ExampleTableViewController/ExampleItem.h; sourceTree = "<group>"; };
 		507A16FB1B24242900B4A016 /* ExampleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleItem.m; path = ExampleTableViewController/ExampleItem.m; sourceTree = "<group>"; };
+		508DF4F11B2C0FD000361081 /* ExampleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleImage.h; path = ExampleTableViewController/ExampleImage.h; sourceTree = "<group>"; };
+		508DF4F21B2C0FD000361081 /* ExampleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleImage.m; path = ExampleTableViewController/ExampleImage.m; sourceTree = "<group>"; };
 		50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DWURecyclingAlert.m; path = DWURecyclingAlert/DWURecyclingAlert.m; sourceTree = "<group>"; };
 		50A5D6671B2468250058E134 /* UIView+DWURecyclingAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+DWURecyclingAlert.h"; path = "DWURecyclingAlert/UIView+DWURecyclingAlert.h"; sourceTree = "<group>"; };
 		50A5D6681B2468250058E134 /* UIView+DWURecyclingAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+DWURecyclingAlert.m"; path = "DWURecyclingAlert/UIView+DWURecyclingAlert.m"; sourceTree = "<group>"; };
@@ -154,6 +157,8 @@
 				507A16F71B2423DD00B4A016 /* ExampleCell.m */,
 				507A16FA1B24242900B4A016 /* ExampleItem.h */,
 				507A16FB1B24242900B4A016 /* ExampleItem.m */,
+				508DF4F11B2C0FD000361081 /* ExampleImage.h */,
+				508DF4F21B2C0FD000361081 /* ExampleImage.m */,
 			);
 			name = ExampleTableViewController;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 				507A16C21B23EE3400B4A016 /* main.m in Sources */,
 				507A16FC1B24242900B4A016 /* ExampleItem.m in Sources */,
 				50A5D6661B2463FA0058E134 /* DWURecyclingAlert.m in Sources */,
+				508DF4F31B2C0FD000361081 /* ExampleImage.m in Sources */,
 				507A16F41B241FC000B4A016 /* ExampleDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
