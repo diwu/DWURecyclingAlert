@@ -1,15 +1,15 @@
 //
-//  UIView+DWURecyclingAlert.h
+//  NSObject+DWURecyclingAlert.h
 //  RecyclingAlert
 //
 //  Created by Di Wu on 6/7/15.
 //  Copyright (c) 2015 Di Wu. All rights reserved.
 //
 
-#import <UIKit/UIView.h>
+#import <Foundation/Foundation.h>
 
 #if DEBUG
-@interface UIView (DWURecyclingAlert)
+@interface NSObject (DWURecyclingAlert)
 
 @property (nonatomic, strong) NSNumber *dwuRecyclingCount;
 

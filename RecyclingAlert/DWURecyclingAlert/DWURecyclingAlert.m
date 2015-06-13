@@ -10,7 +10,8 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <UIKit/UITableViewCell.h>
-#import "UIView+DWURecyclingAlert.h"
+#import <UIKit/UIImage.h>
+#import "NSObject+DWURecyclingAlert.h"
 #import <QuartzCore/CALayer.h>
 
 #define DWU_PROPERTY(propName) NSStringFromSelector(@selector(propName))
@@ -40,6 +41,13 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 
 static void dwu_recursionHelper1(UIView *view) {
     view.dwuRecyclingCount = @(1);
+    SEL imageSelector = NSSelectorFromString(@"image");
+    if ([view respondsToSelector:imageSelector]) {
+        UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(view, imageSelector);
+        if (image) {
+            image.dwuRecyclingCount = @(1);
+        }
+    }
     for (UIView *subview in view.subviews) {
         dwu_recursionHelper1(subview);
     }
@@ -53,7 +61,23 @@ static void dwu_markAllSubviewsAsRecycled(UITableViewCell *_self) {
 
 static void dwu_recursionHelper2(UIView *view) {
     NSNumber *recyclingCount = view.dwuRecyclingCount;
-    if (!recyclingCount) {
+    NSNumber *imageRecyclingCount;
+    SEL imageSelector = NSSelectorFromString(@"image");
+    BOOL viewTargetFound = NO;
+    BOOL imageTargetFound = NO;
+    if ([view respondsToSelector:imageSelector]) {
+        UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(view, imageSelector);
+        if (image) {
+            imageRecyclingCount = image.dwuRecyclingCount;
+            if (!imageRecyclingCount) {
+                imageTargetFound = YES;
+            }
+        }
+    } else if (!recyclingCount) {
+        viewTargetFound = YES;
+    }
+    
+    if (viewTargetFound || imageTargetFound) {
         view.dwuRecyclingCount = @(1);
         view.layer.borderColor = [[UIColor redColor] CGColor];
         view.layer.borderWidth = 5.0;
@@ -72,6 +96,27 @@ static void dwu_checkNonRecycledSubviews(UITableViewCell *_self) {
     });
 }
 
+//static void dwu_recursionHelper3(UIView *view) {
+//    NSNumber *recyclingCount = view.dwuRecyclingCount;
+//    if (!recyclingCount) {
+//        view.dwuRecyclingCount = @(1);
+//        view.layer.borderColor = [[UIColor redColor] CGColor];
+//        view.layer.borderWidth = 5.0;
+//    } else {
+//        view.layer.borderColor = [[UIColor clearColor] CGColor];
+//        view.layer.borderWidth = 0.0;
+//    }
+//    for (UIView *subview in view.subviews) {
+//        dwu_recursionHelper2(subview);
+//    }
+//}
+//
+//static void dwu_checkNonRecycledImagesInSubviews(UITableViewCell *_self) {
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        dwu_recursionHelper3(_self.contentView);
+//    });
+//}
+
 #if DEBUG
 __attribute__((constructor)) static void DWURecyclingAlert(void) {
     @autoreleasepool {
@@ -89,6 +134,12 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
             dwu_markAllSubviewsAsRecycled(_self);
             return ((id ( *)(id, SEL, NSInteger, id))objc_msgSend)(_self, newSelector, arg1, arg2);
         });
+//        selStr = DWU_PROPERTY(setImage:);
+//        selector = NSSelectorFromString(selStr);
+//        newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
+//        dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, ^(__unsafe_unretained UITableViewCell *_self, __unsafe_unretained id arg) {
+//            ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
+//        });
     }
 }
 #endif

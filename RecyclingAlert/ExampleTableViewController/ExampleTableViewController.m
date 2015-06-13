@@ -36,7 +36,7 @@ static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+    [super viewDidLoad];    
     [self.tableView registerClass:[ExampleCell class] forCellReuseIdentifier:ExampleCellIdentifier];
     self.exampleDelegate = [ExampleDelegate new];
     self.exampleDataSource = [[ExampleDataSource alloc] initWithItems:[self generateExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:^(ExampleCell *cell, ExampleItem *item) {
@@ -52,6 +52,8 @@ static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
             [cell layoutNonRecycledView:view];
             
             cell.recycledImageViewWithNonRecycledImage.image = [ExampleImage imageWithPureColor:[UIColor blackColor]];
+        } else {
+            cell.recycledImageViewWithNonRecycledImage.image = nil;
         }
     }];
     self.tableView.delegate = self.exampleDelegate;
