@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50177D691B2C419E00795317 /* ExampleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 508DF4F21B2C0FD000361081 /* ExampleImage.m */; };
 		507A16C21B23EE3400B4A016 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16C11B23EE3400B4A016 /* main.m */; };
 		507A16C51B23EE3400B4A016 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16C41B23EE3400B4A016 /* AppDelegate.m */; };
 		507A16CB1B23EE3400B4A016 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 507A16C91B23EE3400B4A016 /* Main.storyboard */; };
@@ -288,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50177D691B2C419E00795317 /* ExampleImage.m in Sources */,
 				507A16F11B241F0F00B4A016 /* ExampleTableViewController.m in Sources */,
 				507A16FD1B24242900B4A016 /* ExampleItem.m in Sources */,
 				507A16ED1B241EF400B4A016 /* ExampleDataSource.m in Sources */,
