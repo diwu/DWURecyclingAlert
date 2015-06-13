@@ -26,7 +26,6 @@
 		508DF4F31B2C0FD000361081 /* ExampleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 508DF4F21B2C0FD000361081 /* ExampleImage.m */; };
 		508DF4F81B2C221100361081 /* apple_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 508DF4F71B2C221100361081 /* apple_logo@3x.png */; };
 		50A5D6661B2463FA0058E134 /* DWURecyclingAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */; };
-		50A5D6691B2468250058E134 /* UIView+DWURecyclingAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A5D6681B2468250058E134 /* UIView+DWURecyclingAlert.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,8 +64,6 @@
 		508DF4F21B2C0FD000361081 /* ExampleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleImage.m; path = ExampleTableViewController/ExampleImage.m; sourceTree = "<group>"; };
 		508DF4F71B2C221100361081 /* apple_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple_logo@3x.png"; sourceTree = "<group>"; };
 		50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DWURecyclingAlert.m; path = DWURecyclingAlert/DWURecyclingAlert.m; sourceTree = "<group>"; };
-		50A5D6671B2468250058E134 /* UIView+DWURecyclingAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+DWURecyclingAlert.h"; path = "DWURecyclingAlert/UIView+DWURecyclingAlert.h"; sourceTree = "<group>"; };
-		50A5D6681B2468250058E134 /* UIView+DWURecyclingAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+DWURecyclingAlert.m"; path = "DWURecyclingAlert/UIView+DWURecyclingAlert.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,8 +167,6 @@
 			isa = PBXGroup;
 			children = (
 				50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */,
-				50A5D6671B2468250058E134 /* UIView+DWURecyclingAlert.h */,
-				50A5D6681B2468250058E134 /* UIView+DWURecyclingAlert.m */,
 			);
 			name = DWURecyclingAlert;
 			sourceTree = "<group>";
@@ -278,7 +273,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				507A16EC1B241EF400B4A016 /* ExampleDataSource.m in Sources */,
-				50A5D6691B2468250058E134 /* UIView+DWURecyclingAlert.m in Sources */,
 				507A16C51B23EE3400B4A016 /* AppDelegate.m in Sources */,
 				507A16F81B2423DD00B4A016 /* ExampleCell.m in Sources */,
 				507A16F01B241F0F00B4A016 /* ExampleTableViewController.m in Sources */,
