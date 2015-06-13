@@ -26,6 +26,7 @@ static const CGFloat ExampleCellInset = 10.0;
         self.recycledView.backgroundColor = [UIColor greenColor];
         [self.contentView addSubview:self.recycledView];
         self.recycledImageViewWithNonRecycledImage = [UIImageView new];
+        self.recycledImageViewWithNonRecycledImage.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:self.recycledImageViewWithNonRecycledImage];
     }
     return self;
@@ -42,19 +43,19 @@ static const CGFloat ExampleCellInset = 10.0;
 @implementation ExampleCell (LayoutSubviews)
 
 - (void)layoutRecyledView: (UIView *)view {
-    CGRect rect = CGRectMake(0, 0, CGRectGetWidth(self.contentView.frame)/3.0, CGRectGetHeight(self.contentView.frame));
+    CGRect rect = CGRectMake(0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame));
     rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
     view.frame = rect;
 }
 
 - (void)layoutNonRecycledView: (UIView *)view {
-    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame)/3.0, 0, CGRectGetWidth(self.contentView.frame)/3.0, CGRectGetHeight(self.contentView.frame));
+    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame)/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame));
     rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
     view.frame = rect;
 }
 
 - (void)layoutNonRecycledImage: (UIView *)view {
-    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame) * 2.0/3.0, 0, CGRectGetWidth(self.contentView.frame)/3.0, CGRectGetHeight(self.contentView.frame));
+    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame) * 2.0/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame));
     rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
     view.frame = rect;
 }

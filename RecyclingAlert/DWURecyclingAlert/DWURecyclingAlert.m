@@ -60,25 +60,28 @@ static void dwu_markAllSubviewsAsRecycled(UITableViewCell *_self) {
 }
 
 static void dwu_recursionHelper2(UIView *view) {
+    static NSMutableSet *cgImageRefSet;
+    if (!cgImageRefSet) {
+        cgImageRefSet = [NSMutableSet set];
+    }
     NSNumber *recyclingCount = view.dwuRecyclingCount;
-    NSNumber *imageRecyclingCount;
     SEL imageSelector = NSSelectorFromString(@"image");
     BOOL viewTargetFound = NO;
     BOOL imageTargetFound = NO;
     if ([view respondsToSelector:imageSelector]) {
         UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(view, imageSelector);
         if (image) {
-            imageRecyclingCount = image.dwuRecyclingCount;
-            if (!imageRecyclingCount) {
+            if (![cgImageRefSet containsObject:[NSString stringWithFormat:@"%@", image.CGImage]]) {
+                [cgImageRefSet addObject:[NSString stringWithFormat:@"%@", image.CGImage]];
                 imageTargetFound = YES;
             }
         }
     } else if (!recyclingCount) {
         viewTargetFound = YES;
+        view.dwuRecyclingCount = @(1);
     }
     
     if (viewTargetFound || imageTargetFound) {
-        view.dwuRecyclingCount = @(1);
         view.layer.borderColor = [[UIColor redColor] CGColor];
         view.layer.borderWidth = 5.0;
     } else {

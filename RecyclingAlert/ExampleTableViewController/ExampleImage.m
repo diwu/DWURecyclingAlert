@@ -10,15 +10,14 @@
 
 @implementation ExampleImage
 
-+ (UIImage *)imageWithPureColor:(UIColor *)color {
-    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [color CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
++ (UIImage *)recycledImage {
+    return [UIImage imageNamed:@"apple_logo"];
+}
+
++ (UIImage *)nonRecycledImage {
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *filePath = [bundle pathForResource:@"apple_logo@3x" ofType:@"png"];
+    return [UIImage imageWithContentsOfFile:filePath];
 }
 
 @end

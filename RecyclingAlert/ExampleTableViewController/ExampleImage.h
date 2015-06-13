@@ -10,6 +10,8 @@
 
 @interface ExampleImage : NSObject
 
-+ (UIImage *)imageWithPureColor:(UIColor *)color;
++ (UIImage *)recycledImage;
+
++ (UIImage *)nonRecycledImage;
 
 @end
