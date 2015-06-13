@@ -7,6 +7,7 @@
 //
 
 #import "ExampleCell.h"
+#import "ExampleImage.h"
 
 static const CGFloat ExampleCellInset = 10.0;
 
@@ -15,6 +16,8 @@ static const CGFloat ExampleCellInset = 10.0;
 @property (nonatomic, strong) UIView *recycledView;
 
 @property (nonatomic, strong, readwrite) UIImageView *recycledImageViewWithNonRecycledImage;
+
+@property (nonatomic, strong, readwrite) UIImageView *recycledImageViewWithRecycledImage;
 
 @end
 
@@ -28,6 +31,10 @@ static const CGFloat ExampleCellInset = 10.0;
         self.recycledImageViewWithNonRecycledImage = [UIImageView new];
         self.recycledImageViewWithNonRecycledImage.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:self.recycledImageViewWithNonRecycledImage];
+        self.recycledImageViewWithRecycledImage = [UIImageView new];
+        self.recycledImageViewWithRecycledImage.contentMode = UIViewContentModeScaleAspectFit;
+        self.recycledImageViewWithRecycledImage.image = [ExampleImage recycledImage];
+        [self.contentView addSubview:self.recycledImageViewWithRecycledImage];
     }
     return self;
 }
@@ -36,6 +43,8 @@ static const CGFloat ExampleCellInset = 10.0;
     [super layoutSubviews];
     [self layoutRecyledView:self.recycledView];
     [self layoutNonRecycledImage:self.recycledImageViewWithNonRecycledImage];
+    [self layoutNonRecycledImage:self.recycledImageViewWithNonRecycledImage];
+    [self layoutRecycledImage:self.recycledImageViewWithRecycledImage];
 }
 
 @end
@@ -56,6 +65,12 @@ static const CGFloat ExampleCellInset = 10.0;
 
 - (void)layoutNonRecycledImage: (UIView *)view {
     CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame) * 2.0/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame));
+    rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
+    view.frame = rect;
+}
+
+- (void)layoutRecycledImage: (UIView *)view {
+    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame) * 3.0/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame));
     rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
     view.frame = rect;
 }

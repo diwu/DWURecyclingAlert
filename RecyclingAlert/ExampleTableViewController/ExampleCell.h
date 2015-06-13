@@ -16,10 +16,14 @@
 
 @property (nonatomic, strong, readonly) UIImageView *recycledImageViewWithNonRecycledImage;
 
-- (void)layoutRecyledView: (UIView *)view;
+@property (nonatomic, strong, readonly) UIImageView *recycledImageViewWithRecycledImage;
 
 - (void)layoutNonRecycledView: (UIView *)view;
 
+- (void)layoutRecyledView: (UIView *)view;
+
 - (void)layoutNonRecycledImage: (UIView *)view;
+
+- (void)layoutRecycledImage: (UIView *)view;
 
 @end
