@@ -14,7 +14,9 @@ Now launch your app, initialize a UITableView and observe. Anything that are mar
 
 Once you start caching those UI stuff, the ugly red borders will be gone, for good. Because [DWURecyclingAlert.m](./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m) will intelligently detect which is cached and will only mark those that are not cached with a red border.
 #How It Works
-[DWURecyclingAlert.m](./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m) dynamically injects a property into every UIView instances so that it has a way to know which is recycled and which is not.
+[DWURecyclingAlert.m](./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m) dynamically injects a property into every UIView instances so that it has a way to know which is recycled and which is not. 
+
+For views that have an image property, [DWURecyclingAlert.m](./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m) will record and check the underlying CGImageRef value to decide whether the image is a recycled one or not.
 #Disabled in Release Builds By Default
 [DWURecyclingAlert.m](./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m) requires the DEBUG macro to compile and run. If you also want to disable it in debug builds, feel free to comment out the [DWURecyclingAlertEnabled](https://github.com/diwu/DWURecyclingAlert/blob/master/RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L16) macro at the top of the file.
 #Example Project
