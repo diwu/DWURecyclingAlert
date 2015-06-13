@@ -1,9 +1,9 @@
-[![](https://img.shields.io/badge/build-passing-green.svg)](https://github.com/diwu/LeetCode-Solutions-in-Swift)
-[![](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/diwu/LeetCode-Solutions-in-Swift)
-
 ![](https://github.com/diwu/ui-markdown-store/blob/master/demo_1.gif)
 
 #DWURecyclingAlert
+[![](https://img.shields.io/badge/build-passing-green.svg)](https://github.com/diwu/LeetCode-Solutions-in-Swift)
+[![](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/diwu/LeetCode-Solutions-in-Swift)
+
 A dead simple drop-in code snippet that detects non-recycled UI elements inside your UITableViewCells.
 #Usage
 Step 1: Drop [DWURecyclingAlert.m](./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m) into your project.
