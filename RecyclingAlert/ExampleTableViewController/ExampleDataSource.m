@@ -44,8 +44,9 @@ static const NSInteger ExampleNumberOfSections = 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    id cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier
                                               forIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellEditingStyleNone;
     id item = [self itemAtIndexPath:indexPath];
     self.configureExampleCell(cell, item);
     return cell;

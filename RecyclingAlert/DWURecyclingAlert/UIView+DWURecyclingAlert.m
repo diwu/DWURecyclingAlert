@@ -1,16 +1,16 @@
 //
-//  NSObject+DWURecyclingAlert.m
+//  UIView+DWURecyclingAlert.m
 //  RecyclingAlert
 //
 //  Created by Di Wu on 6/7/15.
 //  Copyright (c) 2015 Di Wu. All rights reserved.
 //
 
-#import "NSObject+DWURecyclingAlert.h"
+#import "UIView+DWURecyclingAlert.h"
 #import <objc/runtime.h>
 
 #if DEBUG
-@implementation NSObject (DWURecyclingAlert)
+@implementation UIView (DWURecyclingAlert)
 
 @dynamic dwuRecyclingCount;
 

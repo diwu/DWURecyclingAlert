@@ -11,7 +11,7 @@
 #import <objc/message.h>
 #import <UIKit/UITableViewCell.h>
 #import <UIKit/UIImage.h>
-#import "NSObject+DWURecyclingAlert.h"
+#import "UIView+DWURecyclingAlert.h"
 #import <QuartzCore/CALayer.h>
 
 #define DWU_PROPERTY(propName) NSStringFromSelector(@selector(propName))
@@ -41,13 +41,6 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 
 static void dwu_recursionHelper1(UIView *view) {
     view.dwuRecyclingCount = @(1);
-    SEL imageSelector = NSSelectorFromString(@"image");
-    if ([view respondsToSelector:imageSelector]) {
-        UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(view, imageSelector);
-        if (image) {
-            image.dwuRecyclingCount = @(1);
-        }
-    }
     for (UIView *subview in view.subviews) {
         dwu_recursionHelper1(subview);
     }

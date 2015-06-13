@@ -11,7 +11,7 @@
 #import "ExampleItem.h"
 #import "ExampleCell.h"
 
-typedef void (^ConfigureExampleCell)(ExampleCell *, ExampleItem *);
+typedef void (^ConfigureExampleCell)(id, ExampleItem *);
 
 @interface ExampleDataSource : NSObject <UITableViewDataSource>
 
