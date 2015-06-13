@@ -18,6 +18,14 @@
 
 @property (nonatomic, strong, readonly) UIImageView *recycledImageViewWithRecycledImage;
 
+@property (nonatomic, strong, readonly) UILabel *label0;
+
+@property (nonatomic, strong, readonly) UILabel *label1;
+
+@property (nonatomic, strong, readonly) UILabel *label2;
+
+@property (nonatomic, strong, readonly) UILabel *label3;
+
 - (void)layoutNonRecycledView: (UIView *)view;
 
 - (void)layoutRecyledView: (UIView *)view;
