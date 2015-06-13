@@ -15,8 +15,6 @@
 
 #define DWURecyclingAlertEnabled
 
-#define DWU_PROPERTY(propName) NSStringFromSelector(@selector(propName))
-
 #if defined (DEBUG) && defined (DWURecyclingAlertEnabled)
 @interface UIView (DWURecyclingAlert)
 
@@ -116,14 +114,14 @@ static void dwu_checkNonRecycledSubviews(UITableViewCell *_self) {
 
 __attribute__((constructor)) static void DWURecyclingAlert(void) {
     @autoreleasepool {
-        NSString *selStr = DWU_PROPERTY(prepareForReuse);
+        NSString *selStr = NSStringFromSelector(@selector(prepareForReuse));
         SEL selector = NSSelectorFromString(selStr);
         SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
         dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, ^(__unsafe_unretained UITableViewCell *_self) {
             ((void ( *)(id, SEL))objc_msgSend)(_self, newSelector);
             dwu_checkNonRecycledSubviews(_self);
         });
-        selStr = DWU_PROPERTY(initWithStyle:reuseIdentifier:);
+        selStr = NSStringFromSelector(@selector(initWithStyle:reuseIdentifier:));
         selector = NSSelectorFromString(selStr);
         newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
         dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UITableViewCell *_self, NSInteger arg1, __unsafe_unretained id arg2) {
