@@ -2,7 +2,7 @@
 
 #DWURecyclingAlert
 [![](https://img.shields.io/badge/build-passing-green.svg)][project]
-[![](https://img.shields.io/badge/license-MIT-blue.svg)][project]
+[![](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 [![](https://img.shields.io/badge/swift-compatible-orange.svg)][project]
 
 A dead simple drop-in code snippet that detects non-recycled UI elements inside your UITableViewCells.
@@ -25,7 +25,8 @@ Inside this repo you can find the RecyclingAlert example project.
 #License
 DWURecyclingAlert is released under the MIT license. See LICENSE for details.
 
-[code]: https://raw.githubusercontent.com/diwu/DWURecyclingAlert/master/RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m
-[code_line_16]: https://github.com/diwu/DWURecyclingAlert/blob/master/RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L22
+[code]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m
+[code_line_16]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L22
 [project]: https://github.com/diwu/DWURecyclingAlert
 [demo]: https://github.com/diwu/ui-markdown-store/blob/master/demo_1.gif
+[license]: ./LICENSE
