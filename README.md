@@ -26,6 +26,6 @@ Inside this repo you can find the RecyclingAlert example project.
 DWURecyclingAlert is released under the MIT license. See LICENSE for details.
 
 [code]: https://raw.githubusercontent.com/diwu/DWURecyclingAlert/master/RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m
-[code_line_16]: https://github.com/diwu/DWURecyclingAlert/blob/master/RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L16
+[code_line_16]: https://github.com/diwu/DWURecyclingAlert/blob/master/RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L22
 [project]: https://github.com/diwu/DWURecyclingAlert
 [demo]: https://github.com/diwu/ui-markdown-store/blob/master/demo_1.gif

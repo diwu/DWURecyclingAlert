@@ -19,6 +19,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //THE SOFTWARE.
 
+#define DWURecyclingAlertEnabled
+
+#if defined (DEBUG) && defined (DWURecyclingAlertEnabled)
+
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
@@ -26,9 +30,6 @@
 #import <UIKit/UIImage.h>
 #import <QuartzCore/CALayer.h>
 
-#define DWURecyclingAlertEnabled
-
-#if defined (DEBUG) && defined (DWURecyclingAlertEnabled)
 @interface UIView (DWURecyclingAlert)
 
 @property (nonatomic, strong) NSNumber *dwuRecyclingCount;
@@ -52,17 +53,12 @@
 // http://www.mikeash.com/pyblog/friday-qa-2010-01-29-method-replacement-for-fun-and-profit.html
 static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id block) {
     if ([c instancesRespondToSelector:newSEL]) return YES; // Selector already implemented, skip silently.
-    
     Method origMethod = class_getInstanceMethod(c, origSEL);
-    
-    // Add the new method.
     IMP impl = imp_implementationWithBlock(block);
     if (!class_addMethod(c, newSEL, impl, method_getTypeEncoding(origMethod))) {
         return NO;
     }else {
         Method newMethod = class_getInstanceMethod(c, newSEL);
-        
-        // If original doesn't implement the method we want to swizzle, create it.
         if (class_addMethod(c, origSEL, method_getImplementation(newMethod), method_getTypeEncoding(origMethod))) {
             class_replaceMethod(c, newSEL, method_getImplementation(origMethod), method_getTypeEncoding(newMethod));
         }else {
