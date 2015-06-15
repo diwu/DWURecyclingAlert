@@ -19,7 +19,11 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //THE SOFTWARE.
 
+// Comment out if you want to disable this entire runtime hack
 #define DWURecyclingAlertEnabled
+
+// Comment out if you want to disable the millisecond counter
+#define DWUMillisecondCounterEnabled
 
 #if defined (DEBUG) && defined (DWURecyclingAlertEnabled)
 
@@ -147,6 +151,7 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
             dwu_markAllSubviewsAsRecycled(_self);
             return ((id ( *)(id, SEL, NSInteger, id))objc_msgSend)(_self, newSelector, arg1, arg2);
         });
+#if defined (DEBUG) && defined (DWURecyclingAlertEnabled) && defined (DWUMillisecondCounterEnabled)
         selStr = NSStringFromSelector(@selector(setDataSource:));
         selector = NSSelectorFromString(selStr);
         newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
@@ -183,6 +188,7 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
             });
             ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
         });
+#endif
     }
 }
 #endif
