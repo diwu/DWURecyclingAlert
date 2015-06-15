@@ -30,7 +30,7 @@ To calculate the cell assembly time, [DWURecyclingAlert.m][code] hacks into the 
 #Disabled in Release  By Default
 [DWURecyclingAlert.m][code] requires the DEBUG macro to compile and run. If you also want to disable it in debug builds, feel free to comment out the [DWURecyclingAlertEnabled][code_line_23] macro at the top of the file.
 
-There will be times when you want to keep an eye on the non-recycled UI elements but prefer the time counting label hidden, if that's the case, comment out the [DWUMillisecondCounterEnabled][code_line_23] right below [DWURecyclingAlertEnabled][code_line_23].
+There will be times when you want to keep an eye on the non-recycled UI elements but prefer the time counting label hidden, if that's the case, comment out the [DWUMillisecondCounterEnabled][code_line_26] right below [DWURecyclingAlertEnabled][code_line_23].
 #Example Project
 Inside this repo you can find the RecyclingAlert example project. 
 #License
