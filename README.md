@@ -1,10 +1,9 @@
 ![][demo]
 
 #DWURecyclingAlert
-> Your code usually has less than ten milliseconds to run before it causes a frame drop.[^1]
+> Your code usually has less than ten milliseconds to run before it causes a frame drop.<sup>[1](#myfootnote1)</sup>
 >
 
-[^1]: Facebook AsyncDisplayKit Guide. (http://asyncdisplaykit.org/guide)
 [![](https://img.shields.io/badge/build-passing-green.svg)][project]
 [![](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 [![](https://img.shields.io/badge/swift-compatible-orange.svg)][project]
@@ -43,3 +42,4 @@ DWURecyclingAlert is released under the MIT license. See LICENSE for details.
 [project]: https://github.com/diwu/DWURecyclingAlert
 [demo]: https://raw.githubusercontent.com/diwu/ui-markdown-store/master/demo_2.gif
 [license]: ./LICENSE
+<a name="myfootnote1">1</a>: Facebook AsyncDisplayKit Guide. (http://asyncdisplaykit.org/guide)
