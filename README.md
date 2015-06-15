@@ -40,6 +40,6 @@ DWURecyclingAlert is released under the MIT license. See LICENSE for details.
 [code_line_23]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L23
 [code_line_26]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L23
 [project]: https://github.com/diwu/DWURecyclingAlert
-[demo]: https://raw.githubusercontent.com/diwu/ui-markdown-store/master/demo_2.gif
+[demo]: https://github.com/diwu/ui-markdown-store/blob/master/demo_2.gif
 [license]: ./LICENSE
 <a name="myfootnote1">1</a>: Facebook AsyncDisplayKit Guide. (http://asyncdisplaykit.org/guide)
