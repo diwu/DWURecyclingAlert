@@ -38,7 +38,7 @@ DWURecyclingAlert is released under the MIT license. See LICENSE for details.
 
 [code]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m
 [code_line_23]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L23
-[code_line_26]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L23
+[code_line_26]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L26
 [project]: https://github.com/diwu/DWURecyclingAlert
 [demo]: https://github.com/diwu/ui-markdown-store/blob/master/demo_2.gif
 [license]: ./LICENSE
