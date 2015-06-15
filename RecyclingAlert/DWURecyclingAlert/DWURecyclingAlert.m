@@ -163,8 +163,6 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
                 NSDate *date = [NSDate date];
                 id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, newCellForRowSel, arg1, arg2);
                 NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
-                int randNum = rand() % 20;
-                timeInterval += randNum;
                 NSString *timeIntervalString = [NSString stringWithFormat:@" Rendering takes %zd ms", (NSInteger)timeInterval];
                 UITableViewCell *cell = (UITableViewCell *)returnValue;
                 UILabel *timeIntervalLabel = (UILabel *)[cell viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
