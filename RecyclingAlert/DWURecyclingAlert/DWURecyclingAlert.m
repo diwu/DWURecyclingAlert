@@ -28,7 +28,11 @@
 #import <objc/message.h>
 #import <UIKit/UITableViewCell.h>
 #import <UIKit/UIImage.h>
+#import <UIKit/UITableView.h>
+#import <UIKit/UILabel.h>
 #import <QuartzCore/CALayer.h>
+
+static const NSInteger DWU_TIME_INTERVAL_LABEL_TAG = NSIntegerMax - 123;
 
 @interface UIView (DWURecyclingAlert)
 
@@ -69,6 +73,9 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 }
 
 static void dwu_recursionHelper1(UIView *view) {
+    if (view.tag == DWU_TIME_INTERVAL_LABEL_TAG) {
+        return;
+    }
     view.dwuRecyclingCount = @(1);
     for (UIView *subview in view.subviews) {
         dwu_recursionHelper1(subview);
@@ -82,6 +89,9 @@ static void dwu_markAllSubviewsAsRecycled(UITableViewCell *_self) {
 }
 
 static void dwu_recursionHelper2(UIView *view) {
+    if (view.tag == DWU_TIME_INTERVAL_LABEL_TAG) {
+        return;
+    }
     static NSMutableSet *cgImageRefSet;
     if (!cgImageRefSet) {
         cgImageRefSet = [NSMutableSet set];
@@ -136,6 +146,42 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
         dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UITableViewCell *_self, NSInteger arg1, __unsafe_unretained id arg2) {
             dwu_markAllSubviewsAsRecycled(_self);
             return ((id ( *)(id, SEL, NSInteger, id))objc_msgSend)(_self, newSelector, arg1, arg2);
+        });
+        selStr = NSStringFromSelector(@selector(setDataSource:));
+        selector = NSSelectorFromString(selStr);
+        newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
+        dwu_replaceMethodWithBlock(UITableView.class, selector, newSelector, ^(__unsafe_unretained UITableViewCell *_self, __unsafe_unretained id arg) {
+            NSString *cellForRowSelStr = NSStringFromSelector(@selector(tableView:cellForRowAtIndexPath:));
+            SEL cellForRowSel = NSSelectorFromString(cellForRowSelStr);
+            SEL newCellForRowSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
+            dwu_replaceMethodWithBlock([arg class], cellForRowSel, newCellForRowSel, ^(__unsafe_unretained UITableViewCell *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
+                NSDate *date = [NSDate date];
+                id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, newCellForRowSel, arg1, arg2);
+                NSTimeInterval timeInterval = -[date timeIntervalSinceNow] * 1000;
+                NSString *timeIntervalString;
+                if (timeInterval < 10.0f) {
+                    timeIntervalString = [NSString stringWithFormat:@"%.1f ms", timeInterval];
+                } else {
+                    timeIntervalString = [NSString stringWithFormat:@"👉🏻%.1f ms👈🏻", timeInterval];
+                }
+                UITableViewCell *cell = (UITableViewCell *)returnValue;
+                UILabel *timeIntervalLabel = (UILabel *)[cell viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
+                if (!timeIntervalLabel) {
+                    CGFloat labelWidth = 160.f;
+                    timeIntervalLabel = [[UILabel alloc] initWithFrame:CGRectMake((CGRectGetWidth(cell.contentView.frame) - labelWidth)/2.0, 20, labelWidth, 30)];
+                    timeIntervalLabel.userInteractionEnabled = NO;
+                    timeIntervalLabel.backgroundColor = [UIColor blackColor];
+                    timeIntervalLabel.textColor = [UIColor whiteColor];
+                    timeIntervalLabel.font = [UIFont boldSystemFontOfSize:25];
+                    timeIntervalLabel.textAlignment = NSTextAlignmentCenter;
+                    timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
+                    [cell addSubview:timeIntervalLabel];
+                }
+                [cell bringSubviewToFront:timeIntervalLabel];
+                timeIntervalLabel.text = timeIntervalString;
+                return returnValue;
+            });
+            ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
         });
     }
 }
