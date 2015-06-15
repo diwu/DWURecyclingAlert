@@ -162,23 +162,19 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
             dwu_replaceMethodWithBlock([arg class], cellForRowSel, newCellForRowSel, ^(__unsafe_unretained UITableViewCell *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
                 NSDate *date = [NSDate date];
                 id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, newCellForRowSel, arg1, arg2);
-                NSTimeInterval timeInterval = -[date timeIntervalSinceNow] * 1000;
-                NSString *timeIntervalString;
-                if (timeInterval < 10.0f) {
-                    timeIntervalString = [NSString stringWithFormat:@"%.1f ms", timeInterval];
-                } else {
-                    timeIntervalString = [NSString stringWithFormat:@"👉🏻%.1f ms👈🏻", timeInterval];
-                }
+                NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
+                NSString *timeIntervalString = [NSString stringWithFormat:@" Rendering takes %zd ms", (NSInteger)timeInterval];
                 UITableViewCell *cell = (UITableViewCell *)returnValue;
                 UILabel *timeIntervalLabel = (UILabel *)[cell viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
                 if (!timeIntervalLabel) {
-                    CGFloat labelWidth = 160.f;
-                    timeIntervalLabel = [[UILabel alloc] initWithFrame:CGRectMake((CGRectGetWidth(cell.contentView.frame) - labelWidth)/2.0, 20, labelWidth, 30)];
+                    CGFloat labelWidth = 150.f;
+                    timeIntervalLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelWidth, 16)];
                     timeIntervalLabel.userInteractionEnabled = NO;
                     timeIntervalLabel.backgroundColor = [UIColor blackColor];
                     timeIntervalLabel.textColor = [UIColor whiteColor];
-                    timeIntervalLabel.font = [UIFont boldSystemFontOfSize:25];
+                    timeIntervalLabel.font = [UIFont boldSystemFontOfSize:12];
                     timeIntervalLabel.textAlignment = NSTextAlignmentCenter;
+                    timeIntervalLabel.adjustsFontSizeToFitWidth = YES;
                     timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
                     [cell addSubview:timeIntervalLabel];
                 }
