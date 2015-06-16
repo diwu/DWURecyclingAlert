@@ -4,7 +4,7 @@
 > Your code usually has less than ten milliseconds to run before it causes a frame drop.<sup>[1](#myfootnote1)</sup>
 >
 
-[![](https://img.shields.io/badge/build-passing-green.svg)][project]
+[![Build Status](https://travis-ci.org/diwu/DWURecyclingAlert.svg?branch=master)](https://travis-ci.org/diwu/DWURecyclingAlert)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 [![](https://img.shields.io/badge/swift-compatible-orange.svg)][project]
 
