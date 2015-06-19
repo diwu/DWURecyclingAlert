@@ -16,7 +16,7 @@
 
 + (UIImage *)nonRecycledImage {
     NSBundle *bundle = [NSBundle mainBundle];
-    NSString *filePath = [bundle pathForResource:@"apple_logo@3x" ofType:@"png"];
+    NSString *filePath = [bundle pathForResource:@"android@3x" ofType:@"jpg"];
     return [UIImage imageWithContentsOfFile:filePath];
 }
 

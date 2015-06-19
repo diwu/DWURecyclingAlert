@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		50177D691B2C419E00795317 /* ExampleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 508DF4F21B2C0FD000361081 /* ExampleImage.m */; };
+		504D7C731B340E8800D7E105 /* android@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 504D7C721B340E8800D7E105 /* android@3x.png */; };
 		507A16C21B23EE3400B4A016 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16C11B23EE3400B4A016 /* main.m */; };
 		507A16C51B23EE3400B4A016 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 507A16C41B23EE3400B4A016 /* AppDelegate.m */; };
 		507A16CB1B23EE3400B4A016 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 507A16C91B23EE3400B4A016 /* Main.storyboard */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		504D7C721B340E8800D7E105 /* android@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "android@3x.png"; sourceTree = "<group>"; };
 		507A16BC1B23EE3400B4A016 /* RecyclingAlert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecyclingAlert.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		507A16C01B23EE3400B4A016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		507A16C11B23EE3400B4A016 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 		507A16E91B241E6200B4A016 /* ExampleTableViewController */ = {
 			isa = PBXGroup;
 			children = (
+				504D7C721B340E8800D7E105 /* android@3x.png */,
 				508DF4F71B2C221100361081 /* apple_logo@3x.png */,
 				507A16EE1B241F0F00B4A016 /* ExampleTableViewController.h */,
 				507A16EF1B241F0F00B4A016 /* ExampleTableViewController.m */,
@@ -252,6 +255,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				504D7C731B340E8800D7E105 /* android@3x.png in Resources */,
 				507A16CB1B23EE3400B4A016 /* Main.storyboard in Resources */,
 				508DF4F81B2C221100361081 /* apple_logo@3x.png in Resources */,
 				507A16D01B23EE3400B4A016 /* LaunchScreen.xib in Resources */,
