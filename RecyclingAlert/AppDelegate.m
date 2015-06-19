@@ -19,7 +19,12 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     ExampleTableViewController *controller = [ExampleTableViewController new];
-    self.window.rootViewController = controller;
+    controller.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFeatured tag:0];
+    ExampleTableViewController *anotherController = [ExampleTableViewController new];
+    anotherController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemTopRated tag:1];
+    UITabBarController *tabBarController= [UITabBarController new];
+    tabBarController.viewControllers = @[controller, anotherController];
+    self.window.rootViewController = tabBarController;
     [self.window makeKeyAndVisible];
     return YES;
 }
