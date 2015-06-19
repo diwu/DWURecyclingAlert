@@ -1,18 +1,18 @@
 //
-//  ExampleDataSource.h
+//  ExampleCollectionViewDataSource.h
 //  RecyclingAlert
 //
-//  Created by Di Wu on 6/7/15.
+//  Created by Di Wu on 6/20/15.
 //  Copyright (c) 2015 Di Wu. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UITableViewController.h>
 #import "ExampleItem.h"
+#import <UIKit/UICollectionView.h>
 
 typedef void (^ConfigureExampleCell)(id, ExampleItem *);
 
-@interface ExampleDataSource : NSObject <UITableViewDataSource>
+@interface ExampleCollectionViewDataSource : NSObject <UICollectionViewDataSource>
 
 - (instancetype)initWithItems: (NSArray *)itemsArr cellIdentifier: (NSString *)cellIdentifier configureCellBlock: (ConfigureExampleCell)configureExampleCell;
 

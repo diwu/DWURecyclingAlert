@@ -37,6 +37,7 @@
 #import <QuartzCore/CALayer.h>
 #import <UIKit/UINibLoading.h>
 #import <UIKit/UICollectionViewCell.h>
+#import <UIKit/UICollectionView.h>
 
 static const NSInteger DWU_TIME_INTERVAL_LABEL_TAG = NSIntegerMax - 123;
 
@@ -137,6 +138,76 @@ static void dwu_checkNonRecycledSubviews(UIView *_self) {
     });
 }
 
+static void generateTimeLabelForUITableViewCell() {
+    NSString *selStr = NSStringFromSelector(@selector(setDataSource:));
+    SEL selector = NSSelectorFromString(selStr);
+    SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_uitableview_%@", selStr]);
+    dwu_replaceMethodWithBlock(UITableView.class, selector, newSelector, ^(__unsafe_unretained UITableViewCell *_self, __unsafe_unretained id arg) {
+        NSString *cellForRowSelStr = NSStringFromSelector(@selector(tableView:cellForRowAtIndexPath:));
+        SEL cellForRowSel = NSSelectorFromString(cellForRowSelStr);
+        SEL newCellForRowSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
+        dwu_replaceMethodWithBlock([arg class], cellForRowSel, newCellForRowSel, ^(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
+            NSDate *date = [NSDate date];
+            id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, newCellForRowSel, arg1, arg2);
+            NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
+            NSString *timeIntervalString = [NSString stringWithFormat:@" Rendering takes %zd ms", (NSInteger)timeInterval];
+            UITableViewCell *cell = (UITableViewCell *)returnValue;
+            UILabel *timeIntervalLabel = (UILabel *)[cell viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
+            if (!timeIntervalLabel) {
+                CGFloat labelWidth = 150.f;
+                timeIntervalLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelWidth, 16)];
+                timeIntervalLabel.userInteractionEnabled = NO;
+                timeIntervalLabel.backgroundColor = [UIColor blackColor];
+                timeIntervalLabel.textColor = [UIColor whiteColor];
+                timeIntervalLabel.font = [UIFont boldSystemFontOfSize:12];
+                timeIntervalLabel.textAlignment = NSTextAlignmentCenter;
+                timeIntervalLabel.adjustsFontSizeToFitWidth = YES;
+                timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
+                [cell addSubview:timeIntervalLabel];
+            }
+            [cell bringSubviewToFront:timeIntervalLabel];
+            timeIntervalLabel.text = timeIntervalString;
+            return returnValue;
+        });
+        ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
+    });
+}
+
+static void generateTimeLabelForUICollectionViewCell() {
+    NSString *selStr = NSStringFromSelector(@selector(setDataSource:));
+    SEL selector = NSSelectorFromString(selStr);
+    SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_uicollectionview_%@", selStr]);
+    dwu_replaceMethodWithBlock(UICollectionView.class, selector, newSelector, ^(__unsafe_unretained UICollectionView *_self, __unsafe_unretained id arg) {
+        NSString *cellForItemSelStr = NSStringFromSelector(@selector(collectionView:cellForItemAtIndexPath:));
+        SEL cellForItemSel = NSSelectorFromString(cellForItemSelStr);
+        SEL newCellForItemSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
+        dwu_replaceMethodWithBlock([arg class], cellForItemSel, newCellForItemSel, ^(__unsafe_unretained UICollectionView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
+            NSDate *date = [NSDate date];
+            id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, newCellForItemSel, arg1, arg2);
+            NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
+            NSString *timeIntervalString = [NSString stringWithFormat:@" %zd ms", (NSInteger)timeInterval];
+            UITableViewCell *cell = (UITableViewCell *)returnValue;
+            UILabel *timeIntervalLabel = (UILabel *)[cell viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
+            if (!timeIntervalLabel) {
+                CGFloat labelWidth = 50.f;
+                timeIntervalLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelWidth, 16)];
+                timeIntervalLabel.userInteractionEnabled = NO;
+                timeIntervalLabel.backgroundColor = [UIColor blackColor];
+                timeIntervalLabel.textColor = [UIColor whiteColor];
+                timeIntervalLabel.font = [UIFont boldSystemFontOfSize:12];
+                timeIntervalLabel.textAlignment = NSTextAlignmentCenter;
+                timeIntervalLabel.adjustsFontSizeToFitWidth = YES;
+                timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
+                [cell addSubview:timeIntervalLabel];
+            }
+            [cell bringSubviewToFront:timeIntervalLabel];
+            timeIntervalLabel.text = timeIntervalString;
+            return returnValue;
+        });
+        ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
+    });
+}
+
 __attribute__((constructor)) static void DWURecyclingAlert(void) {
     @autoreleasepool {
         NSString *selStr = NSStringFromSelector(@selector(prepareForReuse));
@@ -179,38 +250,8 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
             return ((id ( *)(id, SEL))objc_msgSend)(_self, newSelector);
         });
 #if defined (DEBUG) && defined (DWURecyclingAlertEnabled) && defined (DWUMillisecondCounterEnabled)
-        selStr = NSStringFromSelector(@selector(setDataSource:));
-        selector = NSSelectorFromString(selStr);
-        newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
-        dwu_replaceMethodWithBlock(UITableView.class, selector, newSelector, ^(__unsafe_unretained UITableViewCell *_self, __unsafe_unretained id arg) {
-            NSString *cellForRowSelStr = NSStringFromSelector(@selector(tableView:cellForRowAtIndexPath:));
-            SEL cellForRowSel = NSSelectorFromString(cellForRowSelStr);
-            SEL newCellForRowSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
-            dwu_replaceMethodWithBlock([arg class], cellForRowSel, newCellForRowSel, ^(__unsafe_unretained UITableViewCell *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
-                NSDate *date = [NSDate date];
-                id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, newCellForRowSel, arg1, arg2);
-                NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
-                NSString *timeIntervalString = [NSString stringWithFormat:@" Rendering takes %zd ms", (NSInteger)timeInterval];
-                UITableViewCell *cell = (UITableViewCell *)returnValue;
-                UILabel *timeIntervalLabel = (UILabel *)[cell viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
-                if (!timeIntervalLabel) {
-                    CGFloat labelWidth = 150.f;
-                    timeIntervalLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelWidth, 16)];
-                    timeIntervalLabel.userInteractionEnabled = NO;
-                    timeIntervalLabel.backgroundColor = [UIColor blackColor];
-                    timeIntervalLabel.textColor = [UIColor whiteColor];
-                    timeIntervalLabel.font = [UIFont boldSystemFontOfSize:12];
-                    timeIntervalLabel.textAlignment = NSTextAlignmentCenter;
-                    timeIntervalLabel.adjustsFontSizeToFitWidth = YES;
-                    timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
-                    [cell addSubview:timeIntervalLabel];
-                }
-                [cell bringSubviewToFront:timeIntervalLabel];
-                timeIntervalLabel.text = timeIntervalString;
-                return returnValue;
-            });
-            ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
-        });
+        generateTimeLabelForUITableViewCell();
+        generateTimeLabelForUICollectionViewCell();
 #endif
     }
 }

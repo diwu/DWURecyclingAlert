@@ -1,16 +1,15 @@
 //
-//  ExampleDataSource.m
+//  ExampleCollectionViewDataSource.m
 //  RecyclingAlert
 //
-//  Created by Di Wu on 6/7/15.
+//  Created by Di Wu on 6/20/15.
 //  Copyright (c) 2015 Di Wu. All rights reserved.
 //
 
-#import "ExampleDataSource.h"
+#import "ExampleCollectionViewDataSource.h"
+#import <UIKit/UITableView.h>
 
-static const NSInteger ExampleNumberOfSections = 1;
-
-@interface ExampleDataSource ()
+@interface ExampleCollectionViewDataSource ()
 
 @property (nonatomic, copy) NSArray *itemsArr;
 
@@ -20,7 +19,7 @@ static const NSInteger ExampleNumberOfSections = 1;
 
 @end
 
-@implementation ExampleDataSource
+@implementation ExampleCollectionViewDataSource
 
 - (instancetype)initWithItems: (NSArray *)itemsArr cellIdentifier: (NSString *)cellIdentifier configureCellBlock: (ConfigureExampleCell)configureExampleCell {
     if ((self = [super init])) {
@@ -35,21 +34,19 @@ static const NSInteger ExampleNumberOfSections = 1;
     return self.itemsArr[[indexPath row] + [indexPath section] * 4];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.itemsArr count];
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 4;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return ExampleNumberOfSections;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier
-                                              forIndexPath:indexPath];
-    cell.selectionStyle = UITableViewCellEditingStyleNone;
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellIdentifier forIndexPath:indexPath];
     id item = [self itemAtIndexPath:indexPath];
     self.configureExampleCell(cell, item);
     return cell;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 99;
 }
 
 @end

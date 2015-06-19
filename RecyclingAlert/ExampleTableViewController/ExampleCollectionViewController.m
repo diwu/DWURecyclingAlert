@@ -8,19 +8,18 @@
 
 #import "ExampleCollectionViewController.h"
 #import "ExampleDelegate.h"
-#import "ExampleDataSource.h"
 #import "ExampleItemGenerator.h"
 #import "ExampleImage.h"
 #import "ExampleCollectionViewCell.h"
+#import "ExampleCollectionViewDataSource.h"
 
 static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
-static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
 
 @interface ExampleCollectionViewController ()
 
 @property (nonatomic, strong) ExampleDelegate *exampleDelegate;
 
-@property (nonatomic, strong) ExampleDataSource *exampleDataSource;
+@property (nonatomic, strong) ExampleCollectionViewDataSource *exampleDataSource;
 
 @end
 
@@ -36,7 +35,7 @@ static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
 //    self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.exampleDelegate = [ExampleDelegate new];
-    self.exampleDataSource = [[ExampleDataSource alloc] initWithItems:[ExampleItemGenerator randomExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:^(ExampleCollectionViewCell *cell, ExampleItem *item) {
+    self.exampleDataSource = [[ExampleCollectionViewDataSource alloc] initWithItems:[ExampleItemGenerator randomExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:^(ExampleCollectionViewCell *cell, ExampleItem *item) {
         NSInteger type = item.idNumber;
         if (cell.nonRecycledView) {
             [cell.nonRecycledView removeFromSuperview];

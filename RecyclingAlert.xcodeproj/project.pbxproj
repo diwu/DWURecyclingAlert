@@ -31,6 +31,7 @@
 		508DF4F31B2C0FD000361081 /* ExampleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 508DF4F21B2C0FD000361081 /* ExampleImage.m */; };
 		508DF4F81B2C221100361081 /* apple_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 508DF4F71B2C221100361081 /* apple_logo@3x.png */; };
 		508E18DB1B3459A800F2D090 /* ExampleCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 508E18DA1B3459A800F2D090 /* ExampleCollectionViewLayout.m */; };
+		508E18DE1B347DF800F2D090 /* ExampleCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 508E18DD1B347DF800F2D090 /* ExampleCollectionViewDataSource.m */; };
 		50A5D6661B2463FA0058E134 /* DWURecyclingAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,8 @@
 		508DF4F71B2C221100361081 /* apple_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple_logo@3x.png"; sourceTree = "<group>"; };
 		508E18D91B3459A800F2D090 /* ExampleCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleCollectionViewLayout.h; path = ExampleTableViewController/ExampleCollectionViewLayout.h; sourceTree = "<group>"; };
 		508E18DA1B3459A800F2D090 /* ExampleCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleCollectionViewLayout.m; path = ExampleTableViewController/ExampleCollectionViewLayout.m; sourceTree = "<group>"; };
+		508E18DC1B347DF800F2D090 /* ExampleCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleCollectionViewDataSource.h; path = ExampleTableViewController/ExampleCollectionViewDataSource.h; sourceTree = "<group>"; };
+		508E18DD1B347DF800F2D090 /* ExampleCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleCollectionViewDataSource.m; path = ExampleTableViewController/ExampleCollectionViewDataSource.m; sourceTree = "<group>"; };
 		50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DWURecyclingAlert.m; path = DWURecyclingAlert/DWURecyclingAlert.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -183,6 +186,8 @@
 				504D7C7B1B34175500D7E105 /* ExampleCollectionViewCell.m */,
 				508E18D91B3459A800F2D090 /* ExampleCollectionViewLayout.h */,
 				508E18DA1B3459A800F2D090 /* ExampleCollectionViewLayout.m */,
+				508E18DC1B347DF800F2D090 /* ExampleCollectionViewDataSource.h */,
+				508E18DD1B347DF800F2D090 /* ExampleCollectionViewDataSource.m */,
 			);
 			name = ExampleTableViewController;
 			sourceTree = "<group>";
@@ -309,6 +314,7 @@
 				507A16FC1B24242900B4A016 /* ExampleItem.m in Sources */,
 				50A5D6661B2463FA0058E134 /* DWURecyclingAlert.m in Sources */,
 				508DF4F31B2C0FD000361081 /* ExampleImage.m in Sources */,
+				508E18DE1B347DF800F2D090 /* ExampleCollectionViewDataSource.m in Sources */,
 				507A16F41B241FC000B4A016 /* ExampleDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
