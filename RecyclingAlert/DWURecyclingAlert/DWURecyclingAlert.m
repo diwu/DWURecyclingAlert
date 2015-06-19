@@ -35,6 +35,8 @@
 #import <UIKit/UITableView.h>
 #import <UIKit/UILabel.h>
 #import <QuartzCore/CALayer.h>
+#import <UIKit/UINibLoading.h>
+#import <UIKit/UICollectionViewCell.h>
 
 static const NSInteger DWU_TIME_INTERVAL_LABEL_TAG = NSIntegerMax - 123;
 
@@ -86,9 +88,9 @@ static void dwu_recursionHelper1(UIView *view) {
     }
 }
 
-static void dwu_markAllSubviewsAsRecycled(UITableViewCell *_self) {
+static void dwu_markAllSubviewsAsRecycled(UIView *_self) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        dwu_recursionHelper1(_self.contentView);
+        dwu_recursionHelper1(_self);
     });
 }
 
@@ -129,9 +131,9 @@ static void dwu_recursionHelper2(UIView *view) {
     }
 }
 
-static void dwu_checkNonRecycledSubviews(UITableViewCell *_self) {
+static void dwu_checkNonRecycledSubviews(UIView *_self) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        dwu_recursionHelper2(_self.contentView);
+        dwu_recursionHelper2(_self);
     });
 }
 
@@ -144,12 +146,37 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
             ((void ( *)(id, SEL))objc_msgSend)(_self, newSelector);
             dwu_checkNonRecycledSubviews(_self);
         });
+        dwu_replaceMethodWithBlock(UICollectionViewCell.class, selector, newSelector, ^(__unsafe_unretained UICollectionViewCell *_self) {
+            ((void ( *)(id, SEL))objc_msgSend)(_self, newSelector);
+            dwu_checkNonRecycledSubviews(_self);
+        });
+        // handle "created by code" case for UITableViewCell
         selStr = NSStringFromSelector(@selector(initWithStyle:reuseIdentifier:));
         selector = NSSelectorFromString(selStr);
         newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
         dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UITableViewCell *_self, NSInteger arg1, __unsafe_unretained id arg2) {
             dwu_markAllSubviewsAsRecycled(_self);
             return ((id ( *)(id, SEL, NSInteger, id))objc_msgSend)(_self, newSelector, arg1, arg2);
+        });
+        // handle "created by code" case for UICollectionViewCell
+        selStr = NSStringFromSelector(@selector(initWithFrame:));
+        selector = NSSelectorFromString(selStr);
+        newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
+        dwu_replaceMethodWithBlock(UICollectionViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UICollectionViewCell *_self, CGRect arg) {
+            dwu_markAllSubviewsAsRecycled(_self);
+            return ((id ( *)(id, SEL, CGRect))objc_msgSend)(_self, newSelector, arg);
+        });
+        // handle "created from nib" case
+        selStr = NSStringFromSelector(@selector(awakeFromNib));
+        selector = NSSelectorFromString(selStr);
+        newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
+        dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UITableViewCell *_self) {
+            dwu_markAllSubviewsAsRecycled(_self);
+            return ((id ( *)(id, SEL))objc_msgSend)(_self, newSelector);
+        });
+        dwu_replaceMethodWithBlock(UICollectionViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UICollectionViewCell *_self) {
+            dwu_markAllSubviewsAsRecycled(_self);
+            return ((id ( *)(id, SEL))objc_msgSend)(_self, newSelector);
         });
 #if defined (DEBUG) && defined (DWURecyclingAlertEnabled) && defined (DWUMillisecondCounterEnabled)
         selStr = NSStringFromSelector(@selector(setDataSource:));
