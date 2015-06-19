@@ -8,6 +8,7 @@
 
 #import "ExampleCollectionViewDataSource.h"
 #import <UIKit/UITableView.h>
+#import "ExampleSimulatedWorkLoad.h"
 
 @interface ExampleCollectionViewDataSource ()
 
@@ -42,6 +43,7 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellIdentifier forIndexPath:indexPath];
     id item = [self itemAtIndexPath:indexPath];
     self.configureExampleCell(cell, item);
+    [ExampleSimulatedWorkLoad doSimulatedWorkLoad];
     return cell;
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "ExampleDataSource.h"
+#import "ExampleSimulatedWorkLoad.h"
 
 static const NSInteger ExampleNumberOfSections = 1;
 
@@ -49,6 +50,7 @@ static const NSInteger ExampleNumberOfSections = 1;
     cell.selectionStyle = UITableViewCellEditingStyleNone;
     id item = [self itemAtIndexPath:indexPath];
     self.configureExampleCell(cell, item);
+    [ExampleSimulatedWorkLoad doSimulatedWorkLoad];
     return cell;
 }
 
