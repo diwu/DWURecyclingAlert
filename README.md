@@ -10,8 +10,8 @@
 
 A drop-in tool that monitors UITableViewCell & UICollectionViewCell rendering performance on the fly.
 
-* Detects non-recycled UI elements inside the UITableViewCells.
-* Displays the time it takes to render each UITableViewCell, in milliseconds.
+* Detects non-recycled UI elements inside UITableViewCell & UICollectionViewCell.
+* Displays the time it takes to render each UITableViewCell and UICollectionViewCell, in milliseconds.
 
 #Usage
 Step 1: Drop [DWURecyclingAlert.m][code] into your project.
