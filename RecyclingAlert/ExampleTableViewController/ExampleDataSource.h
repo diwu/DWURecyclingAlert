@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UITableViewController.h>
+#import <UIKit/UICollectionView.h>
 #import "ExampleItem.h"
-#import "ExampleCell.h"
 
 typedef void (^ConfigureExampleCell)(id, ExampleItem *);
 
-@interface ExampleDataSource : NSObject <UITableViewDataSource>
+@interface ExampleDataSource : NSObject <UITableViewDataSource, UICollectionViewDataSource>
 
 - (instancetype)initWithItems: (NSArray *)itemsArr cellIdentifier: (NSString *)cellIdentifier configureCellBlock: (ConfigureExampleCell)configureExampleCell;
 

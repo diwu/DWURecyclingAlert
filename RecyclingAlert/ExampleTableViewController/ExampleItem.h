@@ -12,6 +12,8 @@
 
 @property (nonatomic, assign, readonly) BOOL willBeDisplayingNewlyCreatedSubviews;
 
+@property (nonatomic, assign, readonly) NSInteger idNumber;
+
 - (instancetype)initWithIDNumber: (NSInteger)idNumber willBeDisplayingNewlyCreatedSubviews: (BOOL)willBeUsingRecycledSubviews;
 
 @end

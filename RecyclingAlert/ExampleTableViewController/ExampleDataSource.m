@@ -32,7 +32,7 @@ static const NSInteger ExampleNumberOfSections = 1;
 }
 
 - (ExampleItem *)itemAtIndexPath: (NSIndexPath *)indexPath {
-    return self.itemsArr[[indexPath row]];
+    return self.itemsArr[[indexPath row] + [indexPath section] * 4];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -51,5 +51,23 @@ static const NSInteger ExampleNumberOfSections = 1;
     self.configureExampleCell(cell, item);
     return cell;
 }
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 4;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellIdentifier forIndexPath:indexPath];
+    id item = [self itemAtIndexPath:indexPath];
+    self.configureExampleCell(cell, item);
+    return cell;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 99;
+}
+
 
 @end

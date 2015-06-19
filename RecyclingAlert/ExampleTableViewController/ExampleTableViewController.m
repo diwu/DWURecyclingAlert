@@ -10,8 +10,9 @@
 #import "ExampleDataSource.h"
 #import "ExampleDelegate.h"
 #import "ExampleImage.h"
+#import "ExampleItemGenerator.h"
+#import "ExampleCell.h"
 
-static const NSInteger ExampleNumberOfItems = 999;
 static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
 static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
 
@@ -25,23 +26,13 @@ static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
 
 @implementation ExampleTableViewController
 
-- (NSArray *)generateExampleItems {
-    NSMutableArray *arr = [NSMutableArray array];
-    for (int i = 0; i < ExampleNumberOfItems; i++) {
-        BOOL willBeDisplayingNewlyCreatedSubviews = (arc4random_uniform(2) == 0);
-        ExampleItem *item = [[ExampleItem alloc] initWithIDNumber:i willBeDisplayingNewlyCreatedSubviews:willBeDisplayingNewlyCreatedSubviews];
-        [arr addObject:item];
-    }
-    return arr;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self.tableView registerClass:[ExampleCell class] forCellReuseIdentifier:ExampleCellIdentifier];
     self.tableView.showsVerticalScrollIndicator = NO;
     self.exampleDelegate = [ExampleDelegate new];
-    self.exampleDataSource = [[ExampleDataSource alloc] initWithItems:[self generateExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:^(ExampleCell *cell, ExampleItem *item) {
+    self.exampleDataSource = [[ExampleDataSource alloc] initWithItems:[ExampleItemGenerator randomExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:^(ExampleCell *cell, ExampleItem *item) {
         UIView *view = [cell viewWithTag:ExampleCellNonRecycledViewTag];
         if (view) {
             [view removeFromSuperview];

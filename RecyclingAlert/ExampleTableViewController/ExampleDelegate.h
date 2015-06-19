@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UITableViewController.h>
+#import <UIKit/UICollectionView.h>
 
-@interface ExampleDelegate : NSObject <UITableViewDelegate>
+@interface ExampleDelegate : NSObject <UITableViewDelegate, UICollectionViewDelegate>
 
 @end

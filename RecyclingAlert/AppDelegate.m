@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "ExampleTableViewController.h"
+#import "ExampleCollectionViewController.h"
+#import "ExampleCollectionViewLayout.h"
 
 @interface AppDelegate ()
 
@@ -20,7 +22,10 @@
     // Override point for customization after application launch.
     ExampleTableViewController *controller = [ExampleTableViewController new];
     controller.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFeatured tag:0];
-    ExampleTableViewController *anotherController = [ExampleTableViewController new];
+    ExampleCollectionViewLayout *flowLayout = [ExampleCollectionViewLayout new];
+    [flowLayout setItemSize:CGSizeMake(90, 105)];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    ExampleCollectionViewController *anotherController = [[ExampleCollectionViewController alloc] initWithCollectionViewLayout:flowLayout];
     anotherController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemTopRated tag:1];
     UITabBarController *tabBarController= [UITabBarController new];
     tabBarController.viewControllers = @[controller, anotherController];
