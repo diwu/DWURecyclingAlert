@@ -11,7 +11,7 @@
 
 A drop-in tool that monitors UITableViewCell & UICollectionViewCell rendering performance on the fly.
 
-* Detects non-recycled UIView and CALayer elements inside UITableViewCell & UICollectionViewCell.
+* Detects non-recycled UIView, CALayer and UIImage objects inside UITableViewCell & UICollectionViewCell.
 * Displays the time it takes to render each UITableViewCell and UICollectionViewCell, in milliseconds.
 
 #Usage
