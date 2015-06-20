@@ -37,9 +37,9 @@ static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
     self.exampleDelegate = [ExampleDelegate new];
     self.exampleDataSource = [[ExampleCollectionViewDataSource alloc] initWithItems:[ExampleItemGenerator randomExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:^(ExampleCollectionViewCell *cell, ExampleItem *item) {
         NSInteger type = item.idNumber;
-        if (cell.nonRecycledView) {
-            [cell.nonRecycledView removeFromSuperlayer];
-            cell.nonRecycledView = nil;
+        if (cell.nonRecycledLayer) {
+            [cell.nonRecycledLayer removeFromSuperlayer];
+            cell.nonRecycledLayer = nil;
         }
         cell.imageView.image = nil;
         cell.imageView.backgroundColor = [UIColor clearColor];
@@ -50,10 +50,10 @@ static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
                 break;
             }
             case 1: {
-                cell.label.text = @"Non-Recycled View";
-                cell.nonRecycledView = [CALayer new];
-                cell.nonRecycledView.backgroundColor = [UIColor blueColor].CGColor;
-                [cell.imageView.layer addSublayer:cell.nonRecycledView];
+                cell.label.text = @"Non-Recycled Layer";
+                cell.nonRecycledLayer = [CALayer new];
+                cell.nonRecycledLayer.backgroundColor = [UIColor lightGrayColor].CGColor;
+                [cell.imageView.layer addSublayer:cell.nonRecycledLayer];
                 [cell setNeedsLayout];
                 break;
             }
