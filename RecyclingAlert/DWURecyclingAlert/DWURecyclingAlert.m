@@ -79,9 +79,9 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
     return YES;
 }
 
-static void dwu_recursionHelper1(CALayer *view) {
-    view.dwuRecyclingCount = @(1);
-    for (CALayer *subview in view.sublayers) {
+static void dwu_recursionHelper1(CALayer *layer) {
+    layer.dwuRecyclingCount = @(1);
+    for (CALayer *subview in layer.sublayers) {
         dwu_recursionHelper1(subview);
     }
 }
@@ -92,17 +92,17 @@ static void dwu_markAllSubviewsAsRecycled(CALayer *_self) {
     });
 }
 
-static void dwu_recursionHelper2(CALayer *view) {
+static void dwu_recursionHelper2(CALayer *layer) {
     static NSMutableSet *cgImageRefSet;
     if (!cgImageRefSet) {
         cgImageRefSet = [NSMutableSet set];
     }
-    NSNumber *recyclingCount = view.dwuRecyclingCount;
+    NSNumber *recyclingCount = layer.dwuRecyclingCount;
     SEL imageSelector = NSSelectorFromString(@"image");
     BOOL viewTargetFound = NO;
     BOOL imageTargetFound = NO;
-    if ( view.delegate && [view.delegate respondsToSelector:imageSelector]) {
-        UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(view.delegate, imageSelector);
+    if ( layer.delegate && [layer.delegate respondsToSelector:imageSelector]) {
+        UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(layer.delegate, imageSelector);
         if (image) {
             if (![cgImageRefSet containsObject:[NSString stringWithFormat:@"%@", image.CGImage]]) {
                 [cgImageRefSet addObject:[NSString stringWithFormat:@"%@", image.CGImage]];
@@ -111,17 +111,17 @@ static void dwu_recursionHelper2(CALayer *view) {
         }
     } else if (!recyclingCount) {
         viewTargetFound = YES;
-        view.dwuRecyclingCount = @(1);
+        layer.dwuRecyclingCount = @(1);
     }
     
     if (viewTargetFound || imageTargetFound) {
-        view.borderColor = [[UIColor redColor] CGColor];
-        view.borderWidth = 5.0;
+        layer.borderColor = [[UIColor redColor] CGColor];
+        layer.borderWidth = 5.0;
     } else {
-        view.borderColor = [[UIColor clearColor] CGColor];
-        view.borderWidth = 0.0;
+        layer.borderColor = [[UIColor clearColor] CGColor];
+        layer.borderWidth = 0.0;
     }
-    for (CALayer *subview in view.sublayers) {
+    for (CALayer *subview in layer.sublayers) {
         dwu_recursionHelper2(subview);
     }
 }
