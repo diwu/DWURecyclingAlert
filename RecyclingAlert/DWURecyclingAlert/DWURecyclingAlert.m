@@ -90,7 +90,6 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 }
 
 static void dwu_recursionHelper1(CALayer *layer) {
-    [layer dwu_increaseDwuRecyclingCountBy1];
     for (CALayer *subview in layer.sublayers) {
         dwu_recursionHelper1(subview);
     }
@@ -102,10 +101,24 @@ static void dwu_markAllSubviewsAsRecycled(CALayer *_self) {
     });
 }
 
+static void addRedBorderEffect(CALayer *layer) {
+    layer.borderColor = [[UIColor redColor] CGColor];
+    layer.borderWidth = 5.0;
+}
+
+static void removeRedBorderEffect(CALayer *layer) {
+    layer.borderColor = [[UIColor clearColor] CGColor];
+    layer.borderWidth = 0.0;
+}
+
 static void dwu_recursionHelper2(CALayer *layer) {
     static NSMutableSet *cgImageRefSet;
+    static NSMutableDictionary *cgImageRefDict;
     if (!cgImageRefSet) {
         cgImageRefSet = [NSMutableSet set];
+    }
+    if (!cgImageRefDict) {
+        cgImageRefDict = [NSMutableDictionary dictionary];
     }
     NSNumber *recyclingCount = layer.dwuRecyclingCount;
     SEL imageSelector = NSSelectorFromString(@"image");
@@ -114,27 +127,29 @@ static void dwu_recursionHelper2(CALayer *layer) {
     if ( layer.delegate && [layer.delegate respondsToSelector:imageSelector]) {
         UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(layer.delegate, imageSelector);
         if (image) {
-            if (![cgImageRefSet containsObject:[NSString stringWithFormat:@"%@", image.CGImage]]) {
-                [cgImageRefSet addObject:[NSString stringWithFormat:@"%@", image.CGImage]];
+            NSString *addressString = [NSString stringWithFormat:@"%@", image.CGImage];
+            if (![cgImageRefSet containsObject:addressString]) {
+                [cgImageRefSet addObject:addressString];
+                [cgImageRefDict setObject:layer.delegate forKey:addressString];
                 imageTargetFound = YES;
+            } else {
+                UIView *someLastMarkedView = [cgImageRefDict objectForKey:addressString];
+                removeRedBorderEffect(someLastMarkedView.layer);
             }
         }
-    } else if (!recyclingCount) {
+    } else if (!recyclingCount && layer.superlayer && layer.superlayer.dwuRecyclingCount) {
         viewTargetFound = YES;
     }
     
-    [layer dwu_increaseDwuRecyclingCountBy1];
-    
     if (viewTargetFound || imageTargetFound) {
-        layer.borderColor = [[UIColor redColor] CGColor];
-        layer.borderWidth = 5.0;
+        addRedBorderEffect(layer);
     } else {
-        layer.borderColor = [[UIColor clearColor] CGColor];
-        layer.borderWidth = 0.0;
+        removeRedBorderEffect(layer);
     }
     for (CALayer *subview in layer.sublayers) {
         dwu_recursionHelper2(subview);
     }
+    [layer dwu_increaseDwuRecyclingCountBy1];
 }
 
 static void dwu_checkNonRecycledSubviews(CALayer *_self) {
@@ -154,6 +169,7 @@ static void generateTimeLabelForUITableViewCell() {
         dwu_replaceMethodWithBlock([arg class], cellForRowSel, newCellForRowSel, ^(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
             NSDate *date = [NSDate date];
             id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, newCellForRowSel, arg1, arg2);
+            dwu_recursionHelper2([returnValue layer]);
             NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
             NSString *timeIntervalString = [NSString stringWithFormat:@" Rendering takes %zd ms", (NSInteger)timeInterval];
             UITableViewCell *cell = (UITableViewCell *)returnValue;
@@ -215,6 +231,7 @@ static void generateTimeLabelForUICollectionViewCell() {
 
 __attribute__((constructor)) static void DWURecyclingAlert(void) {
     @autoreleasepool {
+        /*
         NSString *selStr = NSStringFromSelector(@selector(prepareForReuse));
         SEL selector = NSSelectorFromString(selStr);
         SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
@@ -254,6 +271,7 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
             dwu_markAllSubviewsAsRecycled(_self.layer);
             return ((id ( *)(id, SEL))objc_msgSend)(_self, newSelector);
         });
+        */
 #if defined (DEBUG) && defined (DWURecyclingAlertEnabled) && defined (DWUMillisecondCounterEnabled)
         generateTimeLabelForUITableViewCell();
         generateTimeLabelForUICollectionViewCell();
