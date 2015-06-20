@@ -41,13 +41,13 @@
 
 static const NSInteger DWU_TIME_INTERVAL_LABEL_TAG = NSIntegerMax - 123;
 
-@interface UIView (DWURecyclingAlert)
+@interface CALayer (DWURecyclingAlert)
 
 @property (nonatomic, strong) NSNumber *dwuRecyclingCount;
 
 @end
 
-@implementation UIView (DWURecyclingAlert)
+@implementation CALayer (DWURecyclingAlert)
 
 @dynamic dwuRecyclingCount;
 
@@ -79,26 +79,20 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
     return YES;
 }
 
-static void dwu_recursionHelper1(UIView *view) {
-    if (view.tag == DWU_TIME_INTERVAL_LABEL_TAG) {
-        return;
-    }
+static void dwu_recursionHelper1(CALayer *view) {
     view.dwuRecyclingCount = @(1);
-    for (UIView *subview in view.subviews) {
+    for (CALayer *subview in view.sublayers) {
         dwu_recursionHelper1(subview);
     }
 }
 
-static void dwu_markAllSubviewsAsRecycled(UIView *_self) {
+static void dwu_markAllSubviewsAsRecycled(CALayer *_self) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         dwu_recursionHelper1(_self);
     });
 }
 
-static void dwu_recursionHelper2(UIView *view) {
-    if (view.tag == DWU_TIME_INTERVAL_LABEL_TAG) {
-        return;
-    }
+static void dwu_recursionHelper2(CALayer *view) {
     static NSMutableSet *cgImageRefSet;
     if (!cgImageRefSet) {
         cgImageRefSet = [NSMutableSet set];
@@ -107,8 +101,8 @@ static void dwu_recursionHelper2(UIView *view) {
     SEL imageSelector = NSSelectorFromString(@"image");
     BOOL viewTargetFound = NO;
     BOOL imageTargetFound = NO;
-    if ([view respondsToSelector:imageSelector]) {
-        UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(view, imageSelector);
+    if ( view.delegate && [view.delegate respondsToSelector:imageSelector]) {
+        UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(view.delegate, imageSelector);
         if (image) {
             if (![cgImageRefSet containsObject:[NSString stringWithFormat:@"%@", image.CGImage]]) {
                 [cgImageRefSet addObject:[NSString stringWithFormat:@"%@", image.CGImage]];
@@ -121,18 +115,18 @@ static void dwu_recursionHelper2(UIView *view) {
     }
     
     if (viewTargetFound || imageTargetFound) {
-        view.layer.borderColor = [[UIColor redColor] CGColor];
-        view.layer.borderWidth = 5.0;
+        view.borderColor = [[UIColor redColor] CGColor];
+        view.borderWidth = 5.0;
     } else {
-        view.layer.borderColor = [[UIColor clearColor] CGColor];
-        view.layer.borderWidth = 0.0;
+        view.borderColor = [[UIColor clearColor] CGColor];
+        view.borderWidth = 0.0;
     }
-    for (UIView *subview in view.subviews) {
+    for (CALayer *subview in view.sublayers) {
         dwu_recursionHelper2(subview);
     }
 }
 
-static void dwu_checkNonRecycledSubviews(UIView *_self) {
+static void dwu_checkNonRecycledSubviews(CALayer *_self) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         dwu_recursionHelper2(_self);
     });
@@ -215,18 +209,18 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
         SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
         dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, ^(__unsafe_unretained UITableViewCell *_self) {
             ((void ( *)(id, SEL))objc_msgSend)(_self, newSelector);
-            dwu_checkNonRecycledSubviews(_self);
+            dwu_checkNonRecycledSubviews(_self.layer);
         });
         dwu_replaceMethodWithBlock(UICollectionViewCell.class, selector, newSelector, ^(__unsafe_unretained UICollectionViewCell *_self) {
             ((void ( *)(id, SEL))objc_msgSend)(_self, newSelector);
-            dwu_checkNonRecycledSubviews(_self);
+            dwu_checkNonRecycledSubviews(_self.layer);
         });
         // handle "created by code" case for UITableViewCell
         selStr = NSStringFromSelector(@selector(initWithStyle:reuseIdentifier:));
         selector = NSSelectorFromString(selStr);
         newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
         dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UITableViewCell *_self, NSInteger arg1, __unsafe_unretained id arg2) {
-            dwu_markAllSubviewsAsRecycled(_self);
+            dwu_markAllSubviewsAsRecycled(_self.layer);
             return ((id ( *)(id, SEL, NSInteger, id))objc_msgSend)(_self, newSelector, arg1, arg2);
         });
         // handle "created by code" case for UICollectionViewCell
@@ -234,7 +228,7 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
         selector = NSSelectorFromString(selStr);
         newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
         dwu_replaceMethodWithBlock(UICollectionViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UICollectionViewCell *_self, CGRect arg) {
-            dwu_markAllSubviewsAsRecycled(_self);
+            dwu_markAllSubviewsAsRecycled(_self.layer);
             return ((id ( *)(id, SEL, CGRect))objc_msgSend)(_self, newSelector, arg);
         });
         // handle "created from nib" case
@@ -242,11 +236,11 @@ __attribute__((constructor)) static void DWURecyclingAlert(void) {
         selector = NSSelectorFromString(selStr);
         newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
         dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UITableViewCell *_self) {
-            dwu_markAllSubviewsAsRecycled(_self);
+            dwu_markAllSubviewsAsRecycled(_self.layer);
             return ((id ( *)(id, SEL))objc_msgSend)(_self, newSelector);
         });
         dwu_replaceMethodWithBlock(UICollectionViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UICollectionViewCell *_self) {
-            dwu_markAllSubviewsAsRecycled(_self);
+            dwu_markAllSubviewsAsRecycled(_self.layer);
             return ((id ( *)(id, SEL))objc_msgSend)(_self, newSelector);
         });
 #if defined (DEBUG) && defined (DWURecyclingAlertEnabled) && defined (DWUMillisecondCounterEnabled)

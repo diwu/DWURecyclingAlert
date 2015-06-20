@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong, readonly) UIImageView *imageView;
 
-@property (nonatomic, strong) UIView *nonRecycledView;
+@property (nonatomic, strong) CALayer *nonRecycledView;
 
 - (void)layoutNonRecycledView: (UIView *)view;
 
