@@ -90,7 +90,7 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 }
 
 static void dwu_recursionHelper1(CALayer *layer) {
-    layer.dwuRecyclingCount = @(1);
+    [layer dwu_increaseDwuRecyclingCountBy1];
     for (CALayer *subview in layer.sublayers) {
         dwu_recursionHelper1(subview);
     }
@@ -121,8 +121,9 @@ static void dwu_recursionHelper2(CALayer *layer) {
         }
     } else if (!recyclingCount) {
         viewTargetFound = YES;
-        layer.dwuRecyclingCount = @(1);
     }
+    
+    [layer dwu_increaseDwuRecyclingCountBy1];
     
     if (viewTargetFound || imageTargetFound) {
         layer.borderColor = [[UIColor redColor] CGColor];
