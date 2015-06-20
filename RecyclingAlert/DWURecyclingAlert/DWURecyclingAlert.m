@@ -22,9 +22,6 @@
 // Comment out if you want to disable this entire runtime hack
 #define DWURecyclingAlertEnabled
 
-// Comment out if you want to disable the millisecond counter
-#define DWUMillisecondCounterEnabled
-
 #if defined (DEBUG) && defined (DWURecyclingAlertEnabled)
 
 #import <Foundation/Foundation.h>
@@ -95,12 +92,6 @@ static void dwu_recursionHelper1(CALayer *layer) {
     }
 }
 
-static void dwu_markAllSubviewsAsRecycled(CALayer *_self) {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        dwu_recursionHelper1(_self);
-    });
-}
-
 static void addRedBorderEffect(CALayer *layer) {
     layer.borderColor = [[UIColor redColor] CGColor];
     layer.borderWidth = 5.0;
@@ -150,12 +141,6 @@ static void dwu_recursionHelper2(CALayer *layer) {
         dwu_recursionHelper2(subview);
     }
     [layer dwu_increaseDwuRecyclingCountBy1];
-}
-
-static void dwu_checkNonRecycledSubviews(CALayer *_self) {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        dwu_recursionHelper2(_self);
-    });
 }
 
 static void generateTimeLabelForUITableViewCell() {
@@ -234,51 +219,8 @@ static void generateTimeLabelForUICollectionViewCell() {
 
 __attribute__((constructor)) static void DWURecyclingAlert(void) {
     @autoreleasepool {
-        /*
-        NSString *selStr = NSStringFromSelector(@selector(prepareForReuse));
-        SEL selector = NSSelectorFromString(selStr);
-        SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
-        dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, ^(__unsafe_unretained UITableViewCell *_self) {
-            ((void ( *)(id, SEL))objc_msgSend)(_self, newSelector);
-            dwu_checkNonRecycledSubviews(_self.layer);
-        });
-        dwu_replaceMethodWithBlock(UICollectionViewCell.class, selector, newSelector, ^(__unsafe_unretained UICollectionViewCell *_self) {
-            ((void ( *)(id, SEL))objc_msgSend)(_self, newSelector);
-            dwu_checkNonRecycledSubviews(_self.layer);
-        });
-        // handle "created by code" case for UITableViewCell
-        selStr = NSStringFromSelector(@selector(initWithStyle:reuseIdentifier:));
-        selector = NSSelectorFromString(selStr);
-        newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
-        dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UITableViewCell *_self, NSInteger arg1, __unsafe_unretained id arg2) {
-            dwu_markAllSubviewsAsRecycled(_self.layer);
-            return ((id ( *)(id, SEL, NSInteger, id))objc_msgSend)(_self, newSelector, arg1, arg2);
-        });
-        // handle "created by code" case for UICollectionViewCell
-        selStr = NSStringFromSelector(@selector(initWithFrame:));
-        selector = NSSelectorFromString(selStr);
-        newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
-        dwu_replaceMethodWithBlock(UICollectionViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UICollectionViewCell *_self, CGRect arg) {
-            dwu_markAllSubviewsAsRecycled(_self.layer);
-            return ((id ( *)(id, SEL, CGRect))objc_msgSend)(_self, newSelector, arg);
-        });
-        // handle "created from nib" case
-        selStr = NSStringFromSelector(@selector(awakeFromNib));
-        selector = NSSelectorFromString(selStr);
-        newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
-        dwu_replaceMethodWithBlock(UITableViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UITableViewCell *_self) {
-            dwu_markAllSubviewsAsRecycled(_self.layer);
-            return ((id ( *)(id, SEL))objc_msgSend)(_self, newSelector);
-        });
-        dwu_replaceMethodWithBlock(UICollectionViewCell.class, selector, newSelector, (id)^(__unsafe_unretained UICollectionViewCell *_self) {
-            dwu_markAllSubviewsAsRecycled(_self.layer);
-            return ((id ( *)(id, SEL))objc_msgSend)(_self, newSelector);
-        });
-        */
-#if defined (DEBUG) && defined (DWURecyclingAlertEnabled) && defined (DWUMillisecondCounterEnabled)
         generateTimeLabelForUITableViewCell();
         generateTimeLabelForUICollectionViewCell();
-#endif
     }
 }
 #endif
