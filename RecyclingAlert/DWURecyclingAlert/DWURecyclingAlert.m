@@ -184,6 +184,7 @@ static void generateTimeLabelForUITableViewCell() {
                 timeIntervalLabel.textAlignment = NSTextAlignmentCenter;
                 timeIntervalLabel.adjustsFontSizeToFitWidth = YES;
                 timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
+                [timeIntervalLabel.layer dwu_increaseDwuRecyclingCountBy1];
                 [cell addSubview:timeIntervalLabel];
             }
             [cell bringSubviewToFront:timeIntervalLabel];
@@ -205,6 +206,7 @@ static void generateTimeLabelForUICollectionViewCell() {
         dwu_replaceMethodWithBlock([arg class], cellForItemSel, newCellForItemSel, ^(__unsafe_unretained UICollectionView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
             NSDate *date = [NSDate date];
             id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, newCellForItemSel, arg1, arg2);
+            dwu_recursionHelper2([returnValue layer]);
             NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
             NSString *timeIntervalString = [NSString stringWithFormat:@" %zd ms", (NSInteger)timeInterval];
             UITableViewCell *cell = (UITableViewCell *)returnValue;
@@ -219,6 +221,7 @@ static void generateTimeLabelForUICollectionViewCell() {
                 timeIntervalLabel.textAlignment = NSTextAlignmentCenter;
                 timeIntervalLabel.adjustsFontSizeToFitWidth = YES;
                 timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
+                [timeIntervalLabel.layer dwu_increaseDwuRecyclingCountBy1];
                 [cell addSubview:timeIntervalLabel];
             }
             [cell bringSubviewToFront:timeIntervalLabel];
