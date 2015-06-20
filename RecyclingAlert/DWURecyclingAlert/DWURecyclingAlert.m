@@ -86,12 +86,6 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
     return YES;
 }
 
-static void dwu_recursionHelper1(CALayer *layer) {
-    for (CALayer *subview in layer.sublayers) {
-        dwu_recursionHelper1(subview);
-    }
-}
-
 static void addRedBorderEffect(CALayer *layer) {
     layer.borderColor = [[UIColor redColor] CGColor];
     layer.borderWidth = 5.0;
