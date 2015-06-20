@@ -45,6 +45,8 @@ static const NSInteger DWU_TIME_INTERVAL_LABEL_TAG = NSIntegerMax - 123;
 
 @property (nonatomic, strong) NSNumber *dwuRecyclingCount;
 
+- (void)dwu_increaseDwuRecyclingCountBy1;
+
 @end
 
 @implementation CALayer (DWURecyclingAlert)
@@ -57,6 +59,14 @@ static const NSInteger DWU_TIME_INTERVAL_LABEL_TAG = NSIntegerMax - 123;
 
 - (id)dwuRecyclingCount {
     return objc_getAssociatedObject(self, @selector(dwuRecyclingCount));
+}
+
+- (void)dwu_increaseDwuRecyclingCountBy1 {
+    if (!self.dwuRecyclingCount) {
+        self.dwuRecyclingCount = @(1);
+    } else {
+        self.dwuRecyclingCount = @([self.dwuRecyclingCount integerValue] + 1);
+    }
 }
 
 @end
