@@ -30,8 +30,12 @@ In addition, [DWURecyclingAlert.m][code] calculates the time your code uses to a
 For views that have an image property, [DWURecyclingAlert.m][code] will record and check the underlying CGImageRef values to decide whether the image is a recycled one or not.
 
 To calculate the cell rendering time, [DWURecyclingAlert.m][code] hacks into the heart of UITableViewDataSource & UICollectionViewDataSource and injects a simple time counting logic inside each data sources' implementation of [tableView:cellForRowAtIndexPath:] & [collectionView:cellForItemAtIndexPath:].
-#Disabled in Release  By Default
-[DWURecyclingAlert.m][code] requires the DEBUG macro to compile and run. If you also want to disable it in debug builds, feel free to comment out the [DWURecyclingAlertEnabled][code_line_23] macro at the top of the file.
+#Disabled in Release By Default
+[DWURecyclingAlert.m][code] requires the DEBUG macro to compile and run. As a result, it's disabled in Release by default. If you also want to disable it in debug builds, feel free to comment out the [DWURecyclingAlertEnabled][code_line_23] macro at the top of the file.
+#Misc
+* Whether your cells are created by code or by nib/storyboard, [DWURecyclingAlert.m][code] has a way to scan it.
+* [DWURecyclingAlert.m][code] requires iOS 6 or higher to compile due to an implementation detail (NSMapTable). If you want to use it for older iOS versions, replace NSMapTable with the less memory efficient NSMutableDictionary and you'll be good to go.
+
 #Example Project
 Inside this repo you can find the RecyclingAlert example project. 
 #License
