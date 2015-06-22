@@ -97,9 +97,10 @@ static void removeRedBorderEffect(CALayer *layer) {
 }
 
 static void dwu_recursionHelper2(CALayer *layer) {
-    static NSMutableDictionary *cgImageRefDict;
+    static NSMapTable *cgImageRefDict;
     if (!cgImageRefDict) {
-        cgImageRefDict = [NSMutableDictionary dictionary];
+        cgImageRefDict = [NSMapTable mapTableWithKeyOptions:NSMapTableCopyIn
+                                               valueOptions:NSMapTableWeakMemory];
     }
     NSNumber *recyclingCount = layer.dwuRecyclingCount;
     SEL imageSelector = NSSelectorFromString(@"image");
