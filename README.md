@@ -1,5 +1,4 @@
-![][demo1]
-![][demo2]
+![][demo]
 
 #DWURecyclingAlert
 > Your code usually has less than ten milliseconds to run before it causes a frame drop.<sup>[1](#myfootnote1)</sup>
@@ -34,7 +33,7 @@ To calculate the cell rendering time, [DWURecyclingAlert.m][code] hacks into the
 [DWURecyclingAlert.m][code] requires the DEBUG macro to compile and run. As a result, it's disabled in Release by default. If you also want to disable it in debug builds, feel free to comment out the [DWURecyclingAlertEnabled][code_line_23] macro at the top of the file.
 #Misc
 * Whether your cells are created by code or by nib/storyboard, [DWURecyclingAlert.m][code] has a way to scan it.
-* [DWURecyclingAlert.m][code] requires iOS 6 or higher to compile due to an implementation detail (NSMapTable). If you want to use it for older iOS versions, replace NSMapTable with the less memory efficient NSMutableDictionary and you'll be good to go.
+* [DWURecyclingAlert.m][code] requires iOS 6 or higher to compile due to an implementation detail (NSMapTable).
 
 #Example Project
 Inside this repo you can find the RecyclingAlert example project. 
@@ -45,7 +44,6 @@ DWURecyclingAlert is released under the MIT license. See LICENSE for details.
 [code_line_23]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L23
 [code_line_26]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L26
 [project]: https://github.com/diwu/DWURecyclingAlert
-[demo1]: https://raw.githubusercontent.com/diwu/ui-markdown-store/master/demo_6.png
-[demo2]: https://raw.githubusercontent.com/diwu/ui-markdown-store/master/demo_7.png
+[demo]: https://raw.githubusercontent.com/diwu/ui-markdown-store/master/demo_8.gif
 [license]: ./LICENSE
 <a name="myfootnote1">1</a>: Facebook AsyncDisplayKit Guide. (http://asyncdisplaykit.org/guide)
