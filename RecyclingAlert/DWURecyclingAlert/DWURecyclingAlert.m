@@ -97,11 +97,7 @@ static void removeRedBorderEffect(CALayer *layer) {
 }
 
 static void dwu_recursionHelper2(CALayer *layer) {
-    static NSMutableSet *cgImageRefSet;
     static NSMutableDictionary *cgImageRefDict;
-    if (!cgImageRefSet) {
-        cgImageRefSet = [NSMutableSet set];
-    }
     if (!cgImageRefDict) {
         cgImageRefDict = [NSMutableDictionary dictionary];
     }
@@ -112,9 +108,8 @@ static void dwu_recursionHelper2(CALayer *layer) {
     if ( layer.delegate && [layer.delegate respondsToSelector:imageSelector]) {
         UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(layer.delegate, imageSelector);
         if (image) {
-            NSString *addressString = [NSString stringWithFormat:@"%@", image.CGImage];
-            if (![cgImageRefSet containsObject:addressString]) {
-                [cgImageRefSet addObject:addressString];
+            NSString *addressString = [NSString stringWithFormat:@"%p", image.CGImage];
+            if (![cgImageRefDict objectForKey:addressString]) {
                 [cgImageRefDict setObject:layer.delegate forKey:addressString];
                 imageTargetFound = YES;
             } else {
