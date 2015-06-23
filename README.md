@@ -23,6 +23,8 @@ Now launch your app, initialize a UITableView or a UICollectionView, scroll it f
 Once you start caching them, the ugly red borders will be gone, for good. Because [DWURecyclingAlert.m][code] will intelligently detect which is cached and will only mark those that are not cached with a red border.
 
 In addition, [DWURecyclingAlert.m][code] calculates the time your code uses to assemble each cell and presents the results in black labels at the top left corner, so that you can easily spot the heaviest ones and refactor them to free up the UI thread.
+#UI Configuration
+It's not unlikely that your project happens to use lots of `[UIColor redColor]` here and there. Or, maybe you want to localize the millisecond warning string with your team's first language. Take a look at the [UI Configuration][code_line_39] section and customize as much as you like.
 #How It Works
 [DWURecyclingAlert.m][code] dynamically injects a property into every CALayer instances so that it has a way to know which is recycled and which is not. 
 
@@ -42,7 +44,7 @@ DWURecyclingAlert is released under the MIT license. See LICENSE for details.
 
 [code]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m
 [code_line_23]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L23
-[code_line_26]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L26
+[code_line_39]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L39
 [project]: https://github.com/diwu/DWURecyclingAlert
 [demo]: https://raw.githubusercontent.com/diwu/ui-markdown-store/master/demo_8.gif
 [license]: ./LICENSE
