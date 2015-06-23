@@ -40,11 +40,11 @@ static const CGFloat ExampleCollectionViewCellFontSize = 12.0;
     CGRect frame = self.contentView.frame;
     _imageView.frame = CGRectMake(5, 5, CGRectGetWidth(frame) - 10, CGRectGetWidth(frame));
     _label.frame = CGRectMake(0, CGRectGetMaxY(_imageView.frame), CGRectGetWidth(frame), 30);
-    [self layoutNonRecycledView:self.nonRecycledLayer];
+    [self layoutNonRecycledLayer:self.nonRecycledLayer];
 }
 
-- (void)layoutNonRecycledView: (UIView *)view {
-    view.frame = self.imageView.bounds;
+- (void)layoutNonRecycledLayer: (CALayer *)layer {
+    layer.frame = self.imageView.bounds;
 }
 
 @end

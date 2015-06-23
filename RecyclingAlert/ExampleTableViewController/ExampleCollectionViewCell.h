@@ -16,6 +16,6 @@
 
 @property (nonatomic, strong) CALayer *nonRecycledLayer;
 
-- (void)layoutNonRecycledView: (UIView *)view;
+- (void)layoutNonRecycledLayer: (CALayer *)layer;
 
 @end
