@@ -64,9 +64,7 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
 
 @interface CALayer (DWURecyclingAlert)
 
-@property (nonatomic, strong) NSNumber *dwuRecyclingCount;
-
-- (void)dwu_increaseDwuRecyclingCountByOne;
+@property (nonatomic, assign) NSInteger dwuRecyclingCount;
 
 @end
 
@@ -74,20 +72,13 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
 
 @dynamic dwuRecyclingCount;
 
-- (void)setDwuRecyclingCount:(NSNumber *)number {
-    objc_setAssociatedObject(self, @selector(dwuRecyclingCount), number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setDwuRecyclingCount:(NSInteger)dwuRecyclingCount {
+    objc_setAssociatedObject(self, @selector(dwuRecyclingCount), @(dwuRecyclingCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (id)dwuRecyclingCount {
-    return objc_getAssociatedObject(self, @selector(dwuRecyclingCount));
-}
-
-- (void)dwu_increaseDwuRecyclingCountByOne {
-    if (!self.dwuRecyclingCount) {
-        self.dwuRecyclingCount = @(1);
-    } else {
-        self.dwuRecyclingCount = @([self.dwuRecyclingCount integerValue] + 1);
-    }
+- (NSInteger)dwuRecyclingCount {
+    NSNumber *dwuRecyclingCount = objc_getAssociatedObject(self, _cmd);
+    return [dwuRecyclingCount integerValue];
 }
 
 @end
@@ -128,7 +119,7 @@ static void dwu_recursionHelper2(CALayer *layer) {
         cgImageRefDict = [NSMapTable mapTableWithKeyOptions:NSMapTableCopyIn
                                                valueOptions:NSMapTableWeakMemory];
     }
-    NSNumber *recyclingCount = layer.dwuRecyclingCount;
+    NSInteger recyclingCount = layer.dwuRecyclingCount;
     SEL imageSelector = NSSelectorFromString(@"image");
     BOOL viewTargetFound = NO;
     BOOL imageTargetFound = NO;
@@ -156,7 +147,7 @@ static void dwu_recursionHelper2(CALayer *layer) {
     for (CALayer *subview in layer.sublayers) {
         dwu_recursionHelper2(subview);
     }
-    [layer dwu_increaseDwuRecyclingCountByOne];
+    layer.dwuRecyclingCount++;
 }
 
 static CellForRowAtIndexPathBlock generateTimeLabel(SEL targetSelector, CGFloat labelWidth, NSString *timeStringFormat) {
@@ -177,7 +168,7 @@ static CellForRowAtIndexPathBlock generateTimeLabel(SEL targetSelector, CGFloat 
             timeIntervalLabel.textAlignment = NSTextAlignmentCenter;
             timeIntervalLabel.adjustsFontSizeToFitWidth = YES;
             timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
-            [timeIntervalLabel.layer dwu_increaseDwuRecyclingCountByOne];
+            timeIntervalLabel.layer.dwuRecyclingCount++;
             [cell addSubview:timeIntervalLabel];
         }
         [cell bringSubviewToFront:timeIntervalLabel];
