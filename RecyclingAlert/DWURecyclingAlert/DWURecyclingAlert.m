@@ -154,8 +154,8 @@ static CellForRowAtIndexPathBlock generateTimeLabel(SEL targetSelector, CGFloat 
     return ^(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
         NSDate *date = [NSDate date];
         id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, targetSelector, arg1, arg2);
-        dwu_scanLayerHierarchyRecursively([returnValue layer]);
         NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
+        dwu_scanLayerHierarchyRecursively([returnValue layer]);
         NSString *timeIntervalString = [NSString stringWithFormat:timeStringFormat, (NSInteger)timeInterval];
         UITableViewCell *cell = (UITableViewCell *)returnValue;
         UILabel *timeIntervalLabel = (UILabel *)[cell viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
