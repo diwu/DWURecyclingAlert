@@ -113,7 +113,7 @@ static void removeRedBorderEffect(CALayer *layer) {
     layer.borderWidth = 0.0;
 }
 
-static void dwu_recursionHelper2(CALayer *layer) {
+static void dwu_scanLayerHierarchyRecursively(CALayer *layer) {
     static NSMapTable *cgImageRefDict;
     if (!cgImageRefDict) {
         cgImageRefDict = [NSMapTable mapTableWithKeyOptions:NSMapTableCopyIn
@@ -145,7 +145,7 @@ static void dwu_recursionHelper2(CALayer *layer) {
         removeRedBorderEffect(layer);
     }
     for (CALayer *subview in layer.sublayers) {
-        dwu_recursionHelper2(subview);
+        dwu_scanLayerHierarchyRecursively(subview);
     }
     layer.dwuRecyclingCount++;
 }
@@ -154,7 +154,7 @@ static CellForRowAtIndexPathBlock generateTimeLabel(SEL targetSelector, CGFloat 
     return ^(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
         NSDate *date = [NSDate date];
         id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, targetSelector, arg1, arg2);
-        dwu_recursionHelper2([returnValue layer]);
+        dwu_scanLayerHierarchyRecursively([returnValue layer]);
         NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
         NSString *timeIntervalString = [NSString stringWithFormat:timeStringFormat, (NSInteger)timeInterval];
         UITableViewCell *cell = (UITableViewCell *)returnValue;
