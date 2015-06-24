@@ -60,6 +60,8 @@ static NSString *DWU_LABEL_FORMAT_UICOLLECTIONVIEW_CELL = @" %zd ms";
 
 static const NSInteger DWU_TIME_INTERVAL_LABEL_TAG = NSIntegerMax - 123;
 
+static char DWU_ASSOCIATED_OBJECT_KEY;
+
 typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2);
 
 @interface CALayer (DWURecyclingAlert)
@@ -70,15 +72,13 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
 
 @implementation CALayer (DWURecyclingAlert)
 
-@dynamic dwuRecyclingCount;
-
-- (void)setDwuRecyclingCount:(NSInteger)dwuRecyclingCount {
-    objc_setAssociatedObject(self, @selector(dwuRecyclingCount), @(dwuRecyclingCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setDwuRecyclingCount:(NSInteger)recyclingCount {
+    objc_setAssociatedObject(self, &DWU_ASSOCIATED_OBJECT_KEY, @(recyclingCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (NSInteger)dwuRecyclingCount {
-    NSNumber *dwuRecyclingCount = objc_getAssociatedObject(self, _cmd);
-    return [dwuRecyclingCount integerValue];
+    NSNumber *recyclingCountNumber = objc_getAssociatedObject(self, &DWU_ASSOCIATED_OBJECT_KEY);
+    return [recyclingCountNumber integerValue];
 }
 
 @end
