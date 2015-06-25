@@ -72,6 +72,8 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
 
 @implementation CALayer (DWURecyclingAlert)
 
+#pragma mark - property
+
 - (void)setDwuRecyclingCount:(NSInteger)recyclingCount {
     objc_setAssociatedObject(self, &DWU_ASSOCIATED_OBJECT_KEY, @(recyclingCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -81,7 +83,58 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
     return [recyclingCountNumber integerValue];
 }
 
+#pragma mark - private instance method
+
+- (void)dwu_addRedBorderEffect {
+    self.borderColor = DWU_BORDER_COLOR;
+    self.borderWidth = DWU_BORDER_WIDTH;
+}
+
+- (void)dwu_removeRedBorderEffect {
+    self.borderColor = [[UIColor clearColor] CGColor];
+    self.borderWidth = 0.0;
+}
+
+- (void)dwu_scanLayerHierarchyRecursively {
+    static NSMapTable *cgImageRefDict;
+    if (!cgImageRefDict) {
+        cgImageRefDict = [NSMapTable mapTableWithKeyOptions:NSMapTableCopyIn
+                                               valueOptions:NSMapTableWeakMemory];
+    }
+    NSInteger recyclingCount = self.dwuRecyclingCount;
+    SEL imageSelector = @selector(image);
+    BOOL viewTargetFound = NO;
+    BOOL imageTargetFound = NO;
+    if ( self.delegate && [self.delegate respondsToSelector:imageSelector]) {
+        UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(self.delegate, imageSelector);
+        if (image) {
+            NSString *addressString = [NSString stringWithFormat:@"%p", image.CGImage];
+            if (![cgImageRefDict objectForKey:addressString]) {
+                [cgImageRefDict setObject:self.delegate forKey:addressString];
+                imageTargetFound = YES;
+            } else {
+                UIView *someLastMarkedView = [cgImageRefDict objectForKey:addressString];
+                [someLastMarkedView.layer dwu_removeRedBorderEffect];
+            }
+        }
+    } else if (!recyclingCount && self.superlayer && self.superlayer.dwuRecyclingCount) {
+        viewTargetFound = YES;
+    }
+    
+    if (viewTargetFound || imageTargetFound) {
+        [self dwu_addRedBorderEffect];
+    } else {
+        [self dwu_removeRedBorderEffect];
+    }
+    for (CALayer *sublayer in self.sublayers) {
+        [sublayer dwu_scanLayerHierarchyRecursively];
+    }
+    self.dwuRecyclingCount++;
+}
+
 @end
+
+#pragma mark - swizzling method from block
 
 // http://www.mikeash.com/pyblog/friday-qa-2010-01-29-method-replacement-for-fun-and-profit.html
 static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id block) {
@@ -103,62 +156,16 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
     return YES;
 }
 
-static void addRedBorderEffect(CALayer *layer) {
-    layer.borderColor = DWU_BORDER_COLOR;
-    layer.borderWidth = DWU_BORDER_WIDTH;
-}
-
-static void removeRedBorderEffect(CALayer *layer) {
-    layer.borderColor = [[UIColor clearColor] CGColor];
-    layer.borderWidth = 0.0;
-}
-
-static void dwu_scanLayerHierarchyRecursively(CALayer *layer) {
-    static NSMapTable *cgImageRefDict;
-    if (!cgImageRefDict) {
-        cgImageRefDict = [NSMapTable mapTableWithKeyOptions:NSMapTableCopyIn
-                                               valueOptions:NSMapTableWeakMemory];
-    }
-    NSInteger recyclingCount = layer.dwuRecyclingCount;
-    SEL imageSelector = NSSelectorFromString(@"image");
-    BOOL viewTargetFound = NO;
-    BOOL imageTargetFound = NO;
-    if ( layer.delegate && [layer.delegate respondsToSelector:imageSelector]) {
-        UIImage *image = ((UIImage * ( *)(id, SEL))objc_msgSend)(layer.delegate, imageSelector);
-        if (image) {
-            NSString *addressString = [NSString stringWithFormat:@"%p", image.CGImage];
-            if (![cgImageRefDict objectForKey:addressString]) {
-                [cgImageRefDict setObject:layer.delegate forKey:addressString];
-                imageTargetFound = YES;
-            } else {
-                UIView *someLastMarkedView = [cgImageRefDict objectForKey:addressString];
-                removeRedBorderEffect(someLastMarkedView.layer);
-            }
-        }
-    } else if (!recyclingCount && layer.superlayer && layer.superlayer.dwuRecyclingCount) {
-        viewTargetFound = YES;
-    }
-    
-    if (viewTargetFound || imageTargetFound) {
-        addRedBorderEffect(layer);
-    } else {
-        removeRedBorderEffect(layer);
-    }
-    for (CALayer *subview in layer.sublayers) {
-        dwu_scanLayerHierarchyRecursively(subview);
-    }
-    layer.dwuRecyclingCount++;
-}
+#pragma mark - generate for UITableViewCell / UICollectionViewCell labels
 
 static CellForRowAtIndexPathBlock generateTimeLabel(SEL targetSelector, CGFloat labelWidth, NSString *timeStringFormat) {
     return ^(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
         NSDate *date = [NSDate date];
-        id returnValue = ((id ( *)(id, SEL, id, id))objc_msgSend)(_self, targetSelector, arg1, arg2);
+        UIView *returnView = ((UIView * ( *)(id, SEL, id, id))objc_msgSend)(_self, targetSelector, arg1, arg2);
         NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
-        dwu_scanLayerHierarchyRecursively([returnValue layer]);
+        [[returnView layer] dwu_scanLayerHierarchyRecursively];
         NSString *timeIntervalString = [NSString stringWithFormat:timeStringFormat, (NSInteger)timeInterval];
-        UITableViewCell *cell = (UITableViewCell *)returnValue;
-        UILabel *timeIntervalLabel = (UILabel *)[cell viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
+        UILabel *timeIntervalLabel = (UILabel *)[returnView viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
         if (!timeIntervalLabel) {
             timeIntervalLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelWidth, DWU_LABEL_HEIGHT)];
             timeIntervalLabel.userInteractionEnabled = NO;
@@ -169,11 +176,11 @@ static CellForRowAtIndexPathBlock generateTimeLabel(SEL targetSelector, CGFloat 
             timeIntervalLabel.adjustsFontSizeToFitWidth = YES;
             timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
             timeIntervalLabel.layer.dwuRecyclingCount++;
-            [cell addSubview:timeIntervalLabel];
+            [returnView addSubview:timeIntervalLabel];
         }
-        [cell bringSubviewToFront:timeIntervalLabel];
+        [returnView bringSubviewToFront:timeIntervalLabel];
         timeIntervalLabel.text = timeIntervalString;
-        return returnValue;
+        return returnView;
     };
 }
 
