@@ -158,7 +158,7 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 
 #pragma mark - generate for UITableViewCell / UICollectionViewCell labels
 
-static CellForRowAtIndexPathBlock generateTimeLabel(SEL targetSelector, CGFloat labelWidth, NSString *timeStringFormat) {
+static CellForRowAtIndexPathBlock dwu_generateTimeLabel(SEL targetSelector, CGFloat labelWidth, NSString *timeStringFormat) {
     return ^(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2) {
         NSDate *date = [NSDate date];
         UIView *returnView = ((UIView * ( *)(id, SEL, id, id))objc_msgSend)(_self, targetSelector, arg1, arg2);
@@ -192,7 +192,7 @@ static void dwu_generateTimeLabelForUITableViewCell() {
         SEL cellForRowSel = @selector(tableView:cellForRowAtIndexPath:);
         NSString *cellForRowSelStr = NSStringFromSelector(cellForRowSel);
         SEL newCellForRowSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", cellForRowSelStr]);
-        dwu_replaceMethodWithBlock([arg class], cellForRowSel, newCellForRowSel, generateTimeLabel(newCellForRowSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_CELL));
+        dwu_replaceMethodWithBlock([arg class], cellForRowSel, newCellForRowSel, dwu_generateTimeLabel(newCellForRowSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_CELL));
         ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
     });
 }
@@ -205,7 +205,7 @@ static void dwu_generateTimeLabelForUICollectionViewCell() {
         SEL cellForItemSel = @selector(collectionView:cellForItemAtIndexPath:);
         NSString *cellForItemSelStr = NSStringFromSelector(cellForItemSel);
         SEL newCellForItemSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", cellForItemSelStr]);
-        dwu_replaceMethodWithBlock([arg class], cellForItemSel, newCellForItemSel, generateTimeLabel(newCellForItemSel, DWU_LABEL_WIDTH_UICOLLECTIONVIEW_CELL, DWU_LABEL_FORMAT_UICOLLECTIONVIEW_CELL));
+        dwu_replaceMethodWithBlock([arg class], cellForItemSel, newCellForItemSel, dwu_generateTimeLabel(newCellForItemSel, DWU_LABEL_WIDTH_UICOLLECTIONVIEW_CELL, DWU_LABEL_FORMAT_UICOLLECTIONVIEW_CELL));
         ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
     });
 }
