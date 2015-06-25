@@ -184,7 +184,7 @@ static CellForRowAtIndexPathBlock generateTimeLabel(SEL targetSelector, CGFloat 
     };
 }
 
-static void generateTimeLabelForUITableViewCell() {
+static void dwu_generateTimeLabelForUITableViewCell() {
     SEL selector = @selector(setDataSource:);
     NSString *selStr = NSStringFromSelector(selector);
     SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_uitableview_%@", selStr]);
@@ -197,7 +197,7 @@ static void generateTimeLabelForUITableViewCell() {
     });
 }
 
-static void generateTimeLabelForUICollectionViewCell() {
+static void dwu_generateTimeLabelForUICollectionViewCell() {
     SEL selector = @selector(setDataSource:);
     NSString *selStr = NSStringFromSelector(selector);
     SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_uicollectionview_%@", selStr]);
@@ -212,8 +212,8 @@ static void generateTimeLabelForUICollectionViewCell() {
 
 __attribute__((constructor)) static void DWURecyclingAlert(void) {
     @autoreleasepool {
-        generateTimeLabelForUITableViewCell();
-        generateTimeLabelForUICollectionViewCell();
+        dwu_generateTimeLabelForUITableViewCell();
+        dwu_generateTimeLabelForUICollectionViewCell();
     }
 }
 #endif
