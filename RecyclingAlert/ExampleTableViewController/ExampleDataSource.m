@@ -9,8 +9,6 @@
 #import "ExampleDataSource.h"
 #import "ExampleSimulatedWorkLoad.h"
 
-static const NSInteger ExampleNumberOfSections = 1;
-
 @interface ExampleDataSource ()
 
 @property (nonatomic, copy) NSArray *itemsArr;
@@ -37,11 +35,11 @@ static const NSInteger ExampleNumberOfSections = 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.itemsArr count];
+    return 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return ExampleNumberOfSections;
+    return [self.itemsArr count];;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
