@@ -184,11 +184,30 @@ static CellForRowAtIndexPathBlock dwu_generateTimeLabel(SEL targetSelector, CGFl
     };
 }
 
+static void dwu_generateTimeLabelForUITableViewHeaderFooterView() {
+    SEL selector = @selector(setDelegate:);
+    NSString *selStr = NSStringFromSelector(selector);
+    SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_uitableview_headerfooter_%@", selStr]);
+    dwu_replaceMethodWithBlock(UITableView.class, selector, newSelector, ^(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg) {
+        SEL viewForSectionSel = @selector(tableView:viewForHeaderInSection:);
+        NSString *viewForSectionSelSelStr = NSStringFromSelector(viewForSectionSel);
+        SEL newViewForSectionSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", viewForSectionSelSelStr]);
+        dwu_replaceMethodWithBlock([arg class], viewForSectionSel, newViewForSectionSel, dwu_generateTimeLabel(newViewForSectionSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_CELL));
+        ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
+        
+        viewForSectionSel = @selector(tableView:viewForFooterInSection:);
+        viewForSectionSelSelStr = NSStringFromSelector(viewForSectionSel);
+        newViewForSectionSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", viewForSectionSelSelStr]);
+        dwu_replaceMethodWithBlock([arg class], viewForSectionSel, newViewForSectionSel, dwu_generateTimeLabel(newViewForSectionSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_CELL));
+        ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
+    });
+}
+
 static void dwu_generateTimeLabelForUITableViewCell() {
     SEL selector = @selector(setDataSource:);
     NSString *selStr = NSStringFromSelector(selector);
     SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_uitableview_%@", selStr]);
-    dwu_replaceMethodWithBlock(UITableView.class, selector, newSelector, ^(__unsafe_unretained UITableViewCell *_self, __unsafe_unretained id arg) {
+    dwu_replaceMethodWithBlock(UITableView.class, selector, newSelector, ^(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg) {
         SEL cellForRowSel = @selector(tableView:cellForRowAtIndexPath:);
         NSString *cellForRowSelStr = NSStringFromSelector(cellForRowSel);
         SEL newCellForRowSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", cellForRowSelStr]);
@@ -213,6 +232,7 @@ static void dwu_generateTimeLabelForUICollectionViewCell() {
 __attribute__((constructor)) static void DWURecyclingAlert(void) {
     @autoreleasepool {
         dwu_generateTimeLabelForUITableViewCell();
+        dwu_generateTimeLabelForUITableViewHeaderFooterView();
         dwu_generateTimeLabelForUICollectionViewCell();
     }
 }
