@@ -12,8 +12,11 @@
 #import "ExampleImage.h"
 #import "ExampleItemGenerator.h"
 #import "ExampleCell.h"
+#import "ExampleItem.h"
+#import "ExampleHeaderFooterView.h"
 
 static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
+static NSString *ExampleHeaderFooterViewIdentifier = @"ExampleHeaderFooterViewIdentifier";
 static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
 
 @interface ExampleTableViewController ()
@@ -30,9 +33,9 @@ static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
     [super viewDidLoad];
     
     [self.tableView registerClass:[ExampleCell class] forCellReuseIdentifier:ExampleCellIdentifier];
+    [self.tableView registerClass:[ExampleHeaderFooterView class] forHeaderFooterViewReuseIdentifier:ExampleHeaderFooterViewIdentifier];
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.exampleDelegate = [ExampleDelegate new];
-    self.exampleDataSource = [[ExampleDataSource alloc] initWithItems:[ExampleItemGenerator randomExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:^(ExampleCell *cell, ExampleItem *item) {
+    ConfigureExampleCell block = ^(ExampleCell *cell, ExampleItem *item) {
         UIView *view = [cell viewWithTag:ExampleCellNonRecycledViewTag];
         if (view) {
             [view removeFromSuperview];
@@ -51,7 +54,9 @@ static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
             cell.label1.hidden = YES;
             cell.label2.hidden = YES;
         }
-    }];
+    };
+    self.exampleDelegate = [[ExampleDelegate alloc] initWithItems:[ExampleItemGenerator randomExampleItems] headerFooterViewIdentifier:ExampleHeaderFooterViewIdentifier configureHeaderFooterViewBlock:block];
+    self.exampleDataSource = [[ExampleDataSource alloc] initWithItems:[ExampleItemGenerator randomExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:block];
     self.tableView.delegate = self.exampleDelegate;
     self.tableView.dataSource = self.exampleDataSource;
 }

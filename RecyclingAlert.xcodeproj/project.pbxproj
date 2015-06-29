@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5010B6E61B418DD600C77472 /* ExampleHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5010B6E51B418DD600C77472 /* ExampleHeaderFooterView.m */; };
 		50177D691B2C419E00795317 /* ExampleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 508DF4F21B2C0FD000361081 /* ExampleImage.m */; };
 		504D7C731B340E8800D7E105 /* android@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 504D7C721B340E8800D7E105 /* android@3x.png */; };
 		504D7C761B3411B600D7E105 /* ExampleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 504D7C751B3411B600D7E105 /* ExampleCollectionViewController.m */; };
@@ -47,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5010B6E41B418DD600C77472 /* ExampleHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleHeaderFooterView.h; path = ExampleTableViewController/ExampleHeaderFooterView.h; sourceTree = "<group>"; };
+		5010B6E51B418DD600C77472 /* ExampleHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleHeaderFooterView.m; path = ExampleTableViewController/ExampleHeaderFooterView.m; sourceTree = "<group>"; };
 		504D7C721B340E8800D7E105 /* android@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "android@3x.png"; sourceTree = "<group>"; };
 		504D7C741B3411B600D7E105 /* ExampleCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleCollectionViewController.h; path = ExampleTableViewController/ExampleCollectionViewController.h; sourceTree = "<group>"; };
 		504D7C751B3411B600D7E105 /* ExampleCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleCollectionViewController.m; path = ExampleTableViewController/ExampleCollectionViewController.m; sourceTree = "<group>"; };
@@ -193,6 +196,8 @@
 				508E18DD1B347DF800F2D090 /* ExampleCollectionViewDataSource.m */,
 				508E18DF1B3480B600F2D090 /* ExampleSimulatedWorkLoad.h */,
 				508E18E01B3480B600F2D090 /* ExampleSimulatedWorkLoad.m */,
+				5010B6E41B418DD600C77472 /* ExampleHeaderFooterView.h */,
+				5010B6E51B418DD600C77472 /* ExampleHeaderFooterView.m */,
 			);
 			name = ExampleTableViewController;
 			sourceTree = "<group>";
@@ -310,6 +315,7 @@
 				504D7C791B3413DC00D7E105 /* ExampleItemGenerator.m in Sources */,
 				507A16EC1B241EF400B4A016 /* ExampleDataSource.m in Sources */,
 				507A16C51B23EE3400B4A016 /* AppDelegate.m in Sources */,
+				5010B6E61B418DD600C77472 /* ExampleHeaderFooterView.m in Sources */,
 				507A16F81B2423DD00B4A016 /* ExampleCell.m in Sources */,
 				508E18E11B3480B600F2D090 /* ExampleSimulatedWorkLoad.m in Sources */,
 				504D7C761B3411B600D7E105 /* ExampleCollectionViewController.m in Sources */,

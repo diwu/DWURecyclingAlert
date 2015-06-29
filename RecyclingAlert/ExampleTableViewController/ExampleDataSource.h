@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UITableViewController.h>
-#import "ExampleItem.h"
+
+@class ExampleItem;
 
 typedef void (^ConfigureExampleCell)(id, ExampleItem *);
 
