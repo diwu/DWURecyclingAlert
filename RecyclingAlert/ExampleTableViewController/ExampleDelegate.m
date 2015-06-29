@@ -11,6 +11,8 @@
 
 static const CGFloat ExampleCellFixedHeight = 130.f;
 
+static const CGFloat ExampleHeaderFooterViewFixedHeight = 150.f;
+
 @interface ExampleDelegate ()
 
 @property (nonatomic, copy) NSArray *itemsArr;
@@ -37,11 +39,11 @@ static const CGFloat ExampleCellFixedHeight = 130.f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return ExampleCellFixedHeight;
+    return ExampleHeaderFooterViewFixedHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return ExampleCellFixedHeight;
+    return ExampleHeaderFooterViewFixedHeight;
 }
 
 - (ExampleItem *)itemAtIndexPath: (NSInteger)section {

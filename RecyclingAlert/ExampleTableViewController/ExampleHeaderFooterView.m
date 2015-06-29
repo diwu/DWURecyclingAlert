@@ -15,6 +15,8 @@ static const CGFloat ExampleCellFontSize = 12.0;
 
 static const CGFloat ExampleCellLabelHeight = 30;
 
+static const CGFloat ExampleHeaderFooterViewHeight = 20;
+
 @interface ExampleHeaderFooterView ()
 
 @property (nonatomic, strong) UIView *recycledView;
@@ -31,12 +33,15 @@ static const CGFloat ExampleCellLabelHeight = 30;
 
 @property (nonatomic, strong, readwrite) UILabel *label3;
 
+@property (nonatomic, strong) UILabel *headerFooterLabel;
+
 @end
 
 @implementation ExampleHeaderFooterView
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     if ((self = [super initWithReuseIdentifier:reuseIdentifier])) {
+        self.contentView.backgroundColor = [UIColor lightGrayColor];
         self.recycledView = [UIView new];
         self.recycledView.backgroundColor = [UIColor greenColor];
         [self.contentView addSubview:self.recycledView];
@@ -71,6 +76,12 @@ static const CGFloat ExampleCellLabelHeight = 30;
         self.label3.textAlignment = NSTextAlignmentCenter;
         self.label3.text = @"Recycled Image";
         [self.contentView addSubview:self.label3];
+        self.headerFooterLabel = [UILabel new];
+        self.headerFooterLabel.font = [UIFont boldSystemFontOfSize:ExampleCellFontSize];
+        self.headerFooterLabel.numberOfLines = 2;
+        self.headerFooterLabel.textAlignment = NSTextAlignmentCenter;
+        self.headerFooterLabel.text = @"This is a header/footer view.";
+        [self.contentView addSubview:self.headerFooterLabel];
     }
     return self;
 }
@@ -87,28 +98,30 @@ static const CGFloat ExampleCellLabelHeight = 30;
 @implementation ExampleHeaderFooterView (LayoutSubviews)
 
 - (void)layoutRecyledView: (UIView *)view {
-    CGRect rect = CGRectMake(0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame) - ExampleCellLabelHeight);
+    CGRect rect = CGRectMake(0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame) - ExampleCellLabelHeight - ExampleHeaderFooterViewHeight);
     rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
     view.frame = rect;
     self.label0.frame = CGRectMake(CGRectGetMinX(rect) - ExampleCellInset, CGRectGetMaxY(rect), CGRectGetWidth(rect) + 2 * ExampleCellInset, ExampleCellLabelHeight);
+    rect = CGRectMake(0, CGRectGetMaxY(self.label0.frame), CGRectGetWidth(self.contentView.frame), ExampleHeaderFooterViewHeight);
+    self.headerFooterLabel.frame = rect;
 }
 
 - (void)layoutNonRecycledView: (UIView *)view {
-    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame)/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame) - ExampleCellLabelHeight);
+    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame)/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame) - ExampleCellLabelHeight - ExampleHeaderFooterViewHeight);
     rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
     view.frame = rect;
     self.label1.frame = CGRectMake(CGRectGetMinX(rect) - ExampleCellInset, CGRectGetMaxY(rect), CGRectGetWidth(rect) + 2 * ExampleCellInset, ExampleCellLabelHeight);
 }
 
 - (void)layoutNonRecycledImage: (UIView *)view {
-    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame) * 2.0/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame) - ExampleCellLabelHeight);
+    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame) * 2.0/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame) - ExampleCellLabelHeight - ExampleHeaderFooterViewHeight);
     rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
     view.frame = rect;
     self.label2.frame = CGRectMake(CGRectGetMinX(rect) - ExampleCellInset, CGRectGetMaxY(rect), CGRectGetWidth(rect) + 2 * ExampleCellInset, ExampleCellLabelHeight);
 }
 
 - (void)layoutRecycledImage: (UIView *)view {
-    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame) * 3.0/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame) - ExampleCellLabelHeight);
+    CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame) * 3.0/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame) - ExampleCellLabelHeight - ExampleHeaderFooterViewHeight);
     rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
     view.frame = rect;
     self.label3.frame = CGRectMake(CGRectGetMinX(rect) - ExampleCellInset, CGRectGetMaxY(rect), CGRectGetWidth(rect) + 2 * ExampleCellInset, ExampleCellLabelHeight);
