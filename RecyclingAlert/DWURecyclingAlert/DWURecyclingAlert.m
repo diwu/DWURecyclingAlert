@@ -35,6 +35,7 @@
 #import <UIKit/UINibLoading.h>
 #import <UIKit/UICollectionViewCell.h>
 #import <UIKit/UICollectionView.h>
+#import <Foundation/NSThread.h>
 
 // ------------ UI Configuration ------------
 static const CGFloat DWU_BORDER_WIDTH = 5.0;
@@ -67,6 +68,28 @@ static char DWU_UIVIEW_TABLEVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY;
 static char DWU_UIVIEW_COLLECTIONVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY;
 
 typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2);
+
+#pragma mark - swizzling method from block
+
+// http://www.mikeash.com/pyblog/friday-qa-2010-01-29-method-replacement-for-fun-and-profit.html
+static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id block) {
+    if ([c instancesRespondToSelector:newSEL]) {
+        return YES;
+    }
+    Method origMethod = class_getInstanceMethod(c, origSEL);
+    IMP impl = imp_implementationWithBlock(block);
+    if (!class_addMethod(c, newSEL, impl, method_getTypeEncoding(origMethod))) {
+        return NO;
+    }else {
+        Method newMethod = class_getInstanceMethod(c, newSEL);
+        if (class_addMethod(c, origSEL, method_getImplementation(newMethod), method_getTypeEncoding(origMethod))) {
+            class_replaceMethod(c, newSEL, method_getImplementation(origMethod), method_getTypeEncoding(newMethod));
+        }else {
+            method_exchangeImplementations(origMethod, newMethod);
+        }
+    }
+    return YES;
+}
 
 #pragma mark - Category
 
@@ -127,7 +150,52 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
     self.borderWidth = 0.0;
 }
 
+static BOOL dwu_implementsSelector(id obj, SEL sel) {
+    if ([[obj class] instanceMethodForSelector:sel] != [[obj superclass] instanceMethodForSelector:sel]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+static void dwu_swizzleDrawRectIfNotYet(CALayer *layer) {
+    if (!layer.delegate) {
+        return;
+    }
+    if (![layer.delegate isKindOfClass:[UIView class]]) {
+        return;
+    }
+    UIView *containerView = layer.delegate;
+    if (!dwu_implementsSelector(containerView, @selector(drawRect:))) {
+        return;
+    }
+    Class c = containerView.class;
+    static NSMutableSet *classSet;
+    if (!classSet) {
+        classSet = [NSMutableSet set];
+    }
+    if ([classSet containsObject:c]) {
+        return;
+    }
+    [classSet addObject:c];
+    SEL selector = @selector(drawRect:);
+    NSString *selStr = NSStringFromSelector(selector);
+    SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
+    dwu_replaceMethodWithBlock(c, selector, newSelector, ^(__unsafe_unretained UIView *containerView, CGRect rect) {
+        if (!NSThread.isMainThread) {
+            ((void ( *)(id, SEL, CGRect))objc_msgSend)(containerView, newSelector, rect);
+        } else {
+            NSDate *date = [NSDate date];
+            containerView.opaque = NO;
+            ((void ( *)(id, SEL, CGRect))objc_msgSend)(containerView, newSelector, rect);
+            NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
+            NSLog(@"diwu draw rect = %f", timeInterval);
+        }
+    });
+}
+
 - (void)dwu_scanLayerHierarchyRecursively {
+    dwu_swizzleDrawRectIfNotYet(self);
     static NSMapTable *cgImageRefDict;
     if (!cgImageRefDict) {
         cgImageRefDict = [NSMapTable mapTableWithKeyOptions:NSMapTableCopyIn
@@ -158,9 +226,9 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
     } else {
         [self dwu_removeRedBorderEffect];
     }
+    UITableViewCell *uiTableViewCellDelegate = [self dwu_findDwuUiTableViewCellDelegate];
+    UICollectionViewCell *uiCollectionViewCellDelegate = [self dwu_findDwuUiCollectionViewCellDelegate];
     for (CALayer *sublayer in self.sublayers) {
-        UITableViewCell *uiTableViewCellDelegate = [self dwu_findDwuUiTableViewCellDelegate];
-        UICollectionViewCell *uiCollectionViewCellDelegate = [self dwu_findDwuUiCollectionViewCellDelegate];
         [self dwu_injectLayer:sublayer withUITableViewCellDelegate:uiTableViewCellDelegate withUICollectionViewCellDelegate:uiCollectionViewCellDelegate];
         [sublayer dwu_scanLayerHierarchyRecursively];
     }
@@ -213,28 +281,6 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
 }
 
 @end
-
-#pragma mark - swizzling method from block
-
-// http://www.mikeash.com/pyblog/friday-qa-2010-01-29-method-replacement-for-fun-and-profit.html
-static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id block) {
-    if ([c instancesRespondToSelector:newSEL]) {
-        return YES;
-    }
-    Method origMethod = class_getInstanceMethod(c, origSEL);
-    IMP impl = imp_implementationWithBlock(block);
-    if (!class_addMethod(c, newSEL, impl, method_getTypeEncoding(origMethod))) {
-        return NO;
-    }else {
-        Method newMethod = class_getInstanceMethod(c, newSEL);
-        if (class_addMethod(c, origSEL, method_getImplementation(newMethod), method_getTypeEncoding(origMethod))) {
-            class_replaceMethod(c, newSEL, method_getImplementation(origMethod), method_getTypeEncoding(newMethod));
-        }else {
-            method_exchangeImplementations(origMethod, newMethod);
-        }
-    }
-    return YES;
-}
 
 #pragma mark - generate for UITableViewCell / UICollectionViewCell labels
 
