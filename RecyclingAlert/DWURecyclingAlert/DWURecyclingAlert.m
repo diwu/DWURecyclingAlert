@@ -42,9 +42,9 @@ static const CGFloat DWU_BORDER_WIDTH = 5.0;
 
 static const CGFloat DWU_LABEL_HEIGHT = 16.0;
 
-static const CGFloat DWU_LABEL_WIDTH_UITABLEVIEW_CELL = 250.0;
+static const CGFloat DWU_LABEL_WIDTH_UITABLEVIEW_CELL = 220.0;
 
-static const CGFloat DWU_LABEL_WIDTH_UICOLLECTIONVIEW_CELL = 70.0;
+static const CGFloat DWU_LABEL_WIDTH_UICOLLECTIONVIEW_CELL = 50.0;
 
 static const CGFloat DWU_LABEL_FONT_SIZE = 12.0;
 
