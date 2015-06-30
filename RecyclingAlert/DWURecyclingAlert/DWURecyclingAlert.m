@@ -107,7 +107,7 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 
 @property (nonatomic, copy) NSString *format;
 
-- (instancetype)initWithKVOTarget: (UIView *)view frame: (CGRect)frame;
+- (instancetype)initWithKVOTarget: (UIView *)view frame: (CGRect)frame format: (NSString *)format;
 
 @end
 
