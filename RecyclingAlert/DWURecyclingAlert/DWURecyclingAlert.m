@@ -35,7 +35,7 @@
 #import <UIKit/UINibLoading.h>
 #import <UIKit/UICollectionViewCell.h>
 #import <UIKit/UICollectionView.h>
-#import <Foundation/NSThread.h>
+#import <UIKit/UITableViewHeaderFooterView.h>
 
 // ------------ UI Configuration ------------
 static const CGFloat DWU_BORDER_WIDTH = 5.0;
@@ -64,8 +64,6 @@ static const NSInteger DWU_TIME_INTERVAL_LABEL_TAG = NSIntegerMax - 123;
 static char DWU_CALAYER_ASSOCIATED_OBJECT_KEY;
 
 static char DWU_UIVIEW_TABLEVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY;
-
-static char DWU_UIVIEW_COLLECTIONVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY;
 
 static char DWU_UIVIEW_DRAW_RECT_TIME_COUNT_NUMBER_ASSOCIATED_OBJECT_KEY;
 
@@ -159,9 +157,7 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 
 @interface UIView (DWURecyclingAlert)
 
-@property (nonatomic, unsafe_unretained) UITableViewCell *dwuUiTableViewCellDelegate;
-
-@property (nonatomic, unsafe_unretained) UICollectionViewCell *dwuUiCollectionViewCellDelegate;
+@property (nonatomic, unsafe_unretained) UIView *dwuCellDelegate;
 
 @property (nonatomic, strong) NSNumber *dwuDrawRectTimeCountNumber;
 
@@ -171,21 +167,12 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 
 @implementation UIView (DWURecyclingAlert)
 
-- (void)setDwuUiTableViewCellDelegate:(UITableViewCell *)delegate {
+- (void)setDwuCellDelegate:(UIView *)delegate {
     objc_setAssociatedObject(self, &DWU_UIVIEW_TABLEVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY, delegate, OBJC_ASSOCIATION_ASSIGN);
 }
 
-- (UITableViewCell *)dwuUiTableViewCellDelegate {
+- (UIView *)dwuCellDelegate {
     UITableViewCell *delegate = objc_getAssociatedObject(self, &DWU_UIVIEW_TABLEVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY);
-    return delegate;
-}
-
-- (void)setDwuUiCollectionViewCellDelegate:(UICollectionViewCell *)delegate {
-    objc_setAssociatedObject(self, &DWU_UIVIEW_COLLECTIONVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY, delegate, OBJC_ASSOCIATION_ASSIGN);
-}
-
-- (UICollectionViewCell *)dwuUiCollectionViewCellDelegate {
-    UICollectionViewCell *delegate = objc_getAssociatedObject(self, &DWU_UIVIEW_COLLECTIONVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY);
     return delegate;
 }
 
@@ -271,19 +258,11 @@ static void dwu_swizzleDrawRectIfNotYet(CALayer *layer) {
     NSString *selStr = NSStringFromSelector(selector);
     SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", selStr]);
     dwu_replaceMethodWithBlock(c, selector, newSelector, ^(__unsafe_unretained UIView *containerView, CGRect rect) {
-        if (!NSThread.isMainThread) {
-            ((void ( *)(id, SEL, CGRect))objc_msgSend)(containerView, newSelector, rect);
-        } else {
-            NSDate *date = [NSDate date];
-            containerView.opaque = NO;
-            ((void ( *)(id, SEL, CGRect))objc_msgSend)(containerView, newSelector, rect);
-            NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
-            if (containerView.dwuUiTableViewCellDelegate) {
-                containerView.dwuUiTableViewCellDelegate.dwuDrawRectTimeCountNumber = @(timeInterval);
-            } else if (containerView.dwuUiCollectionViewCellDelegate) {
-                containerView.dwuUiCollectionViewCellDelegate.dwuDrawRectTimeCountNumber = @(timeInterval);
-            }
-        }
+        NSDate *date = [NSDate date];
+        containerView.opaque = NO;
+        ((void ( *)(id, SEL, CGRect))objc_msgSend)(containerView, newSelector, rect);
+        NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
+        containerView.dwuCellDelegate.dwuDrawRectTimeCountNumber = @(timeInterval);
     });
 }
 
@@ -319,16 +298,15 @@ static void dwu_swizzleDrawRectIfNotYet(CALayer *layer) {
     } else {
         [self dwu_removeRedBorderEffect];
     }
-    UITableViewCell *uiTableViewCellDelegate = [self dwu_findDwuUiTableViewCellDelegate];
-    UICollectionViewCell *uiCollectionViewCellDelegate = [self dwu_findDwuUiCollectionViewCellDelegate];
+    UIView *cellDelegate = [self dwu_findCell];
     for (CALayer *sublayer in self.sublayers) {
-        [self dwu_injectLayer:sublayer withUITableViewCellDelegate:uiTableViewCellDelegate withUICollectionViewCellDelegate:uiCollectionViewCellDelegate];
+        [self dwu_injectLayer:sublayer withCellDelegate:cellDelegate];
         [sublayer dwu_scanLayerHierarchyRecursively];
     }
     self.dwuRecyclingCount++;
 }
 
-- (UITableViewCell *)dwu_findDwuUiTableViewCellDelegate {
+- (UIView *)dwu_findCell {
     UIView *containerView = self.delegate;
     if (!containerView) {
         return nil;
@@ -336,40 +314,23 @@ static void dwu_swizzleDrawRectIfNotYet(CALayer *layer) {
     if (![containerView isKindOfClass:[UIView class]]) {
         return nil;
     }
-    if (containerView.dwuUiTableViewCellDelegate) {
-        return containerView.dwuUiTableViewCellDelegate;
+    if (containerView.dwuCellDelegate) {
+        return containerView.dwuCellDelegate;
     } else if ([containerView isKindOfClass:[UITableViewCell class]]) {
-        return (UITableViewCell *)containerView;
+        return containerView;
+    } else if ([containerView isKindOfClass:[UITableViewHeaderFooterView class]]) {
+        return containerView;
+    } else if ([containerView isKindOfClass:[UICollectionReusableView class]]) {
+        return containerView;
     } else {
         return nil;
     }
 }
 
-- (UICollectionViewCell *)dwu_findDwuUiCollectionViewCellDelegate {
-    UIView *containerView = self.delegate;
-    if (!containerView) {
-        return nil;
-    }
-    if (![containerView isKindOfClass:[UIView class]]) {
-        return nil;
-    }
-    if (containerView.dwuUiCollectionViewCellDelegate) {
-        return containerView.dwuUiCollectionViewCellDelegate;
-    } else if ([containerView isKindOfClass:[UICollectionViewCell class]]) {
-        return (UICollectionViewCell *)containerView;
-    } else {
-        return nil;
-    }
-}
-
-- (void)dwu_injectLayer: (CALayer *)layer withUITableViewCellDelegate:(UITableViewCell *)uitableViewCellDelegate withUICollectionViewCellDelegate: (UICollectionViewCell *)uiCollectionViewCellDelegate {
+- (void)dwu_injectLayer: (CALayer *)layer withCellDelegate:(UIView *)cellDelegate {
     if (layer.delegate && [layer.delegate isKindOfClass:[UIView class]]) {
         UIView *containerView = layer.delegate;
-        if (uitableViewCellDelegate) {
-            containerView.dwuUiTableViewCellDelegate = uitableViewCellDelegate;
-        } else if (uiCollectionViewCellDelegate) {
-            containerView.dwuUiCollectionViewCellDelegate = uiCollectionViewCellDelegate;
-        }
+        containerView.dwuCellDelegate = cellDelegate;
     }
 }
 
