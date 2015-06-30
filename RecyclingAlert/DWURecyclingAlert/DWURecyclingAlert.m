@@ -60,9 +60,45 @@ static NSString *DWU_LABEL_FORMAT_UICOLLECTIONVIEW_CELL = @" %zd ms";
 
 static const NSInteger DWU_TIME_INTERVAL_LABEL_TAG = NSIntegerMax - 123;
 
-static char DWU_ASSOCIATED_OBJECT_KEY;
+static char DWU_CALAYER_ASSOCIATED_OBJECT_KEY;
+
+static char DWU_UIVIEW_TABLEVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY;
+
+static char DWU_UIVIEW_COLLECTIONVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY;
 
 typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2);
+
+#pragma mark - Category
+
+@interface UIView (DWURecyclingAlert)
+
+@property (nonatomic, unsafe_unretained) UITableViewCell *dwuUiTableViewCellDelegate;
+
+@property (nonatomic, unsafe_unretained) UICollectionViewCell *dwuUiCollectionViewCellDelegate;
+
+@end
+
+@implementation UIView (DWURecyclingAlert)
+
+- (void)setDwuUiTableViewCellDelegate:(UITableViewCell *)delegate {
+    objc_setAssociatedObject(self, &DWU_UIVIEW_TABLEVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY, delegate, OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (UITableViewCell *)dwuUiTableViewCellDelegate {
+    UITableViewCell *delegate = objc_getAssociatedObject(self, &DWU_UIVIEW_TABLEVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY);
+    return delegate;
+}
+
+- (void)setDwuUiCollectionViewCellDelegate:(UICollectionViewCell *)delegate {
+    objc_setAssociatedObject(self, &DWU_UIVIEW_COLLECTIONVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY, delegate, OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (UICollectionViewCell *)dwuUiCollectionViewCellDelegate {
+    UICollectionViewCell *delegate = objc_getAssociatedObject(self, &DWU_UIVIEW_COLLECTIONVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY);
+    return delegate;
+}
+
+@end
 
 @interface CALayer (DWURecyclingAlert)
 
@@ -72,18 +108,14 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
 
 @implementation CALayer (DWURecyclingAlert)
 
-#pragma mark - property
-
 - (void)setDwuRecyclingCount:(NSInteger)recyclingCount {
-    objc_setAssociatedObject(self, &DWU_ASSOCIATED_OBJECT_KEY, @(recyclingCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &DWU_CALAYER_ASSOCIATED_OBJECT_KEY, @(recyclingCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (NSInteger)dwuRecyclingCount {
-    NSNumber *recyclingCountNumber = objc_getAssociatedObject(self, &DWU_ASSOCIATED_OBJECT_KEY);
+    NSNumber *recyclingCountNumber = objc_getAssociatedObject(self, &DWU_CALAYER_ASSOCIATED_OBJECT_KEY);
     return [recyclingCountNumber integerValue];
 }
-
-#pragma mark - private instance method
 
 - (void)dwu_addRedBorderEffect {
     self.borderColor = DWU_BORDER_COLOR;
