@@ -20,6 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [application setStatusBarHidden:YES];
     ExampleTableViewController *controller = [ExampleTableViewController new];
     controller.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFeatured tag:0];
     ExampleCollectionViewLayout *flowLayout = [ExampleCollectionViewLayout new];
