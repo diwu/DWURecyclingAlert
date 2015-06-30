@@ -193,7 +193,6 @@ static void dwu_generateTimeLabelForUITableViewHeaderFooterView() {
         NSString *viewForSectionSelSelStr = NSStringFromSelector(viewForSectionSel);
         SEL newViewForSectionSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", viewForSectionSelSelStr]);
         dwu_replaceMethodWithBlock([arg class], viewForSectionSel, newViewForSectionSel, dwu_generateTimeLabel(newViewForSectionSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_CELL));
-        ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
         
         viewForSectionSel = @selector(tableView:viewForFooterInSection:);
         viewForSectionSelSelStr = NSStringFromSelector(viewForSectionSel);
