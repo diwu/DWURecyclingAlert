@@ -189,12 +189,25 @@ static void dwu_generateTimeLabelForUITableViewHeaderFooterView() {
     NSString *selStr = NSStringFromSelector(selector);
     SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"dwu_uitableview_headerfooter_%@", selStr]);
     dwu_replaceMethodWithBlock(UITableView.class, selector, newSelector, ^(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg) {
+        
+        // Two cases will happen when a UITableView calls setDelegate:
+        // 1) It is setting a delegate for <UIScrollViewDelegate>
+        // 2) It is seeting a delegate for <UITableViewDelegate>, which in turn conforms to <UIScrollViewDelegate>
+        // Due to the fuzziness of swizzling a method that is implemented in a class's superclass,
+        // we as a result add a special check here,
+        // 1) If the delegate is purely a <UIScrollViewDelegate>, we call through and do nothing.
+        // 2) If the delegate is in fact a <UITableViewDelegate>, we party on.
         SEL viewForHeaderInSectionSel = @selector(tableView:viewForHeaderInSection:);
+        SEL viewForFooterInSectionSel = @selector(tableView:viewForFooterInSection:);
+        if (NO == [arg respondsToSelector:viewForHeaderInSectionSel] && NO == [arg respondsToSelector:viewForFooterInSectionSel]) {
+            ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
+            return;
+        }
+        
         NSString *viewForSectionSelSelStr = NSStringFromSelector(viewForHeaderInSectionSel);
         SEL newViewForSectionSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", viewForSectionSelSelStr]);
         dwu_replaceMethodWithBlock([arg class], viewForHeaderInSectionSel, newViewForSectionSel, dwu_generateTimeLabel(newViewForSectionSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_CELL));
         
-        SEL viewForFooterInSectionSel = @selector(tableView:viewForFooterInSection:);
         viewForSectionSelSelStr = NSStringFromSelector(viewForFooterInSectionSel);
         newViewForSectionSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", viewForSectionSelSelStr]);
         dwu_replaceMethodWithBlock([arg class], viewForFooterInSectionSel, newViewForSectionSel, dwu_generateTimeLabel(newViewForSectionSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_CELL));
