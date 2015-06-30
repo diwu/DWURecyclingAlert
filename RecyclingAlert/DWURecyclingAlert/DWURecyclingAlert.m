@@ -42,15 +42,15 @@ static const CGFloat DWU_BORDER_WIDTH = 5.0;
 
 static const CGFloat DWU_LABEL_HEIGHT = 16.0;
 
-static const CGFloat DWU_LABEL_WIDTH_UITABLEVIEW_CELL = 150.0;
+static const CGFloat DWU_LABEL_WIDTH_UITABLEVIEW_CELL = 250.0;
 
-static const CGFloat DWU_LABEL_WIDTH_UICOLLECTIONVIEW_CELL = 50.0;
+static const CGFloat DWU_LABEL_WIDTH_UICOLLECTIONVIEW_CELL = 70.0;
 
 static const CGFloat DWU_LABEL_FONT_SIZE = 12.0;
 
-static NSString *DWU_LABEL_FORMAT_UITABLEVIEW_CELL = @" Rendering takes %zd ms";
+static NSString *DWU_LABEL_FORMAT_UITABLEVIEW_CELL = @"cellForRow: %zd ms, drawRect: %zd ms";
 
-static NSString *DWU_LABEL_FORMAT_UICOLLECTIONVIEW_CELL = @" %zd ms";
+static NSString *DWU_LABEL_FORMAT_UICOLLECTIONVIEW_CELL = @" %zd / %zd";
 
 #define DWU_BORDER_COLOR [[UIColor redColor] CGColor]
 
@@ -94,6 +94,66 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
     }
     return YES;
 }
+
+#pragma mark - time count label
+
+@interface DWUKVOLabel : UILabel
+
+@property (nonatomic, strong) UIView *observedView;
+
+@property (nonatomic, assign) NSInteger cellForRowTimeInteger;
+
+@property (nonatomic, assign) NSInteger drawRectTimeInteger;
+
+@property (nonatomic, copy) NSString *format;
+
+- (instancetype)initWithKVOTarget: (UIView *)view frame: (CGRect)frame;
+
+@end
+
+@implementation DWUKVOLabel
+
+- (instancetype)initWithKVOTarget: (UIView *)view frame: (CGRect)frame format: (NSString *)format {
+    if ((self = [super initWithFrame:frame])) {
+        _observedView = view;
+        _format = format;
+        _cellForRowTimeInteger = 0;
+        _drawRectTimeInteger = 0;
+        [view addObserver:self forKeyPath:@"dwuCellForRowTimeCountNumber" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
+        [view addObserver:self forKeyPath:@"dwuDrawRectTimeCountNumber" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
+    }
+    return self;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    NSNumber *number = [change objectForKey:NSKeyValueChangeNewKey];
+    if (!number || ![number isKindOfClass:[NSNumber class]]) {
+        return;
+    }
+    
+    if ([keyPath isEqualToString:@"dwuCellForRowTimeCountNumber"]) {
+        self.cellForRowTimeInteger = [number integerValue];
+    } else if ([keyPath isEqualToString:@"dwuDrawRectTimeCountNumber"]) {
+        self.drawRectTimeInteger += [number integerValue];
+    }
+    
+    [self updateText];
+}
+
+- (void)updateText {
+    self.text = [NSString stringWithFormat:self.format, self.cellForRowTimeInteger, self.drawRectTimeInteger];
+}
+
+- (void)dealloc {
+    [self.observedView removeObserver:self forKeyPath:@"dwuCellForRowTimeCountNumber"];
+    [self.observedView removeObserver:self forKeyPath:@"dwuDrawRectTimeCountNumber"];
+}
+
+@end
 
 #pragma mark - Category
 
@@ -218,7 +278,11 @@ static void dwu_swizzleDrawRectIfNotYet(CALayer *layer) {
             containerView.opaque = NO;
             ((void ( *)(id, SEL, CGRect))objc_msgSend)(containerView, newSelector, rect);
             NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
-            NSLog(@"diwu draw rect = %f", timeInterval);
+            if (containerView.dwuUiTableViewCellDelegate) {
+                containerView.dwuUiTableViewCellDelegate.dwuDrawRectTimeCountNumber = @(timeInterval);
+            } else if (containerView.dwuUiCollectionViewCellDelegate) {
+                containerView.dwuUiCollectionViewCellDelegate.dwuDrawRectTimeCountNumber = @(timeInterval);
+            }
         }
     });
 }
@@ -319,10 +383,9 @@ static CellForRowAtIndexPathBlock dwu_generateTimeLabel(SEL targetSelector, CGFl
         UIView *returnView = ((UIView * ( *)(id, SEL, id, id))objc_msgSend)(_self, targetSelector, arg1, arg2);
         NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
         [[returnView layer] dwu_scanLayerHierarchyRecursively];
-        NSString *timeIntervalString = [NSString stringWithFormat:timeStringFormat, (NSInteger)timeInterval];
-        UILabel *timeIntervalLabel = (UILabel *)[returnView viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
+        DWUKVOLabel *timeIntervalLabel = (DWUKVOLabel *)[returnView viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
         if (!timeIntervalLabel) {
-            timeIntervalLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelWidth, DWU_LABEL_HEIGHT)];
+            timeIntervalLabel = [[DWUKVOLabel alloc] initWithKVOTarget:returnView frame:CGRectMake(0, 0, labelWidth, DWU_LABEL_HEIGHT) format:timeStringFormat];
             timeIntervalLabel.userInteractionEnabled = NO;
             timeIntervalLabel.backgroundColor = DWU_TEXT_LABEL_BACKGROUND_COLOR;
             timeIntervalLabel.textColor = DWU_TEXT_LABEL_FONT_COLOR;
@@ -333,8 +396,10 @@ static CellForRowAtIndexPathBlock dwu_generateTimeLabel(SEL targetSelector, CGFl
             timeIntervalLabel.layer.dwuRecyclingCount++;
             [returnView addSubview:timeIntervalLabel];
         }
+        timeIntervalLabel.cellForRowTimeInteger = 0;
+        timeIntervalLabel.drawRectTimeInteger = 0;
         [returnView bringSubviewToFront:timeIntervalLabel];
-        timeIntervalLabel.text = timeIntervalString;
+        returnView.dwuCellForRowTimeCountNumber = @(timeInterval);
         return returnView;
     };
 }
