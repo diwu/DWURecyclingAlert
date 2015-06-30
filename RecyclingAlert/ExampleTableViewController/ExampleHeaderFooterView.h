@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ExampleRecycledViewWithDrawRect.h"
 
 @interface ExampleHeaderFooterView : UITableViewHeaderFooterView
 
 @end
 
 @interface ExampleHeaderFooterView (LayoutSubviews)
+
+@property (nonatomic, strong, readonly) ExampleRecycledViewWithDrawRect *recycledView;
 
 @property (nonatomic, strong, readonly) UIImageView *recycledImageViewWithNonRecycledImage;
 
