@@ -45,11 +45,14 @@ static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
         cell.imageView.backgroundColor = [UIColor clearColor];
         switch (type) {
             case 0: {
-                cell.imageView.backgroundColor = [UIColor greenColor];
+                cell.imageView.backgroundColor = [UIColor clearColor];
                 cell.label.text = @"Recycled View";
+                cell.recyledViewWithDrawRect.hidden = NO;
+                [cell.recyledViewWithDrawRect setNeedsDisplay];
                 break;
             }
             case 1: {
+                cell.recyledViewWithDrawRect.hidden = YES;
                 cell.label.text = @"Non-Recycled Layer";
                 cell.nonRecycledLayer = [CALayer new];
                 cell.nonRecycledLayer.backgroundColor = [UIColor lightGrayColor].CGColor;
@@ -58,11 +61,13 @@ static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
                 break;
             }
             case 2: {
+                cell.recyledViewWithDrawRect.hidden = YES;
                 cell.label.text = @"Non-Recycled Image";
                 cell.imageView.image = [ExampleImage nonRecycledImage];
                 break;
             }
             case 3: {
+                cell.recyledViewWithDrawRect.hidden = YES;
                 cell.label.text = @"Recycled Image";
                 cell.imageView.image = [ExampleImage recycledImage];
                 break;
