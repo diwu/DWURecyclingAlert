@@ -69,7 +69,9 @@ static char DWU_UIVIEW_DRAW_RECT_TIME_COUNT_NUMBER_ASSOCIATED_OBJECT_KEY;
 
 static char DWU_UIVIEW_CELL_FOR_ROW_TIME_COUNT_NUMBER_ASSOCIATED_OBJECT_KEY;
 
-typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2);
+typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained id _self, __unsafe_unretained id arg1, __unsafe_unretained id arg2);
+
+typedef id(^CollectionHeaderFooterBlock)(__unsafe_unretained id _self, __unsafe_unretained id arg1, __unsafe_unretained id arg2,  __unsafe_unretained id arg3);
 
 #pragma mark - swizzling method from block
 
@@ -365,6 +367,33 @@ static CellForRowAtIndexPathBlock dwu_generateTimeLabel(SEL targetSelector, CGFl
     };
 }
 
+static CollectionHeaderFooterBlock dwu_generateCollectionViewHeaderFooterTimeLabel(SEL targetSelector, CGFloat labelWidth, NSString *timeStringFormat) {
+    return ^(__unsafe_unretained id _self, __unsafe_unretained id arg1, __unsafe_unretained id arg2,  __unsafe_unretained id arg3) {
+        NSDate *date = [NSDate date];
+        UIView *returnView = ((UIView * ( *)(id, SEL, id, id, id))objc_msgSend)(_self, targetSelector, arg1, arg2, arg3);
+        NSTimeInterval timeInterval = ceilf(-[date timeIntervalSinceNow] * 1000);
+        [[returnView layer] dwu_scanLayerHierarchyRecursively];
+        DWUKVOLabel *timeIntervalLabel = (DWUKVOLabel *)[returnView viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
+        if (!timeIntervalLabel) {
+            timeIntervalLabel = [[DWUKVOLabel alloc] initWithKVOTarget:returnView frame:CGRectMake(0, 0, labelWidth, DWU_LABEL_HEIGHT) format:timeStringFormat];
+            timeIntervalLabel.userInteractionEnabled = NO;
+            timeIntervalLabel.backgroundColor = DWU_TEXT_LABEL_BACKGROUND_COLOR;
+            timeIntervalLabel.textColor = DWU_TEXT_LABEL_FONT_COLOR;
+            timeIntervalLabel.font = [UIFont boldSystemFontOfSize:DWU_LABEL_FONT_SIZE];
+            timeIntervalLabel.textAlignment = NSTextAlignmentCenter;
+            timeIntervalLabel.adjustsFontSizeToFitWidth = YES;
+            timeIntervalLabel.tag = DWU_TIME_INTERVAL_LABEL_TAG;
+            timeIntervalLabel.layer.dwuRecyclingCount++;
+            [returnView addSubview:timeIntervalLabel];
+        }
+        timeIntervalLabel.cellForRowTimeInteger = 0;
+        timeIntervalLabel.drawRectTimeInteger = 0;
+        [returnView bringSubviewToFront:timeIntervalLabel];
+        returnView.dwuCellForRowTimeCountNumber = @(timeInterval);
+        return returnView;
+    };
+}
+
 static void dwu_generateTimeLabelForUITableViewHeaderFooterView() {
     SEL selector = @selector(setDelegate:);
     NSString *selStr = NSStringFromSelector(selector);
@@ -408,6 +437,14 @@ static void dwu_generateTimeLabelForUICollectionViewCell() {
         NSString *cellForItemSelStr = NSStringFromSelector(cellForItemSel);
         SEL newCellForItemSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", cellForItemSelStr]);
         dwu_replaceMethodWithBlock([arg class], cellForItemSel, newCellForItemSel, dwu_generateTimeLabel(newCellForItemSel, DWU_LABEL_WIDTH_UICOLLECTIONVIEW_CELL, DWU_LABEL_FORMAT_UICOLLECTIONVIEW_CELL));
+        
+        cellForItemSel = @selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:);
+        if ([arg respondsToSelector:cellForItemSel]) {
+            cellForItemSelStr = NSStringFromSelector(cellForItemSel);
+            newCellForItemSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", cellForItemSelStr]);
+            dwu_replaceMethodWithBlock([arg class], cellForItemSel, newCellForItemSel, dwu_generateCollectionViewHeaderFooterTimeLabel(newCellForItemSel, DWU_LABEL_WIDTH_UICOLLECTIONVIEW_CELL, DWU_LABEL_FORMAT_UICOLLECTIONVIEW_CELL));
+        }
+
         ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
     });
 }
