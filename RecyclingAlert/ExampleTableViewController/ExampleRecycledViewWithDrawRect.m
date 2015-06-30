@@ -7,15 +7,20 @@
 //
 
 #import "ExampleRecycledViewWithDrawRect.h"
+#import "ExampleImage.h"
 
 @implementation ExampleRecycledViewWithDrawRect
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
-    // Drawing code
+    for (int i = 0; i < 1000; i++) {
+        UIFont* font = [UIFont fontWithName:@"Arial" size:15];
+        UIColor* textColor = [UIColor blackColor];
+        NSDictionary* stringAttrs = @{ NSFontAttributeName : font, NSForegroundColorAttributeName : textColor };
+        NSAttributedString* attrStr = [[NSAttributedString alloc] initWithString:@"calling" attributes:stringAttrs];
+        [attrStr drawAtPoint:CGPointMake(3.f, 10.f)];
+        attrStr = [[NSAttributedString alloc] initWithString:@"drawRect:" attributes:stringAttrs];
+        [attrStr drawAtPoint:CGPointMake(3.f, 35.f)];
+    }
 }
-*/
 
 @end
