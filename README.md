@@ -11,7 +11,8 @@
 A drop-in tool that monitors UITableViewCell, UICollectionViewCell and UITableViewHeaderFooterView rendering performance on the fly.
 
 * Detects non-recycled UIView, CALayer and UIImage objects inside UITableViewCell, UICollectionViewCell and UITableViewHeaderFooterView.
-* Displays the time it takes to render each UITableViewCell, UICollectionViewCell and UITableViewHeaderFooterView, in milliseconds.
+* Displays the time it takes to go through `cellForRowAtIndexPath:` in each UITableViewCell, UICollectionViewCell and UITableViewHeaderFooterView, in milliseconds.
+* Displays the time it takes to go through customized `[UIView drawRect:]` in each UITableViewCell, UICollectionViewCell and UITableViewHeaderFooterView, in milliseconds.
 * Support for UICollectionReusableView coming soon. Stay tuned.
 
 #Usage
@@ -32,6 +33,13 @@ It's not unlikely that your project happens to use lots of `[UIColor redColor]` 
 For views that have an image property, [DWURecyclingAlert.m][code] will record and check the underlying CGImageRef values to decide whether the image is a recycled one or not.
 
 In order to count the cell / header / footer rendering time, [DWURecyclingAlert.m][code] hacks into the heart of UITableViewDataSource, UICollectionViewDataSource and UITableViewDelegate and injects a simple time counting logic inside them.
+
+When [DWURecyclingAlert.m][code] finds a UIView subclass that overrides `[UIView drawRect:]`, [DWURecyclingAlert.m][code] swizzles its customized drawRect: implementation and injects the time counting logic there.
+
+Since `[UIView drawRect:]` and `cellForRowAtIndexPath:` rarely happens in the same runloop, [DWURecyclingAlert.m][code] uses KVO to observe the latest time count and updates the time count label whenever a KVO event fires.
+
+It's perfectly normal for a cell to have multiple subviews that override `drawRect:`, if that's the case, [DWURecyclingAlert.m][code] will calculate the sum for all the time it takes to go through each `drawRect:` call.
+
 #Disabled in Release By Default
 [DWURecyclingAlert.m][code] requires the DEBUG macro to compile and run. As a result, it's disabled in Release by default. If you also want to disable it in debug builds, feel free to comment out the [DWURecyclingAlertEnabled][code_line_23] macro at the top of the file.
 #Misc
