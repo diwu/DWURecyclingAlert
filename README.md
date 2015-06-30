@@ -24,7 +24,7 @@ Now launch your app, initialize a UITableView or a UICollectionView, scroll it f
 
 Once you start caching them, the ugly red borders will be gone, for good. Because [DWURecyclingAlert.m][code] will intelligently detect which is cached and will only mark those that are not cached with a red border.
 
-In addition, [DWURecyclingAlert.m][code] calculates the time your code uses to assemble each cell / header / footer and presents the results in black labels at the top left corner, so that you can easily spot the heaviest ones and refactor them to free up the UI thread.
+In addition, [DWURecyclingAlert.m][code] calculates the time your code uses to go through `cellForRowAtIndexPath:` and customized `[UIView drawRect:]` and presents the results in black labels at the top left corner, so that you can easily spot the heaviest ones and refactor them to free up the UI thread.
 #UI Configuration
 It's not unlikely that your project happens to use lots of `[UIColor redColor]` here and there. Or, maybe you want to localize the millisecond warning string with your team's first language. Take a look at the [UI Configuration][code_line_39] section and customize them the way you like.
 #How It Works
