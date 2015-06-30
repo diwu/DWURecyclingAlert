@@ -35,6 +35,7 @@
 		508E18DE1B347DF800F2D090 /* ExampleCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 508E18DD1B347DF800F2D090 /* ExampleCollectionViewDataSource.m */; };
 		508E18E11B3480B600F2D090 /* ExampleSimulatedWorkLoad.m in Sources */ = {isa = PBXBuildFile; fileRef = 508E18E01B3480B600F2D090 /* ExampleSimulatedWorkLoad.m */; };
 		5097A0561B42CB530039F87D /* ExampleRecycledViewWithDrawRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 5097A0551B42CB530039F87D /* ExampleRecycledViewWithDrawRect.m */; };
+		5097A0591B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5097A0581B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.m */; };
 		50A5D6661B2463FA0058E134 /* DWURecyclingAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +91,8 @@
 		508E18E01B3480B600F2D090 /* ExampleSimulatedWorkLoad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleSimulatedWorkLoad.m; path = ExampleTableViewController/ExampleSimulatedWorkLoad.m; sourceTree = "<group>"; };
 		5097A0541B42CB530039F87D /* ExampleRecycledViewWithDrawRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleRecycledViewWithDrawRect.h; path = ExampleTableViewController/ExampleRecycledViewWithDrawRect.h; sourceTree = "<group>"; };
 		5097A0551B42CB530039F87D /* ExampleRecycledViewWithDrawRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleRecycledViewWithDrawRect.m; path = ExampleTableViewController/ExampleRecycledViewWithDrawRect.m; sourceTree = "<group>"; };
+		5097A0571B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleCollectionViewHeaderFooterViewCollectionReusableView.h; path = ExampleTableViewController/ExampleCollectionViewHeaderFooterViewCollectionReusableView.h; sourceTree = "<group>"; };
+		5097A0581B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleCollectionViewHeaderFooterViewCollectionReusableView.m; path = ExampleTableViewController/ExampleCollectionViewHeaderFooterViewCollectionReusableView.m; sourceTree = "<group>"; };
 		50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DWURecyclingAlert.m; path = DWURecyclingAlert/DWURecyclingAlert.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -203,6 +206,8 @@
 				5010B6E51B418DD600C77472 /* ExampleHeaderFooterView.m */,
 				5097A0541B42CB530039F87D /* ExampleRecycledViewWithDrawRect.h */,
 				5097A0551B42CB530039F87D /* ExampleRecycledViewWithDrawRect.m */,
+				5097A0571B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.h */,
+				5097A0581B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.m */,
 			);
 			name = ExampleTableViewController;
 			sourceTree = "<group>";
@@ -319,6 +324,7 @@
 			files = (
 				504D7C791B3413DC00D7E105 /* ExampleItemGenerator.m in Sources */,
 				507A16EC1B241EF400B4A016 /* ExampleDataSource.m in Sources */,
+				5097A0591B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.m in Sources */,
 				507A16C51B23EE3400B4A016 /* AppDelegate.m in Sources */,
 				5010B6E61B418DD600C77472 /* ExampleHeaderFooterView.m in Sources */,
 				507A16F81B2423DD00B4A016 /* ExampleCell.m in Sources */,

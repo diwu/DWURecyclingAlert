@@ -12,6 +12,7 @@
 #import "ExampleImage.h"
 #import "ExampleCollectionViewCell.h"
 #import "ExampleCollectionViewDataSource.h"
+#import "ExampleCollectionViewHeaderFooterViewCollectionReusableView.h"
 
 static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
 
@@ -30,9 +31,10 @@ static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
     
     // Register cell classes
     [self.collectionView registerClass:[ExampleCollectionViewCell class] forCellWithReuseIdentifier:ExampleCellIdentifier];
-    
+    [self.collectionView registerClass:[ExampleCollectionViewHeaderFooterViewCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewHeaderIdentifier];
+    [self.collectionView registerClass:[ExampleCollectionViewHeaderFooterViewCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewFooterIdentifier];
+
     // Do any additional setup after loading the view.
-//    self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.exampleDelegate = [ExampleDelegate new];
     self.exampleDataSource = [[ExampleCollectionViewDataSource alloc] initWithItems:[ExampleItemGenerator randomExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:^(ExampleCollectionViewCell *cell, ExampleItem *item) {
