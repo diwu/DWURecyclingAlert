@@ -159,9 +159,57 @@ typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, 
         [self dwu_removeRedBorderEffect];
     }
     for (CALayer *sublayer in self.sublayers) {
+        UITableViewCell *uiTableViewCellDelegate = [self dwu_findDwuUiTableViewCellDelegate];
+        UICollectionViewCell *uiCollectionViewCellDelegate = [self dwu_findDwuUiCollectionViewCellDelegate];
+        [self dwu_injectLayer:sublayer withUITableViewCellDelegate:uiTableViewCellDelegate withUICollectionViewCellDelegate:uiCollectionViewCellDelegate];
         [sublayer dwu_scanLayerHierarchyRecursively];
     }
     self.dwuRecyclingCount++;
+}
+
+- (UITableViewCell *)dwu_findDwuUiTableViewCellDelegate {
+    UIView *containerView = self.delegate;
+    if (!containerView) {
+        return nil;
+    }
+    if (![containerView isKindOfClass:[UIView class]]) {
+        return nil;
+    }
+    if (containerView.dwuUiTableViewCellDelegate) {
+        return containerView.dwuUiTableViewCellDelegate;
+    } else if ([containerView isKindOfClass:[UITableViewCell class]]) {
+        return (UITableViewCell *)containerView;
+    } else {
+        return nil;
+    }
+}
+
+- (UICollectionViewCell *)dwu_findDwuUiCollectionViewCellDelegate {
+    UIView *containerView = self.delegate;
+    if (!containerView) {
+        return nil;
+    }
+    if (![containerView isKindOfClass:[UIView class]]) {
+        return nil;
+    }
+    if (containerView.dwuUiCollectionViewCellDelegate) {
+        return containerView.dwuUiCollectionViewCellDelegate;
+    } else if ([containerView isKindOfClass:[UICollectionViewCell class]]) {
+        return (UICollectionViewCell *)containerView;
+    } else {
+        return nil;
+    }
+}
+
+- (void)dwu_injectLayer: (CALayer *)layer withUITableViewCellDelegate:(UITableViewCell *)uitableViewCellDelegate withUICollectionViewCellDelegate: (UICollectionViewCell *)uiCollectionViewCellDelegate {
+    if (layer.delegate && [layer.delegate isKindOfClass:[UIView class]]) {
+        UIView *containerView = layer.delegate;
+        if (uitableViewCellDelegate) {
+            containerView.dwuUiTableViewCellDelegate = uitableViewCellDelegate;
+        } else if (uiCollectionViewCellDelegate) {
+            containerView.dwuUiCollectionViewCellDelegate = uiCollectionViewCellDelegate;
+        }
+    }
 }
 
 @end
