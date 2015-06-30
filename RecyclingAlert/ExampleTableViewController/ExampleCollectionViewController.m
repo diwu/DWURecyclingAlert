@@ -31,8 +31,8 @@ static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
     
     // Register cell classes
     [self.collectionView registerClass:[ExampleCollectionViewCell class] forCellWithReuseIdentifier:ExampleCellIdentifier];
-    [self.collectionView registerClass:[ExampleCollectionViewHeaderFooterViewCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewHeaderIdentifier];
-    [self.collectionView registerClass:[ExampleCollectionViewHeaderFooterViewCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewFooterIdentifier];
+    [self.collectionView registerClass:[ExampleCollectionViewCell class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewHeaderIdentifier];
+    [self.collectionView registerClass:[ExampleCollectionViewCell class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewFooterIdentifier];
 
     // Do any additional setup after loading the view.
     self.collectionView.backgroundColor = [UIColor whiteColor];

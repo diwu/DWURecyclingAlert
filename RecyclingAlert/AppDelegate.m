@@ -25,8 +25,8 @@
     ExampleCollectionViewLayout *flowLayout = [ExampleCollectionViewLayout new];
     [flowLayout setItemSize:CGSizeMake(90, 105)];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    [flowLayout setHeaderReferenceSize:CGSizeMake(100, 200)];
-    [flowLayout setHeaderReferenceSize:CGSizeMake(100, 200)];
+    [flowLayout setHeaderReferenceSize:CGSizeMake(90, 105)];
+    [flowLayout setHeaderReferenceSize:CGSizeMake(90, 105)];
     ExampleCollectionViewController *anotherController = [[ExampleCollectionViewController alloc] initWithCollectionViewLayout:flowLayout];
     anotherController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemTopRated tag:1];
     UITabBarController *tabBarController= [UITabBarController new];
