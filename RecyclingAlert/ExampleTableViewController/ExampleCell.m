@@ -8,7 +8,6 @@
 
 #import "ExampleCell.h"
 #import "ExampleImage.h"
-#import "ExampleRecycledViewWithDrawRect.h"
 
 static const CGFloat ExampleCellInset = 10.0;
 
@@ -18,7 +17,7 @@ static const CGFloat ExampleCellLabelHeight = 30;
 
 @interface ExampleCell ()
 
-@property (nonatomic, strong) ExampleRecycledViewWithDrawRect *recycledView;
+@property (nonatomic, strong, readwrite) ExampleRecycledViewWithDrawRect *recycledView;
 
 @property (nonatomic, strong, readwrite) UIImageView *recycledImageViewWithNonRecycledImage;
 
