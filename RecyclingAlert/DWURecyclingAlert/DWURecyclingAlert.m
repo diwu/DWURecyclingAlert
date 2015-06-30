@@ -67,6 +67,10 @@ static char DWU_UIVIEW_TABLEVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY;
 
 static char DWU_UIVIEW_COLLECTIONVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY;
 
+static char DWU_UIVIEW_DRAW_RECT_TIME_COUNT_NUMBER_ASSOCIATED_OBJECT_KEY;
+
+static char DWU_UIVIEW_CELL_FOR_ROW_TIME_COUNT_NUMBER_ASSOCIATED_OBJECT_KEY;
+
 typedef id(^CellForRowAtIndexPathBlock)(__unsafe_unretained UITableView *_self, __unsafe_unretained id arg1, __unsafe_unretained id arg2);
 
 #pragma mark - swizzling method from block
@@ -99,6 +103,10 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 
 @property (nonatomic, unsafe_unretained) UICollectionViewCell *dwuUiCollectionViewCellDelegate;
 
+@property (nonatomic, strong) NSNumber *dwuDrawRectTimeCountNumber;
+
+@property (nonatomic, strong) NSNumber *dwuCellForRowTimeCountNumber;
+
 @end
 
 @implementation UIView (DWURecyclingAlert)
@@ -119,6 +127,24 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 - (UICollectionViewCell *)dwuUiCollectionViewCellDelegate {
     UICollectionViewCell *delegate = objc_getAssociatedObject(self, &DWU_UIVIEW_COLLECTIONVIEW_CELL_DELEGATE_ASSOCIATED_OBJECT_KEY);
     return delegate;
+}
+
+- (void)setDwuDrawRectTimeCountNumber: (NSNumber *)number {
+    objc_setAssociatedObject(self, &DWU_UIVIEW_DRAW_RECT_TIME_COUNT_NUMBER_ASSOCIATED_OBJECT_KEY, number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSNumber *)dwuDrawRectTimeCountNumber {
+    NSNumber *number = objc_getAssociatedObject(self, &DWU_UIVIEW_DRAW_RECT_TIME_COUNT_NUMBER_ASSOCIATED_OBJECT_KEY);
+    return number;
+}
+
+- (void)setDwuCellForRowTimeCountNumber: (NSNumber *)number {
+    objc_setAssociatedObject(self, &DWU_UIVIEW_CELL_FOR_ROW_TIME_COUNT_NUMBER_ASSOCIATED_OBJECT_KEY, number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSNumber *)dwuCellForRowTimeCountNumber {
+    NSNumber *number = objc_getAssociatedObject(self, &DWU_UIVIEW_CELL_FOR_ROW_TIME_COUNT_NUMBER_ASSOCIATED_OBJECT_KEY);
+    return number;
 }
 
 @end
