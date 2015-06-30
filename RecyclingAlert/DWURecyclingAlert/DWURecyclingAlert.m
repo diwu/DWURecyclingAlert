@@ -170,6 +170,9 @@ static void dwu_swizzleDrawRectIfNotYet(CALayer *layer) {
         return;
     }
     Class c = containerView.class;
+    if ([NSStringFromClass(c) hasPrefix:@"UI"]) {
+        return;
+    }
     static NSMutableSet *classSet;
     if (!classSet) {
         classSet = [NSMutableSet set];
