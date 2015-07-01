@@ -99,6 +99,9 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 
 @interface DWUKVOLabel : UILabel
 
+// Known issue: *strong* will lead to retain cycle.
+// (While *weak* will lead to a NSKVODeallocate exception.)
+// Will adopt something like FBKVOController in the future.
 @property (nonatomic, strong) UIView *observedView;
 
 @property (nonatomic, assign) NSInteger cellForRowTimeInteger;
