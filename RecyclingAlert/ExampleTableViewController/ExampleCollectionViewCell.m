@@ -16,6 +16,8 @@ static const CGFloat ExampleCollectionViewCellFontSize = 12.0;
 
 @property (nonatomic, strong, readwrite) UILabel *label;
 
+@property (nonatomic, strong, readwrite) ExampleRecycledViewWithDrawRect *recyledViewWithDrawRect;
+
 @end
 
 @implementation ExampleCollectionViewCell
@@ -23,8 +25,12 @@ static const CGFloat ExampleCollectionViewCellFontSize = 12.0;
 - (instancetype)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
         _imageView = [UIImageView new];
-        _imageView.backgroundColor = [UIColor greenColor];
+        _imageView.backgroundColor = [UIColor clearColor];
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
+        _recyledViewWithDrawRect = [ExampleRecycledViewWithDrawRect new];
+        _recyledViewWithDrawRect.backgroundColor = [UIColor greenColor];
+        _recyledViewWithDrawRect.hidden = YES;
+        [_imageView addSubview:_recyledViewWithDrawRect];
         [self.contentView addSubview:_imageView];
         _label = [UILabel new];
         _label.numberOfLines = 2;
@@ -38,8 +44,9 @@ static const CGFloat ExampleCollectionViewCellFontSize = 12.0;
 - (void)layoutSubviews {
     [super layoutSubviews];
     CGRect frame = self.contentView.frame;
-    _imageView.frame = CGRectMake(5, 5, CGRectGetWidth(frame) - 10, CGRectGetWidth(frame));
-    _label.frame = CGRectMake(0, CGRectGetMaxY(_imageView.frame), CGRectGetWidth(frame), 30);
+    self.imageView.frame = CGRectMake(5, 5, CGRectGetWidth(frame) - 10, CGRectGetWidth(frame));
+    self.recyledViewWithDrawRect.frame = self.imageView.bounds;
+    self.label.frame = CGRectMake(0, CGRectGetMaxY(_imageView.frame), CGRectGetWidth(frame), 30);
     [self layoutNonRecycledLayer:self.nonRecycledLayer];
 }
 

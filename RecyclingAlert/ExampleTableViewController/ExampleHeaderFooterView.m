@@ -19,7 +19,7 @@ static const CGFloat ExampleHeaderFooterViewHeight = 20;
 
 @interface ExampleHeaderFooterView ()
 
-@property (nonatomic, strong) UIView *recycledView;
+@property (nonatomic, strong, readwrite) ExampleRecycledViewWithDrawRect *recycledView;
 
 @property (nonatomic, strong, readwrite) UIImageView *recycledImageViewWithNonRecycledImage;
 
@@ -42,7 +42,7 @@ static const CGFloat ExampleHeaderFooterViewHeight = 20;
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     if ((self = [super initWithReuseIdentifier:reuseIdentifier])) {
         self.contentView.backgroundColor = [UIColor lightGrayColor];
-        self.recycledView = [UIView new];
+        self.recycledView = [ExampleRecycledViewWithDrawRect new];
         self.recycledView.backgroundColor = [UIColor greenColor];
         [self.contentView addSubview:self.recycledView];
         self.recycledImageViewWithNonRecycledImage = [UIImageView new];

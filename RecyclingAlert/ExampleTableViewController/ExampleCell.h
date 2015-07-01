@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ExampleRecycledViewWithDrawRect.h"
 
 @interface ExampleCell : UITableViewCell
 
 @end
 
 @interface ExampleCell (LayoutSubviews)
+
+@property (nonatomic, strong, readonly) ExampleRecycledViewWithDrawRect *recycledView;
 
 @property (nonatomic, strong, readonly) UIImageView *recycledImageViewWithNonRecycledImage;
 

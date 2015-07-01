@@ -9,6 +9,8 @@
 #import "ExampleCollectionViewDataSource.h"
 #import <UIKit/UITableView.h>
 #import "ExampleSimulatedWorkLoad.h"
+#import <UIKit/UICollectionViewFlowLayout.h>
+#import "ExampleCollectionViewHeaderFooterViewCollectionReusableView.h"
 
 @interface ExampleCollectionViewDataSource ()
 
@@ -49,6 +51,24 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 99;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *) kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *reusableview = nil;
+    
+    if (kind == UICollectionElementKindSectionHeader) {
+        ExampleCollectionViewHeaderFooterViewCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewHeaderIdentifier forIndexPath:indexPath];
+        reusableview = headerView;
+    }
+    if (kind == UICollectionElementKindSectionFooter) {
+        ExampleCollectionViewHeaderFooterViewCollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewFooterIdentifier forIndexPath:indexPath];
+        reusableview = footerview;
+    }
+    id item = [self itemAtIndexPath:indexPath];
+    self.configureExampleCell(reusableview, item);
+    [ExampleSimulatedWorkLoad doSimulatedWorkLoad];
+    return reusableview;
 }
 
 @end

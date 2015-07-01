@@ -17,7 +17,7 @@ static const CGFloat ExampleCellLabelHeight = 30;
 
 @interface ExampleCell ()
 
-@property (nonatomic, strong) UIView *recycledView;
+@property (nonatomic, strong, readwrite) ExampleRecycledViewWithDrawRect *recycledView;
 
 @property (nonatomic, strong, readwrite) UIImageView *recycledImageViewWithNonRecycledImage;
 
@@ -37,7 +37,7 @@ static const CGFloat ExampleCellLabelHeight = 30;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
-        self.recycledView = [UIView new];
+        self.recycledView = [ExampleRecycledViewWithDrawRect new];
         self.recycledView.backgroundColor = [UIColor greenColor];
         [self.contentView addSubview:self.recycledView];
         self.recycledImageViewWithNonRecycledImage = [UIImageView new];

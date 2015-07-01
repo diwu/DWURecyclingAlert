@@ -12,6 +12,7 @@
 #import "ExampleImage.h"
 #import "ExampleCollectionViewCell.h"
 #import "ExampleCollectionViewDataSource.h"
+#import "ExampleCollectionViewHeaderFooterViewCollectionReusableView.h"
 
 static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
 
@@ -30,9 +31,10 @@ static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
     
     // Register cell classes
     [self.collectionView registerClass:[ExampleCollectionViewCell class] forCellWithReuseIdentifier:ExampleCellIdentifier];
-    
+    [self.collectionView registerClass:[ExampleCollectionViewCell class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewHeaderIdentifier];
+    [self.collectionView registerClass:[ExampleCollectionViewCell class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:ExampleCollectionViewHeaderFooterViewCollectionReusableViewFooterIdentifier];
+
     // Do any additional setup after loading the view.
-//    self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.exampleDelegate = [ExampleDelegate new];
     self.exampleDataSource = [[ExampleCollectionViewDataSource alloc] initWithItems:[ExampleItemGenerator randomExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:^(ExampleCollectionViewCell *cell, ExampleItem *item) {
@@ -45,11 +47,14 @@ static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
         cell.imageView.backgroundColor = [UIColor clearColor];
         switch (type) {
             case 0: {
-                cell.imageView.backgroundColor = [UIColor greenColor];
+                cell.imageView.backgroundColor = [UIColor clearColor];
                 cell.label.text = @"Recycled View";
+                cell.recyledViewWithDrawRect.hidden = NO;
+                [cell.recyledViewWithDrawRect setNeedsDisplay];
                 break;
             }
             case 1: {
+                cell.recyledViewWithDrawRect.hidden = YES;
                 cell.label.text = @"Non-Recycled Layer";
                 cell.nonRecycledLayer = [CALayer new];
                 cell.nonRecycledLayer.backgroundColor = [UIColor lightGrayColor].CGColor;
@@ -58,11 +63,13 @@ static NSString *ExampleCellIdentifier = @"ExampleCellIdentifier";
                 break;
             }
             case 2: {
+                cell.recyledViewWithDrawRect.hidden = YES;
                 cell.label.text = @"Non-Recycled Image";
                 cell.imageView.image = [ExampleImage nonRecycledImage];
                 break;
             }
             case 3: {
+                cell.recyledViewWithDrawRect.hidden = YES;
                 cell.label.text = @"Recycled Image";
                 cell.imageView.image = [ExampleImage recycledImage];
                 break;

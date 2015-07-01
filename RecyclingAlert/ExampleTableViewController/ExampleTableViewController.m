@@ -54,6 +54,7 @@ static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
             cell.label1.hidden = YES;
             cell.label2.hidden = YES;
         }
+        [cell.recycledView setNeedsDisplay];
     };
     self.exampleDelegate = [[ExampleDelegate alloc] initWithItems:[ExampleItemGenerator randomExampleItems] headerFooterViewIdentifier:ExampleHeaderFooterViewIdentifier configureHeaderFooterViewBlock:block];
     self.exampleDataSource = [[ExampleDataSource alloc] initWithItems:[ExampleItemGenerator randomExampleItems] cellIdentifier:ExampleCellIdentifier configureCellBlock:block];
