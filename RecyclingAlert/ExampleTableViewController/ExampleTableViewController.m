@@ -44,11 +44,12 @@ static const NSInteger ExampleCellNonRecycledViewTag = NSIntegerMax;
             view = [UIView new];
             view.tag = ExampleCellNonRecycledViewTag;
             view.backgroundColor = [UIColor blueColor];
+            cell.nonRecycledView = view;
             [cell.contentView addSubview:view];
-            [cell layoutNonRecycledView:view];
             cell.recycledImageViewWithNonRecycledImage.image = [ExampleImage nonRecycledImage];
             cell.label1.hidden = NO;
             cell.label2.hidden = NO;
+            [cell setNeedsLayout];
         } else {
             cell.recycledImageViewWithNonRecycledImage.image = nil;
             cell.label1.hidden = YES;

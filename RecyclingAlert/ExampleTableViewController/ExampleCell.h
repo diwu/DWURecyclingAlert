@@ -11,6 +11,8 @@
 
 @interface ExampleCell : UITableViewCell
 
+@property (nonatomic, weak) UIView *nonRecycledView;
+
 @end
 
 @interface ExampleCell (LayoutSubviews)

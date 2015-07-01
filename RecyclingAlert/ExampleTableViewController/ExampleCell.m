@@ -80,6 +80,7 @@ static const CGFloat ExampleCellLabelHeight = 30;
     [self layoutRecyledView:self.recycledView];
     [self layoutNonRecycledImage:self.recycledImageViewWithNonRecycledImage];
     [self layoutRecycledImage:self.recycledImageViewWithRecycledImage];
+    [self layoutNonRecycledView:self.nonRecycledView];
 }
 
 @end
@@ -94,6 +95,9 @@ static const CGFloat ExampleCellLabelHeight = 30;
 }
 
 - (void)layoutNonRecycledView: (UIView *)view {
+    if (!view) {
+        return;
+    }
     CGRect rect = CGRectMake(CGRectGetWidth(self.contentView.frame)/4.0, 0, CGRectGetWidth(self.contentView.frame)/4.0, CGRectGetHeight(self.contentView.frame) - ExampleCellLabelHeight);
     rect = CGRectInset(rect, ExampleCellInset, ExampleCellInset);
     view.frame = rect;

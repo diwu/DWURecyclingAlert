@@ -11,6 +11,8 @@
 
 @interface ExampleHeaderFooterView : UITableViewHeaderFooterView
 
+@property (nonatomic, weak) UIView *nonRecycledView;
+
 @end
 
 @interface ExampleHeaderFooterView (LayoutSubviews)
