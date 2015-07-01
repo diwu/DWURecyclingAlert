@@ -42,13 +42,17 @@ static const CGFloat DWU_BORDER_WIDTH = 5.0;
 
 static const CGFloat DWU_LABEL_HEIGHT = 16.0;
 
-static const CGFloat DWU_LABEL_WIDTH_UITABLEVIEW_CELL = 220.0;
+static const CGFloat DWU_LABEL_WIDTH_UITABLEVIEW_CELL = 240.0;
 
 static const CGFloat DWU_LABEL_WIDTH_UICOLLECTIONVIEW_CELL = 50.0;
 
 static const CGFloat DWU_LABEL_FONT_SIZE = 12.0;
 
 static NSString *DWU_LABEL_FORMAT_UITABLEVIEW_CELL = @"cellForRow: %zd ms, drawRect: %zd ms";
+
+static NSString *DWU_LABEL_FORMAT_UITABLEVIEW_HEADER = @"viewForHeader: %zd ms, drawRect: %zd ms";
+
+static NSString *DWU_LABEL_FORMAT_UITABLEVIEW_FOOTER = @"viewForFooter: %zd ms, drawRect: %zd ms";
 
 static NSString *DWU_LABEL_FORMAT_UICOLLECTIONVIEW_CELL = @" %zd / %zd";
 
@@ -110,16 +114,15 @@ static BOOL dwu_replaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id bloc
 
 @property (nonatomic, copy) NSString *format;
 
-- (instancetype)initWithKVOTarget: (UIView *)view frame: (CGRect)frame format: (NSString *)format;
+- (instancetype)initWithKVOTarget: (UIView *)view frame: (CGRect)frame;
 
 @end
 
 @implementation DWUKVOLabel
 
-- (instancetype)initWithKVOTarget: (UIView *)view frame: (CGRect)frame format: (NSString *)format {
+- (instancetype)initWithKVOTarget: (UIView *)view frame: (CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
         _observedView = view;
-        _format = format;
         _cellForRowTimeInteger = 0;
         _drawRectTimeInteger = 0;
         [view addObserver:self forKeyPath:@"dwuCellForRowTimeCountNumber" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
@@ -351,7 +354,7 @@ static CellForRowAtIndexPathBlock dwu_generateTimeLabel(SEL targetSelector, CGFl
         [[returnView layer] dwu_scanLayerHierarchyRecursively];
         DWUKVOLabel *timeIntervalLabel = (DWUKVOLabel *)[returnView viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
         if (!timeIntervalLabel) {
-            timeIntervalLabel = [[DWUKVOLabel alloc] initWithKVOTarget:returnView frame:CGRectMake(0, 0, labelWidth, DWU_LABEL_HEIGHT) format:timeStringFormat];
+            timeIntervalLabel = [[DWUKVOLabel alloc] initWithKVOTarget:returnView frame:CGRectMake(0, 0, labelWidth, DWU_LABEL_HEIGHT)];
             timeIntervalLabel.userInteractionEnabled = NO;
             timeIntervalLabel.backgroundColor = DWU_TEXT_LABEL_BACKGROUND_COLOR;
             timeIntervalLabel.textColor = DWU_TEXT_LABEL_FONT_COLOR;
@@ -362,6 +365,7 @@ static CellForRowAtIndexPathBlock dwu_generateTimeLabel(SEL targetSelector, CGFl
             timeIntervalLabel.layer.dwuRecyclingCount++;
             [returnView addSubview:timeIntervalLabel];
         }
+        timeIntervalLabel.format = timeStringFormat;
         timeIntervalLabel.cellForRowTimeInteger = 0;
         timeIntervalLabel.drawRectTimeInteger = 0;
         [returnView bringSubviewToFront:timeIntervalLabel];
@@ -378,7 +382,7 @@ static CollectionHeaderFooterBlock dwu_generateCollectionViewHeaderFooterTimeLab
         [[returnView layer] dwu_scanLayerHierarchyRecursively];
         DWUKVOLabel *timeIntervalLabel = (DWUKVOLabel *)[returnView viewWithTag:DWU_TIME_INTERVAL_LABEL_TAG];
         if (!timeIntervalLabel) {
-            timeIntervalLabel = [[DWUKVOLabel alloc] initWithKVOTarget:returnView frame:CGRectMake(0, 0, labelWidth, DWU_LABEL_HEIGHT) format:timeStringFormat];
+            timeIntervalLabel = [[DWUKVOLabel alloc] initWithKVOTarget:returnView frame:CGRectMake(0, 0, labelWidth, DWU_LABEL_HEIGHT)];
             timeIntervalLabel.userInteractionEnabled = NO;
             timeIntervalLabel.backgroundColor = DWU_TEXT_LABEL_BACKGROUND_COLOR;
             timeIntervalLabel.textColor = DWU_TEXT_LABEL_FONT_COLOR;
@@ -389,6 +393,7 @@ static CollectionHeaderFooterBlock dwu_generateCollectionViewHeaderFooterTimeLab
             timeIntervalLabel.layer.dwuRecyclingCount++;
             [returnView addSubview:timeIntervalLabel];
         }
+        timeIntervalLabel.format = timeStringFormat;
         timeIntervalLabel.cellForRowTimeInteger = 0;
         timeIntervalLabel.drawRectTimeInteger = 0;
         [returnView bringSubviewToFront:timeIntervalLabel];
@@ -406,13 +411,13 @@ static void dwu_generateTimeLabelForUITableViewHeaderFooterView() {
         if ([arg respondsToSelector:viewForHeaderInSectionSel]) {
             NSString *viewForSectionSelSelStr = NSStringFromSelector(viewForHeaderInSectionSel);
             SEL newViewForSectionSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", viewForSectionSelSelStr]);
-            dwu_replaceMethodWithBlock([arg class], viewForHeaderInSectionSel, newViewForSectionSel, dwu_generateTimeLabel(newViewForSectionSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_CELL));
+            dwu_replaceMethodWithBlock([arg class], viewForHeaderInSectionSel, newViewForSectionSel, dwu_generateTimeLabel(newViewForSectionSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_HEADER));
         }
         SEL viewForFooterInSectionSel = @selector(tableView:viewForFooterInSection:);
         if ([arg respondsToSelector:viewForFooterInSectionSel]) {
             NSString *viewForSectionSelSelStr = NSStringFromSelector(viewForFooterInSectionSel);
             SEL newViewForSectionSel = NSSelectorFromString([NSString stringWithFormat:@"dwu_%@", viewForSectionSelSelStr]);
-            dwu_replaceMethodWithBlock([arg class], viewForFooterInSectionSel, newViewForSectionSel, dwu_generateTimeLabel(newViewForSectionSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_CELL));
+            dwu_replaceMethodWithBlock([arg class], viewForFooterInSectionSel, newViewForSectionSel, dwu_generateTimeLabel(newViewForSectionSel, DWU_LABEL_WIDTH_UITABLEVIEW_CELL, DWU_LABEL_FORMAT_UITABLEVIEW_FOOTER));
         }
         ((void ( *)(id, SEL, id))objc_msgSend)(_self, newSelector, arg);
     });
