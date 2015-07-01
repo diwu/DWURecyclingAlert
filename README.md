@@ -8,7 +8,7 @@
 [![](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 [![](https://img.shields.io/badge/swift-compatible-orange.svg)][project]
 
-#Visualize Bad Drawing On The Fly
+#Visualize Bad Drawings On The Fly
 
 Scans 4 classes:
  
@@ -29,7 +29,7 @@ Visualizes bad drawing code in 2 ways:
 * Displays the time it takes to complete each time sensitive API calls, in milliseconds.
 
 #Usage
-Step 1: Drop [DWURecyclingAlert.m][code] into your project.
+Step 1: Drop [DWURecyclingAlert.m][code] into your project, Swift or Obj-C.
 
 Step 2: There's no step 2. 
 
@@ -48,12 +48,12 @@ Method swizzling and associated objects. You could always read the [source][code
 #Example Project
 Inside this repo you can find the RecyclingAlert example project. 
 #License
-DWURecyclingAlert is released under the MIT license. See LICENSE for details.
+DWURecyclingAlert is released under the MIT license. See [LICENSE][license] for details.
 
 [code]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m
 [code_line_23]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L23
 [code_line_39]: ./RecyclingAlert/DWURecyclingAlert/DWURecyclingAlert.m#L39
 [project]: https://github.com/diwu/DWURecyclingAlert
-[demo]: https://raw.githubusercontent.com/diwu/ui-markdown-store/master/demo_10.png
+[demo]: https://raw.githubusercontent.com/diwu/ui-markdown-store/master/demo_11.png
 [license]: ./LICENSE
 <a name="myfootnote1">1</a>: Facebook AsyncDisplayKit Guide. (http://asyncdisplaykit.org/guide)
