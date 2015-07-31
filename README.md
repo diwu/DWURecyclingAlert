@@ -10,18 +10,21 @@
 
 #Visualize Bad Drawings On The Fly
 
-Scans 4 classes:
+Injects 4 classes:
  
  * `UITableViewCell`
  * `UICollectionViewCell`
  * `UITableViewHeaderFooterView`
  * `UICollectionReusableView` (as footers/headers)
  
-Monitors 3 API calls:
+Monitors 6 time sensitive API calls:
 
- * `tableView:cellForRowAtIndexPath:`
- * `collectionView:cellForItemAtIndexPath:`
  * `[UIView drawRect:]`
+ * `tableView:cellForRowAtIndexPath:`
+ * `tableView:viewForHeaderInSection:`
+ * `tableView:viewForFooterInSection:`
+ * `collectionView:cellForItemAtIndexPath:`
+ * `collectionView:viewForSupplementaryElementOfKind:atIndexPath:`
 
 Visualizes bad drawing code in 2 ways:
 
@@ -29,7 +32,7 @@ Visualizes bad drawing code in 2 ways:
 * Displays the time it takes to complete each time sensitive API calls, in milliseconds.
 
 #Usage
-Step 1: Drop [DWURecyclingAlert.m][code] into your project, Swift or Obj-C.
+Step 1: Drop [DWURecyclingAlert.m][code] into your project, Swift or ObjC.
 
 Step 2: There's no step 2. 
 
