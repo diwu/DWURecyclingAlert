@@ -37,6 +37,7 @@
 		5097A0561B42CB530039F87D /* ExampleRecycledViewWithDrawRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 5097A0551B42CB530039F87D /* ExampleRecycledViewWithDrawRect.m */; };
 		5097A0591B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5097A0581B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.m */; };
 		50A5D6661B2463FA0058E134 /* DWURecyclingAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */; };
+		50FC30511BBA9C6700CE59C7 /* DWURecyclingAlert_CocoaPods.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC30501BBA9C6700CE59C7 /* DWURecyclingAlert_CocoaPods.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,8 @@
 		5097A0571B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleCollectionViewHeaderFooterViewCollectionReusableView.h; path = ExampleTableViewController/ExampleCollectionViewHeaderFooterViewCollectionReusableView.h; sourceTree = "<group>"; };
 		5097A0581B42F1AC0039F87D /* ExampleCollectionViewHeaderFooterViewCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExampleCollectionViewHeaderFooterViewCollectionReusableView.m; path = ExampleTableViewController/ExampleCollectionViewHeaderFooterViewCollectionReusableView.m; sourceTree = "<group>"; };
 		50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DWURecyclingAlert.m; path = DWURecyclingAlert/DWURecyclingAlert.m; sourceTree = "<group>"; };
+		50FC304F1BBA9C6700CE59C7 /* DWURecyclingAlert_CocoaPods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DWURecyclingAlert_CocoaPods.h; path = DWURecyclingAlert_CocoaPods/DWURecyclingAlert_CocoaPods.h; sourceTree = "<group>"; };
+		50FC30501BBA9C6700CE59C7 /* DWURecyclingAlert_CocoaPods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DWURecyclingAlert_CocoaPods.m; path = DWURecyclingAlert_CocoaPods/DWURecyclingAlert_CocoaPods.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +138,7 @@
 		507A16BE1B23EE3400B4A016 /* RecyclingAlert */ = {
 			isa = PBXGroup;
 			children = (
+				50FC304E1BBA9C2300CE59C7 /* DWURecyclingAlert_CocoaPods */,
 				50A5D65C1B2440760058E134 /* DWURecyclingAlert */,
 				507A16E91B241E6200B4A016 /* ExampleTableViewController */,
 				507A16C31B23EE3400B4A016 /* AppDelegate.h */,
@@ -218,6 +222,15 @@
 				50A5D6651B2463FA0058E134 /* DWURecyclingAlert.m */,
 			);
 			name = DWURecyclingAlert;
+			sourceTree = "<group>";
+		};
+		50FC304E1BBA9C2300CE59C7 /* DWURecyclingAlert_CocoaPods */ = {
+			isa = PBXGroup;
+			children = (
+				50FC304F1BBA9C6700CE59C7 /* DWURecyclingAlert_CocoaPods.h */,
+				50FC30501BBA9C6700CE59C7 /* DWURecyclingAlert_CocoaPods.m */,
+			);
+			name = DWURecyclingAlert_CocoaPods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,6 +349,7 @@
 				507A16F01B241F0F00B4A016 /* ExampleTableViewController.m in Sources */,
 				507A16C21B23EE3400B4A016 /* main.m in Sources */,
 				507A16FC1B24242900B4A016 /* ExampleItem.m in Sources */,
+				50FC30511BBA9C6700CE59C7 /* DWURecyclingAlert_CocoaPods.m in Sources */,
 				50A5D6661B2463FA0058E134 /* DWURecyclingAlert.m in Sources */,
 				508DF4F31B2C0FD000361081 /* ExampleImage.m in Sources */,
 				508E18DE1B347DF800F2D090 /* ExampleCollectionViewDataSource.m in Sources */,
