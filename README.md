@@ -36,6 +36,14 @@ Step 1: Drop [DWURecyclingAlert.m][code] into your project, Swift or ObjC.
 
 Step 2: There's no step 2. 
 
+(Optionally) Using CocoaPods and manually start the injection:
+
+`pod 'DWURecyclingAlert'` 
+
+Then manually start injection by running the following function anywhere in your project:
+
+`void Inject_DWURecyclingAlert();`
+
 #UI Configuration
 It's likely that your project happens to use lots of `[UIColor redColor]` here and there. Or, maybe you want to localize the millisecond warning string with your team's first language. Take a look at the [UI Configuration][code_line_39] section and customize them the way you like.
 #How It Works
