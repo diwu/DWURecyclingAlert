@@ -307,6 +307,7 @@ static void dwu_swizzleDrawRectIfNotYet(CALayer *layer) {
         [self dwu_removeRedBorderEffect];
     }
     UIView *cellDelegate = [self dwu_findCell];
+    [self dwu_injectLayer:cellDelegate.layer withCellDelegate:cellDelegate];
     for (CALayer *sublayer in self.sublayers) {
         [self dwu_injectLayer:sublayer withCellDelegate:cellDelegate];
         [sublayer dwu_scanLayerHierarchyRecursively];
